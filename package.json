@@ -1,0 +1,15 @@
+{
+	"name": "funcunit-node-reporter",
+	"description": "A Socket.io server for test result reporting",
+	"version": "0.0.1",
+	"homepage": "http://github.com/jupiterjs/funcunit",
+	"author": "David Luecke",
+	"main": "./server.js",
+	"engines": {
+		"node": "~0.6"
+	},
+	"dependencies": {
+		"socket.io": "*",
+    "connect" : "*"
+	}
+}
