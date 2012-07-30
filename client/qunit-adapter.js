@@ -1,7 +1,5 @@
 (function () {
 	var evts = ['begin', 'testStart', 'testDone', 'moduleStart', 'moduleDone', 'done', 'log'],
-		type,
-		orig = {},
 		listeners = {},
 		dispatch = function (type, data) {
 			if (type in listeners) {
@@ -32,15 +30,15 @@
 
 	// Bind event handlers
 	for (var i = 0; i < evts.length; i++) {
-		type = evts[i];
 		(function (type) {
-			QUnit[type](function (data) {
-				if (orig[type]) {
-					orig[type].apply(this, arguments);
+			var old = QUnit[type];
+			QUnit[type] = function (data) {
+				if (old) {
+					old.apply(this, arguments);
 				}
 				dispatch(type, data);
-			});
-		})(type);
+			};
+		})(evts[i]);
 	}
 
 	var matches = window.location.href.match(/(?:websocket=)([^&#]*)/),
@@ -82,7 +80,16 @@
 					});
 				})(QUnit.events[i]);
 			}
+
 		});
+	}
+
+	for (var i = 0; i < QUnit.events.length; i++) {
+		(function (type) {
+			QUnit.on(type, function (o) {
+				console.log(type, o);
+			});
+		})(QUnit.events[i]);
 	}
 
 })();

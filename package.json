@@ -1,15 +1,17 @@
 {
-	"name": "funcunit-node-reporter",
-	"description": "A Socket.io server for test result reporting",
+	"name": "swarmling",
+	"description": "A cross browser testrunner",
 	"version": "0.0.1",
-	"homepage": "http://github.com/jupiterjs/funcunit",
+	"homepage": "http://github.com/daffl/swarmling",
 	"author": "David Luecke",
-	"main": "./server.js",
+	"main": "server/server.js",
 	"engines": {
 		"node": "~0.6"
 	},
 	"dependencies": {
-		"socket.io": "*",
-    "connect" : "*"
+		"socket.io": ">= 0.9.6",
+    "connect" : ">= 1.9.0",
+    "browserstack" : ">= 0.1.0",
+    "uberproto" : ">= 1.0.0"
 	}
 }
