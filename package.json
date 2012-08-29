@@ -10,8 +10,7 @@
 	},
 	"dependencies": {
 		"socket.io": ">= 0.9.6",
-    "connect" : ">= 1.9.0",
-    "browserstack" : ">= 0.1.0",
-    "uberproto" : ">= 1.0.0"
+    "connect" : "1.9.0",
+    "send" : ">= 0.0.4"
 	}
 }

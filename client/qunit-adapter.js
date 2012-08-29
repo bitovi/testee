@@ -41,53 +41,12 @@
 		})(evts[i]);
 	}
 
-	var matches = window.location.href.match(/(?:websocket=)([^&#]*)/),
-		loadScript = function (url, callback) {
-			var script = document.createElement("script")
-			script.type = "text/javascript";
-
-			if (script.readyState) {  //IE
-				script.onreadystatechange = function () {
-					if (script.readyState == "loaded" ||
-						script.readyState == "complete") {
-						script.onreadystatechange = null;
-						callback();
-					}
-				};
-			} else {  //Others
-				script.onload = function () {
-					callback();
-				};
-			}
-
-			script.src = url;
-			document.getElementsByTagName("head")[0].appendChild(script);
-		},
-		url = 'http://localhost:3996',
-		clientLib;
-
-	if (matches && matches[1]) {
-		if (matches[1] !== 'true') {
-			url = matches[1];
-		}
-		clientLib = url + '/socket.io/socket.io.js';
-		loadScript(clientLib, function() {
-			var socket = io.connect(url);
-			for (var i = 0; i < QUnit.events.length; i++) {
-				(function (type) {
-					QUnit.on(type, function (o) {
-						socket.emit('QUnit.' + type, o);
-					});
-				})(QUnit.events[i]);
-			}
-
-		});
-	}
-
 	for (var i = 0; i < QUnit.events.length; i++) {
+		var socket = io.connect();
 		(function (type) {
 			QUnit.on(type, function (o) {
 				console.log(type, o);
+				socket.emit('QUnit.' + type, o);
 			});
 		})(QUnit.events[i]);
 	}
