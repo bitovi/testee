@@ -1,54 +1,52 @@
-(function () {
-	var evts = ['begin', 'testStart', 'testDone', 'moduleStart', 'moduleDone', 'done', 'log'],
-		listeners = {},
-		dispatch = function (type, data) {
-			if (type in listeners) {
-				for (var i = listeners[type].length - 1; i >= 0; i--) {
-					listeners[type][i].call(QUnit, data);
-				}
-			}
-		};
+(function (QUnit) {
+	var socket = io.connect();
+	var time = function() {
+		return new Date().getTime();
+	}
+	var wrap = function(type, event, converter) {
+		var old = QUnit[type];
+		QUnit[type] = function(data) {
+			var converted = converter ? converter(data) : data;
+			old.apply(QUnit, arguments);
+			console.log(type, data, event, converted);
+			socket.emit(event, converted);
+		}
+	}
 
-	/**
-	 * Adds an event mechanism to QUnit.
-	 *
-	 *  QUnit.on('testStart', function(o) {
-	 *      console.log(o);
-	 *  });
-	 *
-	 *  @see https://github.com/spjwebster/qunit-events
-	 */
-	QUnit.extend(QUnit, {
-		on : function (type, callback) {
-			if (false === type in listeners) {
-				listeners[type] = [];
-			}
-			listeners[type].push(callback);
-		},
-		events : evts
+	wrap('begin', 'testRunnerInit', function(data) {
+		var title = document.getElementsByTagName('h1')[0];
+		return {
+			name : title ? title.innerHTML : '',
+			environment : navigator.userAgent,
+			runnter : 'QUnit',
+			time : time()
+		}
 	});
 
-	// Bind event handlers
-	for (var i = 0; i < evts.length; i++) {
-		(function (type) {
-			var old = QUnit[type];
-			QUnit[type] = function (data) {
-				if (old) {
-					old.apply(this, arguments);
-				}
-				dispatch(type, data);
-			};
-		})(evts[i]);
-	}
+	wrap('testStart', 'testStart', function(data) {
+		return {
+			name : data.name,
+			time : time()
+		};
+	});
 
-	for (var i = 0; i < QUnit.events.length; i++) {
-		var socket = io.connect();
-		(function (type) {
-			QUnit.on(type, function (o) {
-				console.log(type, o);
-				socket.emit('QUnit.' + type, o);
-			});
-		})(QUnit.events[i]);
-	}
+	wrap('testDone', 'testDone', function(data) {
+		return data;
+	});
 
-})();
+	wrap('log', 'testAssert', function(data) {
+		return data;
+	});
+
+	wrap('moduleStart', 'testSuiteStart', function(data) {
+		return data;
+	});
+
+	wrap('moduleDone', 'testSuiteDone', function(data) {
+		return data;
+	});
+
+	wrap('done', 'testRunnerExit', function(data) {
+		return data;
+	});
+})(QUnit);

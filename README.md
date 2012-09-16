@@ -16,7 +16,7 @@ Also works cross domain when pointing the websocket to your server:
 
 ## Normalized test results
 
-TestStart:
+TestInitialize:
 
     {
       "name" : "",
@@ -25,37 +25,10 @@ TestStart:
       "time" : 123456
     }
 
-SuiteStart:
+TestStart:
 
     {
       "name" : "",
-      "time" : 123456
-    }
-
-Test:
-
-    {
-      "test" : "",
-      "name" : "",
-      "suite" : "",
-      "total" : 10,
-      "failed" : 1,
-      "passed" : 9,
-      "time" : 123456,
-      "id" : 1,
-      "assert" : [
-        {
-          "message" : "",
-          "passed" : true
-        }
-      ]
-    }
-
-TestDone:
-
-    {
-      "failed" : 2,
-      "passed" : 10,
       "time" : 123456
     }
 
