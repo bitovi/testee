@@ -14,45 +14,48 @@ Also works cross domain when pointing the websocket to your server:
 
 `http://qunit-test-width-adapter.html?websocket=192.168.0.2:3996`
 
-## Normalized test results
+## Test reporting events
 
-TestInitialize:
+### `start`
+
+Fires when the test runner starts:
 
     {
-      "name" : "",
       "environment" : "",
       "runner" : "",
       "time" : 123456
     }
 
-TestStart:
+### `suite`
+
+Fires when a new test suite started. Test suites can be nested into any level. The first suite started should
+be the main test.
 
     {
-      "name" : "",
-      "time" : 123456
+      "id" : <id>
+      "title" : "My test suite",
+      "root" : true,
+      "parent" : <id>
     }
 
-## Todos
+### `test`
 
-- Implement the browserstack API with [node-browserstack](https://github.com/scottgonzalez/node-browserstack/)
-- Convert test results into a general format
-- Local browser launchers
-- Add other test frameworks (Mocha, Jasmine)
-- Make configure-able and add CLI script
-- Set up tunnel. Use Browserstack applet or [Pagekite](http://pagekite.net/)
+    {
+      "title" : "",
+      "async" : 0,
+      "timedOut" : false,
+      "pending" : false,
+      "type" : "test",
+      "parent" : "parent"
+    }
 
-## API
+### `pass`
 
-run.local(function(err, test) {
-  test.firefox('http://localhost:3996/qunit.html?websocket=true', function(err, instance) {
-    instance.on('testDone', function() {
-      instance.stop();
-    });
-  });
- });
+### `fail`
 
-## Localhost Tunneling services
+### `test end`
 
-- http://progrium.com/localtunnel/
-- showoff.io
-- pagekite.me
+### `suite end`
+
+### `end`
+

@@ -29,12 +29,38 @@ describe("StringCalculator", function() {
 			var result = StringCalculator.add("2");
 			assert(result === 2);
 		});
+
+		it("does some wild stuff", function() {
+			assert(true);
+		});
 	});
 
-	describe("when string is passed in", function() {
-		it("returns NaN", function() {
-			var result = 1;
-			assert(isNaN(result));
+//	describe('User', function(){
+//		describe('#save()', function(){
+//			it('should save without error', function(done){
+//				setTimeout(function() {
+//					done();
+//				}, 200)
+//			})
+//		})
+//	})
+
+//	describe("when string is passed in", function() {
+//		it("returns NaN", function() {
+//			var result = 1;
+//			assert(isNaN(result));
+//		});
+//	});
+
+	describe("Some stuff", function() {
+		it('does stuff', function() {
+			assert(true);
+		});
+	});
+
+	describe("Some stuff", function() {
+		it('does stuff', function() {
+			assert(true);
 		});
 	});
 
