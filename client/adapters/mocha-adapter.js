@@ -4,12 +4,13 @@
 	var SwarmReporter= function(runner) {
 		var self = this;
 		var pipe = function(type, converter) {
+			console.log(type, converter.apply(converter, arguments));
 			runner.on(type, function(data) {
 				socket.emit.apply(socket, [type].concat(converter.apply(converter, arguments)));
 			});
 		}
 
-		this.originalReporter= new OldReporter(runner);
+		this.originalReporter = new OldReporter(runner);
 		this.ids = [];
 		this.last = {};
 

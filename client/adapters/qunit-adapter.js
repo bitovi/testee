@@ -13,6 +13,8 @@
 	};
 
 	add('begin', function() {
+		var title = document.getElementsByTagName('title')[0];
+
 		socket.emit('start', {
 			environment : navigator.userAgent,
 			runner : 'QUnit',
@@ -20,7 +22,7 @@
 		});
 
 		socket.emit('suite', {
-			title : document.getElementsByTagName('title')[0].innerHTML,
+			title : title ? title.innerHTML : 'Untitled',
 			root : true,
 			pending : false,
 			id : curId++
