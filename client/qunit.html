@@ -6,6 +6,14 @@
   <script type="text/javascript" src="qunit.js"></script>
 
   <script>
+    /*
+    ['begin', 'moduleStart', 'moduleDone', 'testStart', 'testEnd', 'log', 'done'].forEach(function(name) {
+      QUnit[name] = function(data) {
+        console.log(name, data);
+      }
+    });
+    */
+
       test("a basic test example", function() {
         ok( true, "this test is fine" );
         var value = "hello";

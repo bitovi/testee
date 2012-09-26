@@ -9,7 +9,7 @@ var fsMiddleware = fileServer({
 	replace : '</body>',
 	withText : '<script type="text/javascript" src="/socket.io/socket.io.js"></script>\n' +
 		'<script type="text/javascript" src="/adapters/underscore.js"></script>\n' +
-		'<script type="text/javascript" src="/adapters/mocha-adapter.js"></script>\n' +
+		'<script type="text/javascript" src="/adapters/qunit-adapter.js"></script>\n' +
 		'</body>\n',
 	when : function (req, res) {
 		return res.getHeader('Content-Type').indexOf('text/html') === 0;
@@ -25,7 +25,7 @@ server.on('close', function () {
 
 launch.local({}, function (err, local) {
 	var token = 'bla';
-	local.chrome('http://localhost:3996/mocha.html?__token=' + token, {}, function (err, instance) {
+	local.firefox('http://localhost:3996/qunit.html?__token=' + token, {}, function (err, instance) {
 		server.register(token, instance);
 		instance.on('testing', function (reporter) {
 			console.log('Got test reporter for token ' + token);

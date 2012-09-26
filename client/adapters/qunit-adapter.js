@@ -1,5 +1,7 @@
 (function (QUnit) {
-	var curId = 0;
+	var testId = 0;
+	var suiteId = 0;
+	var parentSuite = null;
 	var socket = io.connect();
 	var time = function() {
 		return new Date().getTime();
@@ -7,13 +9,14 @@
 	var add = function(type, fn) {
 		var old = QUnit[type];
 		QUnit[type] = function() {
+			console.log(type, parentSuite, suiteId, testId);
 			fn.apply(this, arguments);
 			return old.apply(QUnit, arguments);
 		}
 	};
 
 	add('begin', function() {
-		var title = document.getElementsByTagName('title')[0];
+		var title = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
 
 		socket.emit('start', {
 			environment : navigator.userAgent,
@@ -25,38 +28,63 @@
 			title : title ? title.innerHTML : 'Untitled',
 			root : true,
 			pending : false,
-			id : curId++
+			id : (++suiteId)
 		});
+
+		parentSuite = suiteId;
 	});
 
 	add('moduleStart', function(data) {
 		socket.emit('suite', {
-
+			title : data.name,
+			root : false,
+			pending : false,
+			parent : parentSuite,
+			id : (++suiteId)
 		});
+		parentSuite = suiteId;
 	});
 
 	add('moduleDone', function(data) {
 		socket.emit('suite end', {
-
-		})
+			failed : data.failed,
+			total : data.total,
+			id : suiteId
+		});
+		(--parentSuite);
 	});
 
 	add('testStart', function(data) {
 		socket.emit('suite', {
+			title : data.name,
+			root : false,
+			pending : false,
+			parent : parentSuite,
+			id : (++suiteId)
 		});
+		parentSuite = suiteId;
 	});
 
-	add('testEnd', function(data) {
+	add('testDone', function(data) {
 		socket.emit('suite end', {
-
+			"id" : suiteId
 		});
+		(--parentSuite);
 	});
 
 	add('log', function(data) {
-		socket.emit('test', {});
+		socket.emit('test', {
+			id : (++testId),
+			title : data.message,
+			parent : parentSuite
+		});
+
 		if(data.result) {
 			socket.emit('pass', {
-				title : data.message
+				duration : 0,
+				state : 'passed',
+				speed : 'fast',
+				id : testId
 			});
 		} else {
 			socket.emit('fail', {
@@ -65,7 +93,7 @@
 			});
 		}
 		socket.emit('test end', {
-
+			id : testId
 		});
 	});
 

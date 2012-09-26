@@ -32,30 +32,46 @@ Fires when a new test suite started. Test suites can be nested into any level. T
 be the main test.
 
     {
-      "id" : <id>
-      "title" : "My test suite",
-      "root" : true,
-      "parent" : <id>
+    	"id" : <id>,
+    	"title" : "Suite test",
+    	"pending" : false,
+    	"root" : true
     }
 
 ### `test`
 
     {
-      "title" : "",
-      "async" : 0,
-      "timedOut" : false,
-      "pending" : false,
-      "type" : "test",
-      "parent" : "parent"
+    	"title" : "test title",
+    	"async" : false,
+    	"timedOut" : false,
+    	"pending" : false,
+    	"type" : "test",
+    	"parent" : <suite id>,
+    	"id" : <id>
     }
 
 ### `pass`
+
+    {
+      "duration" : <duration>,
+      "state" : "passed",
+      "speed" : "fast",
+      "id" : <test id>
+    }
 
 ### `fail`
 
 ### `test end`
 
+    {
+      "id" : <test id>
+    }
+
 ### `suite end`
+
+    {
+      "id" : <suite id>
+    }
 
 ### `end`
 

@@ -4,9 +4,10 @@
 	var SwarmReporter= function(runner) {
 		var self = this;
 		var pipe = function(type, converter) {
-			console.log(type, converter.apply(converter, arguments));
-			runner.on(type, function(data) {
-				socket.emit.apply(socket, [type].concat(converter.apply(converter, arguments)));
+			runner.on(type, function() {
+				var args = converter.apply(converter, arguments);
+				console.log("runner.emit('" + type + "', " + JSON.stringify(args) + ");");
+				socket.emit.apply(socket, [type].concat(args));
 			});
 		}
 
