@@ -1,10 +1,10 @@
-var fileServer = require('./../lib/server/static');
-var swarm = require('./.');
+var fileServer = require('./../../lib/server/static');
+var swarm = require('../.');
 var launch = require('launchness');
 var mocha = require('mocha');
 var _ = require('underscore');
 var miner = require('miner');
-var Converter = require('./../lib/converter');
+var Converter = require('../../lib/converter');
 var fsMiddleware = fileServer({
 	path : './client',
 	replace : '</body>',

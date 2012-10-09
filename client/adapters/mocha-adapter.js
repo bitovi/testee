@@ -1,4 +1,4 @@
-(function(window, mocha) {
+(function(window, mocha, undefined) {
 	var socket = io.connect();
 	var OldReporter = mocha._reporter;
 	var SwarmReporter= function(runner) {
@@ -6,7 +6,6 @@
 		var pipe = function(type, converter) {
 			runner.on(type, function() {
 				var args = converter.apply(converter, arguments);
-				console.log("runner.emit('" + type + "', " + JSON.stringify(args) + ");");
 				socket.emit.apply(socket, [type].concat(args));
 			});
 		}
@@ -15,7 +14,7 @@
 		this.ids = [];
 		this.last = {};
 
-		pipe('start', function() {
+		pipe("start", function() {
 			return {
 				environment : navigator.userAgent,
 				runner : 'Mocha',
@@ -23,7 +22,16 @@
 			}
 		});
 
-		_.each(["suite", "suite end", "pending", "test", "pass", "fail", "test end", "end"], function(name) {
+		pipe("fail", function(data, err) {
+			var diff = self.diff(data);
+			diff.err = {
+				message : err.message,
+				stack : err.stack || ''
+			}
+			return diff;
+		});
+
+		_.each(["suite", "suite end", "pending", "test", "pass", "pending", "test end", "end"], function(name) {
 			pipe(name, _.bind(self.diff, self));
 		});
 	};
@@ -39,7 +47,7 @@
 				if(!!~idx) {
 					result[key] = idx;
 				}
-			} else if(typeof value !== 'function' && !isPrivate) {
+			} else if(typeof value !== 'function' && !isPrivate && value !== undefined) {
 				result[key] = value;
 			}
 		});

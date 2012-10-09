@@ -1,4 +1,4 @@
-window.StringCalculator = StringCalculator = {
+var StringCalculator = StringCalculator = {
 	add: function(inputString) {
 		if(inputString === '') {
 			return 0;
@@ -35,15 +35,15 @@ describe("StringCalculator", function() {
 		});
 	});
 
-//	describe('User', function(){
-//		describe('#save()', function(){
-//			it('should save without error', function(done){
-//				setTimeout(function() {
-//					done();
-//				}, 200)
-//			})
-//		})
-//	})
+	describe('User', function(){
+		describe('#save()', function(){
+			it('should save without error', function(done){
+				setTimeout(function() {
+					done();
+				}, 200)
+			})
+		})
+	})
 
 //	describe("when string is passed in", function() {
 //		it("returns NaN", function() {
@@ -52,22 +52,23 @@ describe("StringCalculator", function() {
 //		});
 //	});
 
-	describe("Some stuff", function() {
-		it('does stuff', function() {
-			assert(true);
-		});
-	});
+//	describe("Some stuff", function() {
+//		it('does stuff', function() {
+//			assert(true);
+//		});
+//		it('is pending');
+//	});
 
-	describe("Some stuff", function() {
-		it('does stuff', function() {
-			assert(true);
-		});
-	});
-
-	describe("when '1,2' is passed in", function() {
-		it("returns 3", function() {
-			var result = StringCalculator.add("1,2");
-			assert(result === 3);
-		});
-	});
+//	describe("Some stuff", function() {
+//		it('does stuff', function() {
+//			assert(true);
+//		});
+//	});
+//
+//	describe("when '1,2' is passed in", function() {
+//		it("returns 3", function() {
+//			var result = StringCalculator.add("1,2");
+//			assert(result === 3);
+//		});
+//	});
 });

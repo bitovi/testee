@@ -25,7 +25,7 @@
 		});
 
 		socket.emit('suite', {
-			title : title ? title.innerHTML : 'Untitled',
+			title : title ? title.innerHTML : '',
 			root : true,
 			pending : false,
 			id : (++suiteId)
