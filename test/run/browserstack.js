@@ -1,5 +1,5 @@
 var fileServer = require('./../../lib/server/static');
-var swarm = require('../.');
+var swarm = require('../../lib/server');
 var launch = require('launchness');
 var mocha = require('mocha');
 var _ = require('underscore');
@@ -40,7 +40,7 @@ launch.browserstack({
 				server.register(token, instance);
 				instance.on('testing', function (reporter) {
 					console.log('Got test reporter for token ' + token);
-					var convertedReporter = Converter.create(reporter);
+					var convertedReporter = new Converter(reporter);
 					new mocha.reporters.Spec(convertedReporter);
 					reporter.on(server.config.exitEvent, function () {
 						console.log('Stopping instance');

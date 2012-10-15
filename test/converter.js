@@ -43,7 +43,7 @@ describe("Converter", function() {
 			expect(data).to.have.property('parent');
 			expect(data.parent.id).to.be(1);
 			expect(data.fullTitle).to.be.a('function');
-			expect(data.fullTitle()).to.be('Test suite Test 2');
+			expect(data.fullTitle()).to.be('Test suite' + converter.titleSeparator + 'Test 2');
 			done();
 		});
 		emitter.emit('test', { id : 2, parent : 1, title : 'Test 2' });

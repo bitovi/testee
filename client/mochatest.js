@@ -35,16 +35,6 @@ describe("StringCalculator", function() {
 		});
 	});
 
-	describe('User', function(){
-		describe('#save()', function(){
-			it('should save without error', function(done){
-				setTimeout(function() {
-					done();
-				}, 200)
-			})
-		})
-	})
-
 //	describe("when string is passed in", function() {
 //		it("returns NaN", function() {
 //			var result = 1;
@@ -71,4 +61,14 @@ describe("StringCalculator", function() {
 //			assert(result === 3);
 //		});
 //	});
+});
+
+describe('User', function(){
+	describe('#save()', function(){
+		it('should save without error', function(done){
+			setTimeout(function() {
+				done();
+			}, 200)
+		})
+	})
 });

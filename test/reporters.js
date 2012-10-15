@@ -4,8 +4,10 @@ var Converter = require('../lib/converter.js');
 
 var run = function (Reporter) {
 	var runner = new EventEmitter();
-	var reporter = new Reporter(new Converter(runner));
-	runner.emit("start", {"environment" : "Node", "runner" : "Mocha", "time" : 1349670301774});
+
+	new Reporter(new Converter(runner));
+
+	runner.emit("start", { "environment" : "Node", "runner" : "Unittest" });
 	runner.emit("suite", {"title" : "", "pending" : false, "root" : true, "id" : 0});
 	runner.emit("suite", {"title" : "Main suite", "pending" : false, "root" : false, "parent" : 0, "id" : 1});
 	runner.emit("suite", {"title" : "Some stuff", "pending" : false, "root" : false, "parent" : 1, "id" : 2});
@@ -35,16 +37,19 @@ var run = function (Reporter) {
 }
 
 describe('Mocha reporter compatiblity', function () {
-	var skip = [ 'HTML', 'Markdown' ];
+	var skip = [ 'HTML', 'Base', 'Markdown' ];
 	var oldstdout = process.stdout.write;
 	var oldstderr = process.stderr.write;
 	Object.keys(Mocha.reporters).forEach(function (name) {
-		// For now we just test reporters by making sure that we don't get any errors
+		// For now we just test reporters by making sure that we don't get any errors when running
+		// some dummy data through the converter
 		var fn = skip.indexOf(name) === -1 ? it : it.skip;
 		fn('Runs with ' + name, function () {
 			// We don't want stuff to log to the console
-			process.stdout.write = function() {};
-			process.stderr.write = function() {};
+			process.stdout.write = function () {
+			};
+			process.stderr.write = function () {
+			};
 			run(Mocha.reporters[name]);
 			// Reset it once the reporter ran
 			process.stdout.write = oldstdout;

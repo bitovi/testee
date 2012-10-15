@@ -27,7 +27,6 @@
 		socket.emit('suite', {
 			title : title ? title.innerHTML : '',
 			root : true,
-			pending : false,
 			id : (++suiteId)
 		});
 
@@ -37,8 +36,6 @@
 	add('moduleStart', function(data) {
 		socket.emit('suite', {
 			title : data.name,
-			root : false,
-			pending : false,
 			parent : parentSuite,
 			id : (++suiteId)
 		});
@@ -57,8 +54,6 @@
 	add('testStart', function(data) {
 		socket.emit('suite', {
 			title : data.name,
-			root : false,
-			pending : false,
 			parent : parentSuite,
 			id : (++suiteId)
 		});
@@ -81,9 +76,6 @@
 
 		if(data.result) {
 			socket.emit('pass', {
-				duration : 0,
-				state : 'passed',
-				speed : 'fast',
 				id : testId
 			});
 		} else {
@@ -99,7 +91,7 @@
 
 	add('done', function(data) {
 		socket.emit('end', {
-
+			// TODO failed tests etc.
 		});
 	});
 })(QUnit);
