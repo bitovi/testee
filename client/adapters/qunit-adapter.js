@@ -81,7 +81,9 @@
 		} else {
 			socket.emit('fail', {
 				title : data.message,
-				error : 'Expected ' + data.expected + ' but was ' + data.actual
+				err : {
+					message : 'Expected ' + data.expected + ' but was ' + data.actual
+				}
 			});
 		}
 		socket.emit('test end', {

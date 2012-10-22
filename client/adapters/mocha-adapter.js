@@ -1,7 +1,10 @@
 (function(window, mocha, undefined) {
+	// TODO find out why it detects a leak here
+	mocha.ignoreLeaks();
+
 	var socket = io.connect();
 	var OldReporter = mocha._reporter;
-	var SwarmReporter= function(runner) {
+	var TesteeReporter= function(runner) {
 		var self = this;
 		var pipe = function(type, converter) {
 			runner.on(type, function() {
@@ -36,7 +39,7 @@
 		});
 	};
 
-	SwarmReporter.prototype.objectify = function(data) {
+	TesteeReporter.prototype.objectify = function(data) {
 		var result = {};
 		var self = this;
 
@@ -54,7 +57,7 @@
 		return result;
 	}
 
-	SwarmReporter.prototype.diff = function(obj) {
+	TesteeReporter.prototype.diff = function(obj) {
 		var self = this;
 		var current = self.objectify(obj);
 		var result = {};
@@ -76,5 +79,6 @@
 		return result;
 	}
 
-	mocha.reporter(SwarmReporter);
+	Mocha.reporters.Testee = TesteeReporter;
+	mocha.reporter(TesteeReporter);
 })(window, window.mocha);

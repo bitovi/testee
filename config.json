@@ -1,7 +1,0 @@
-{
-  "tunnel" : "localtunnel",
-  "browsers" : {
-    "local" : [ "firefox" ],
-    "browserstack" : [ "ie 8" ]
-  }
-}

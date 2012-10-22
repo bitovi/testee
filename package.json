@@ -1,10 +1,10 @@
 {
-	"name": "swarmling",
-	"description": "A cross browser testrunner",
-	"version": "0.0.1",
-	"homepage": "http://github.com/daffl/swarmling",
+	"name": "testee",
+	"description": "Cross-browser JavaScript testrunner.",
+	"version": "0.1.0",
+	"homepage": "http://github.com/daffl/testee.js",
 	"author": "David Luecke",
-	"main": "lib/swarmling.js",
+	"main": "lib/testee.js",
   "test" : "mocha test",
 	"engines": {
 		"node": "~0.6"
@@ -20,7 +20,7 @@
     "socket.io": ">= 0.9.6",
     "connect" : "> 1.9.0",
     "underscore" : "*",
-    "launchness" : "git+ssh://git@github.com:daffl/launchness.git",
+    "launchpad" : "git+ssh://git@github.com:ekryski/launchpad.git",
     "miner" : "git+ssh://git@github.com:daffl/miner.git"
 	}
 }
