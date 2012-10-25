@@ -513,7 +513,7 @@
 		 */
 
 		var Suite = require('../suite')
-			, Test = require('../test');
+			, Test = require('../.');
 
 		/**
 		 * BDD-style interface:
@@ -650,7 +650,7 @@
 		 */
 
 		var Suite = require('../suite')
-			, Test = require('../test');
+			, Test = require('../.');
 
 		/**
 		 * TDD-style interface:
@@ -722,7 +722,7 @@
 		 */
 
 		var Suite = require('../suite')
-			, Test = require('../test');
+			, Test = require('../.');
 
 		/**
 		 * QUnit-style interface:
@@ -817,7 +817,7 @@
 		 */
 
 		var Suite = require('../suite')
-			, Test = require('../test');
+			, Test = require('../.');
 
 		/**
 		 * TDD-style interface:
@@ -961,7 +961,7 @@
 		exports.Runner = require('./runner');
 		exports.Suite = require('./suite');
 		exports.Hook = require('./hook');
-		exports.Test = require('./test');
+		exports.Test = require('./.');
 
 		/**
 		 * Return image `name` path.
@@ -3499,7 +3499,7 @@
 
 		var EventEmitter = require('browser/events').EventEmitter
 			, debug = require('browser/debug')('mocha:runner')
-			, Test = require('./test')
+			, Test = require('./.')
 			, utils = require('./utils')
 			, filter = utils.filter
 			, keys = utils.keys
