@@ -1,4 +1,4 @@
-var StringCalculator = StringCalculator = {
+StringCalculator = {
 	add: function(inputString) {
 		if(inputString === '') {
 			return 0;

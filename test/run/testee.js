@@ -1,3 +1,7 @@
 var testee = require('../../lib/testee');
+var launch = require('launchpad');
 
-testee.createServer().listen(3996);
+testee.test('examples/mocha/mocha.html', {
+}, function() {
+
+});

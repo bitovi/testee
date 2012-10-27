@@ -1,4 +1,9 @@
-(function (QUnit) {
+(function (win, undefined) {
+	if(!win.QUnit) {
+		return;
+	}
+
+	var QUnit = win.QUnit;
 	var testId = 0;
 	var suiteId = 0;
 	var parentSuite = null;
@@ -96,4 +101,4 @@
 			// TODO failed tests etc.
 		});
 	});
-})(QUnit);
+})(this);

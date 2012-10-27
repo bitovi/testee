@@ -1,4 +1,8 @@
-(function() {
+(function(win, undefined) {
+	if(!win.jasmine) {
+		return;
+	}
+
 	var TesteeReporter = function() {
 
 	}
@@ -30,4 +34,4 @@
 	});
 
 	jasmine.getEnv().addReporter(new TesteeReporter());
-})();
+})(this);

@@ -9,6 +9,7 @@
 	"engines": {
 		"node": "~0.6"
 	},
+  "bin": { "testee": "./bin/testee" },
   "devDependencies" : {
     "expect.js" : ">= 0.1.2"
   },
@@ -16,10 +17,11 @@
     "commander" : "> 1.0.0",
     "send" : ">= 0.0.4",
     "winston" : "> 0.6.0",
-    "mocha" : "> 1.4.0",
+    "mocha" : "1.4.2",
     "socket.io": ">= 0.9.6",
     "connect" : "> 1.9.0",
     "underscore" : "*",
+    "async" : ">= 0.1.20",
     "launchpad" : "git+ssh://git@github.com:ekryski/launchpad.git",
     "miner" : "git+ssh://git@github.com:daffl/miner.git"
 	}

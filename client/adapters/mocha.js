@@ -1,4 +1,8 @@
-(function(window, mocha, undefined) {
+(function(win, undefined) {
+	if(!(win.mocha && win.Mocha)) {
+		return;
+	}
+
 	// TODO find out why it detects a leak here
 	mocha.ignoreLeaks();
 
@@ -81,4 +85,4 @@
 
 	Mocha.reporters.Testee = TesteeReporter;
 	mocha.reporter(TesteeReporter);
-})(window, window.mocha);
+})(this);
