@@ -1,23 +1,29 @@
-test("a basic test example", function() {
-	ok( true, "this test is fine" );
-	var value = "hello";
-	equal( value, "hello", "We expect value to be hello" );
+module('Blog post test');
+
+test('Date set to current time', function() {
+	var now = new Date(),
+		post = new BlogPost('Hello', 'Hello world');
+	equal(post.date.getTime(), now.getTime(), 'New posts date is correct');
 });
 
-module("Module A");
-
-test("first test within module", function() {
-	ok( true, "all pass" );
+test('Unpublished post throws exception', function() {
+	var post = new BlogPost('Hello', 'Hello world');
+	raises(post.toString, "This blog post is not published", "Got exception");
 });
 
-test("second test within module", function() {
-	ok( true, "all pass" );
+test('Generates HTML', function() {
+	stop();
+	var now = new Date(),
+		newpost = new BlogPost('Hello', 'Hello world');
+	newpost.publish(function(post) {
+		equal(post.toString(), "<h1>Hello</h1>" +
+			"<h6>Published on " + now.toString() + "</h6>" +
+			"<p>Hello world</p>", 'Generated expected HTML');
+		start();
+	});
+
 });
 
-module("Module B");
-
-test("some other test", function() {
-	expect(2);
-	equal( true, false, "failing test" );
-	equal( true, true, "passing test" );
+test('Fails epicly', function() {
+	equal(true, false, 'This assertion totally failed');
 });

@@ -1,58 +1,41 @@
-describe("Player", function() {
-  var player;
-  var song;
+describe('Blog post test', function () {
+	it('Should be published at the current time', function () {
+		var now = new Date(),
+			post = new BlogPost('Hello', 'Hello world');
+		expect(post.date.getTime()).toBe(now.getTime());
+	});
 
-  beforeEach(function() {
-    player = new Player();
-    song = new Song();
-  });
+	it('Should throw an exception', function () {
+		var post = new BlogPost('Hello', 'Hello world');
+		expect(post.toString).toThrow("This blog post is not published");
+	});
 
-  it("should be able to play a Song", function() {
-    player.play(song);
-    expect(player.currentlyPlayingSong).toEqual(song);
+	it('Generates some neat HTML', function () {
+		var now = new Date(),
+			newpost = new BlogPost('Hello', 'Hello world'),
+			publishedPost;
 
-    //demonstrates use of custom matcher
-    expect(player).toBePlaying(song);
-  });
+		// Man is asynchronous testing in Jasmine ever awkward.
+		// Please tell me I am doing this wrong!
 
-  describe("when song has been paused", function() {
-    beforeEach(function() {
-      player.play(song);
-      player.pause();
-    });
+		runs(function () {
+			newpost.publish(function (post) {
+				publishedPost = post;
+			});
+		});
 
-    it("should indicate that the song is currently paused", function() {
-      expect(player.isPlaying).toBeFalsy();
+		waitsFor(function () {
+			return !!publishedPost;
+		}, 'Timed out', 1000);
 
-      // demonstrates use of 'not' with a custom matcher
-      expect(player).not.toBePlaying(song);
-    });
+		runs(function () {
+			expect(publishedPost.toString()).toBe("<h1>Hello</h1>" +
+				"<h6>Published on " + now.toString() + "</h6>" +
+				"<p>Hello world</p>");
+		});
+	});
 
-    it("should be possible to resume", function() {
-      player.resume();
-      expect(player.isPlaying).toBeTruthy();
-      expect(player.currentlyPlayingSong).toEqual(song);
-    });
-  });
-
-  // demonstrates use of spies to intercept and test method calls
-  it("tells the current song if the user has made it a favorite", function() {
-    spyOn(song, 'persistFavoriteStatus');
-
-    player.play(song);
-    player.makeFavorite();
-
-    expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
-  });
-
-  //demonstrates use of expected exceptions
-  describe("#resume", function() {
-    it("should throw an exception if song is already playing", function() {
-      player.play(song);
-
-      expect(function() {
-        player.resume();
-      }).toThrow("song is already playing");
-    });
-  });
+	it('Fails epicly', function() {
+		expect(true).toBe(false);
+	});
 });

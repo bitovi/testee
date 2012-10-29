@@ -1,74 +1,36 @@
-StringCalculator = {
-	add: function(inputString) {
-		if(inputString === '') {
-			return 0;
-		}
+describe('BlogPost test', function() {
 
-		var result = 0;
-		var inputStrings = inputString.split(',');
-
-		for(var i=0; i<inputStrings.length; i++) {
-			result += parseInt(inputStrings[i]);
-		}
-
-		return result;
-	}
-}
-
-describe("StringCalculator", function() {
-
-	describe("when an empty string is passed in", function() {
-		it("returns 0", function() {
-			var result = StringCalculator.add("");
-			assert(result === 0);
-		});
+	it('Should be published at the current time', function() {
+		var now = new Date(),
+			post = new BlogPost('Hello', 'Hello world');
+		assert(post.date.getTime() == now.getTime());
 	});
 
-	describe("when a number is passed in", function() {
-		it("returns the number", function() {
-			var result = StringCalculator.add("2");
-			assert(result === 2);
-		});
-
-		it("does some wild stuff", function() {
+	it('Should throw an exception', function() {
+		var post = new BlogPost('Hello', 'Hello world');
+		try {
+			post.toString();
+			assert(false);
+		}
+		catch(e) {
 			assert(true);
+			assert(e == "This blog post is not published");
+		}
+	});
+
+	it('Generates some neat HTML', function(done) {
+		var now = new Date(),
+			newpost = new BlogPost('Hello', 'Hello world');
+		newpost.publish(function(post) {
+			assert(post.toString() == "<h1>Hello</h1>" +
+				"<h6>Published on " + now.toString() + "</h6>" +
+				"<p>Hello world</p>");
+			done();
 		});
 	});
 
-//	describe("when string is passed in", function() {
-//		it("returns NaN", function() {
-//			var result = 1;
-//			assert(isNaN(result));
-//		});
-//	});
+	it('Fails epicly', function() {
+		assert(false);
+	});
 
-//	describe("Some stuff", function() {
-//		it('does stuff', function() {
-//			assert(true);
-//		});
-//		it('is pending');
-//	});
-
-//	describe("Some stuff", function() {
-//		it('does stuff', function() {
-//			assert(true);
-//		});
-//	});
-//
-//	describe("when '1,2' is passed in", function() {
-//		it("returns 3", function() {
-//			var result = StringCalculator.add("1,2");
-//			assert(result === 3);
-//		});
-//	});
-});
-
-describe('User', function(){
-	describe('#save()', function(){
-		it('should save without error', function(done){
-			setTimeout(function() {
-				done();
-			}, 200)
-		})
-	})
 });
