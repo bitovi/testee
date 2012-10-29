@@ -14,7 +14,7 @@ module.exports = function (grunt) {
 			dist : {
 				src : [
 					/*'<banner:meta.banner>', */
-					'underscore.js',
+					'lib/underscore.js',
 					'adapters/mocha.js',
 					'adapters/qunit.js',
 					'adapters/jasmine.js'
@@ -51,12 +51,11 @@ module.exports = function (grunt) {
 		},
 		watch: {
 			files: '<config:concat.dist.src>',
-			tasks: 'min'
+			tasks: 'concat min'
 		},
 		uglify : {}
 	});
 
 	// Default task.
 	grunt.registerTask('default', 'concat min');
-
 };

@@ -4,24 +4,27 @@
 	}
 
 	var QUnit = win.QUnit;
-	var testId = 0;
-	var suiteId = 0;
-	var parentSuite = null;
+	var currentId = 0; // Track the current global id
+	var suites = []; // Contains all currently active suites (nested)
 	var socket = io.connect();
 	var time = function() {
 		return new Date().getTime();
 	}
+	// Returns the id of the currently active test suite (last one pushed)
+	var suiteId = function() {
+		return suites[suites.length - 1];
+	}
+	// Overwrite a QUnit hook
 	var add = function(type, fn) {
 		var old = QUnit[type];
 		QUnit[type] = function() {
-			console.log(type, parentSuite, suiteId, testId);
 			fn.apply(this, arguments);
 			return old.apply(QUnit, arguments);
 		}
 	};
 
 	add('begin', function() {
-		var title = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
+		var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
 
 		socket.emit('start', {
 			environment : navigator.userAgent,
@@ -30,53 +33,55 @@
 		});
 
 		socket.emit('suite', {
-			title : title ? title.innerHTML : '',
+			title : titleEl ? titleEl.innerHTML : '',
 			root : true,
-			id : (++suiteId)
+			id : currentId
 		});
 
-		parentSuite = suiteId;
+		suites.push(currentId);
 	});
 
 	add('moduleStart', function(data) {
 		socket.emit('suite', {
 			title : data.name,
-			parent : parentSuite,
-			id : (++suiteId)
+			parent : suiteId(),
+			id : (++currentId)
 		});
-		parentSuite = suiteId;
+		suites.push(currentId);
 	});
 
 	add('moduleDone', function(data) {
 		socket.emit('suite end', {
 			failed : data.failed,
 			total : data.total,
-			id : suiteId
+			id : suiteId()
 		});
-		(--parentSuite);
+		suites.pop();
 	});
 
 	add('testStart', function(data) {
 		socket.emit('suite', {
 			title : data.name,
-			parent : parentSuite,
-			id : (++suiteId)
+			parent : suiteId(),
+			id : (++currentId)
 		});
-		parentSuite = suiteId;
+		suites.push(currentId);
 	});
 
 	add('testDone', function(data) {
 		socket.emit('suite end', {
-			"id" : suiteId
+			"id" : suiteId()
 		});
-		(--parentSuite);
+		suites.pop();
 	});
 
 	add('log', function(data) {
+		var testId = (++currentId);
+
 		socket.emit('test', {
-			id : (++testId),
+			id : testId,
 			title : data.message,
-			parent : parentSuite
+			parent : suiteId()
 		});
 
 		if(data.result) {
@@ -85,20 +90,20 @@
 			});
 		} else {
 			socket.emit('fail', {
-				title : data.message,
+				id : testId,
 				err : {
-					message : 'Expected ' + data.expected + ' but was ' + data.actual
+					message : 'Expected ' + data.expected + ' but was ' + data.actual,
+					stack : data.source || ''
 				}
 			});
 		}
+
 		socket.emit('test end', {
 			id : testId
 		});
 	});
 
 	add('done', function(data) {
-		socket.emit('end', {
-			// TODO failed tests etc.
-		});
+		socket.emit('end', data);
 	});
 })(this);

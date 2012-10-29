@@ -1063,6 +1063,7 @@
 	}
 
 	// TODO find out why it detects a leak here
+	// Works in V8 only anyway
 	mocha.ignoreLeaks();
 
 	var socket = io.connect();
@@ -1152,17 +1153,18 @@
 	}
 
 	var QUnit = win.QUnit;
-	var testId = 0;
-	var suiteId = 0;
-	var parentSuite = null;
+	var currentId = 0;
+	var suites = [];
 	var socket = io.connect();
 	var time = function() {
 		return new Date().getTime();
 	}
+	var suiteId = function() {
+		return suites[suites.length - 1];
+	}
 	var add = function(type, fn) {
 		var old = QUnit[type];
 		QUnit[type] = function() {
-			console.log(type, parentSuite, suiteId, testId);
 			fn.apply(this, arguments);
 			return old.apply(QUnit, arguments);
 		}
@@ -1180,64 +1182,67 @@
 		socket.emit('suite', {
 			title : title ? title.innerHTML : '',
 			root : true,
-			id : (++suiteId)
+			id : (++currentId)
 		});
 
-		parentSuite = suiteId;
+		suites.push(currentId);
 	});
 
 	add('moduleStart', function(data) {
 		socket.emit('suite', {
 			title : data.name,
-			parent : parentSuite,
-			id : (++suiteId)
+			parent : suiteId(),
+			id : (++currentId)
 		});
-		parentSuite = suiteId;
+		suites.push(currentId);
 	});
 
 	add('moduleDone', function(data) {
 		socket.emit('suite end', {
 			failed : data.failed,
 			total : data.total,
-			id : suiteId
+			id : suiteId()
 		});
-		(--parentSuite);
+		suites.pop();
 	});
 
 	add('testStart', function(data) {
 		socket.emit('suite', {
 			title : data.name,
-			parent : parentSuite,
-			id : (++suiteId)
+			parent : suiteId(),
+			id : (++currentId)
 		});
-		parentSuite = suiteId;
+		suites.push(currentId);
 	});
 
 	add('testDone', function(data) {
 		socket.emit('suite end', {
-			"id" : suiteId
+			"id" : suiteId()
 		});
-		(--parentSuite);
+		suites.pop();
 	});
 
 	add('log', function(data) {
+		var testId = (++currentId);
 		socket.emit('test', {
-			id : (++testId),
+			id : testId,
 			title : data.message,
-			parent : parentSuite
+			parent : suiteId()
 		});
 
+		var test = {
+			id : testId
+		};
+
 		if(data.result) {
-			socket.emit('pass', {
-				id : testId
-			});
+			socket.emit('pass', test);
 		} else {
-			socket.emit('fail', {
-				title : data.message,
+			socket.emit('fail', _.extend({
 				err : {
-					message : 'Expected ' + data.expected + ' but was ' + data.actual
+					message : 'Expected ' + data.expected + ' but was ' + data.actual,
+					stack : data.source || ''
 				}
-			});
+			}, test));
 		}
 		socket.emit('test end', {
 			id : testId
@@ -1245,9 +1250,7 @@
 	});
 
 	add('done', function(data) {
-		socket.emit('end', {
-			// TODO failed tests etc.
-		});
+		socket.emit('end', data);
 	});
 })(this);
 
