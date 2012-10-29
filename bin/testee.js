@@ -27,3 +27,12 @@ program
 	.parse(process.argv);
 
 console.log(program);
+
+if(program.launch === 'browserstack') {
+	program.prompt('Enter your Browserstack username: ', function(username){
+		program.password('Your Browserstack password: ', function(pass){
+			console.log('got "%s"', pass);
+			process.stdin.destroy();
+		});
+	});
+}
