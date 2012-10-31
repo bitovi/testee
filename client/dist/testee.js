@@ -1062,8 +1062,7 @@
 		return;
 	}
 
-	// TODO find out why it detects a leak here
-	// Works in V8 only anyway
+	// TODO find out why it detects a leak, works only in V8 anyway
 	mocha.ignoreLeaks();
 
 	var socket = io.connect();
@@ -1153,15 +1152,17 @@
 	}
 
 	var QUnit = win.QUnit;
-	var currentId = 0;
-	var suites = [];
+	var currentId = 0; // Track the current global id
+	var suites = []; // Contains all currently active suites (nested)
 	var socket = io.connect();
 	var time = function() {
 		return new Date().getTime();
 	}
+	// Returns the id of the currently active test suite (last one pushed)
 	var suiteId = function() {
 		return suites[suites.length - 1];
 	}
+	// Overwrite a QUnit hook
 	var add = function(type, fn) {
 		var old = QUnit[type];
 		QUnit[type] = function() {
@@ -1171,7 +1172,7 @@
 	};
 
 	add('begin', function() {
-		var title = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
+		var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
 
 		socket.emit('start', {
 			environment : navigator.userAgent,
@@ -1180,9 +1181,9 @@
 		});
 
 		socket.emit('suite', {
-			title : title ? title.innerHTML : '',
+			title : titleEl ? titleEl.innerHTML : '',
 			root : true,
-			id : (++currentId)
+			id : currentId
 		});
 
 		suites.push(currentId);
@@ -1224,26 +1225,27 @@
 
 	add('log', function(data) {
 		var testId = (++currentId);
+
 		socket.emit('test', {
 			id : testId,
 			title : data.message,
 			parent : suiteId()
 		});
 
-		var test = {
-			id : testId
-		};
-
 		if(data.result) {
-			socket.emit('pass', test);
+			socket.emit('pass', {
+				id : testId
+			});
 		} else {
-			socket.emit('fail', _.extend({
+			socket.emit('fail', {
+				id : testId,
 				err : {
-					message : 'Expected ' + data.expected + ' but was ' + data.actual,
-					stack : data.source || ''
+					message : data.message,
+					stack : 'Expected ' + data.expected + ' but was ' + data.actual + '\n' + (data.source || '')
 				}
-			}, test));
+			});
 		}
+
 		socket.emit('test end', {
 			id : testId
 		});

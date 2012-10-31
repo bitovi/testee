@@ -16,5 +16,5 @@ var testee = require('./lib/testee');
 testee.test('examples/qunit/qunit.html', {
 	port : 4444
 }, function(error, results) {
-
+	process.exit();
 });

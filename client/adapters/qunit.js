@@ -92,8 +92,8 @@
 			socket.emit('fail', {
 				id : testId,
 				err : {
-					message : 'Expected ' + data.expected + ' but was ' + data.actual,
-					stack : data.source || ''
+					message : data.message,
+					stack : 'Expected ' + data.expected + ' but was ' + data.actual + '\n    ' + (data.source || '')
 				}
 			});
 		}

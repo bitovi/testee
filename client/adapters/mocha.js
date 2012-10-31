@@ -3,7 +3,7 @@
 		return;
 	}
 
-	// TODO find out why it detects a leak here, works only in V8 anyway
+	// TODO find out why it detects a leak, works only in V8 anyway
 	mocha.ignoreLeaks();
 
 	var socket = io.connect();
