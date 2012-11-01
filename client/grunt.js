@@ -14,7 +14,8 @@ module.exports = function (grunt) {
 			dist : {
 				src : [
 					/*'<banner:meta.banner>', */
-					'lib/underscore.js',
+					'adapters/index.js',
+					'lib/lodash.custom.js',
 					'adapters/mocha.js',
 					'adapters/qunit.js',
 					'adapters/jasmine.js'
@@ -53,7 +54,25 @@ module.exports = function (grunt) {
 			files: '<config:concat.dist.src>',
 			tasks: 'concat min'
 		},
-		uglify : {}
+		uglify : {},
+		lodash : [ 'extend', 'each', 'indexOf', 'bind' ]
+	});
+
+	grunt.registerTask('lodash', 'Builds a custom lodash distributable', function() {
+		var done = this.async();
+		grunt.log.writeln('Building custom lodash distributable');
+		var includes = grunt.config('lodash');
+		var iife = 'iife=;(function(window, undefined){%output%})(this.Testee);';
+		grunt.utils.spawn({
+			cmd : 'lodash',
+			args : ['-d', 'include="' + includes.join(', ') + '"', iife],
+			opts : {
+				cwd : './lib'
+			}
+		}, function(error, results) {
+			grunt.log.writeln(results);
+			done();
+		});
 	});
 
 	// Default task.

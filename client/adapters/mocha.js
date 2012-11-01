@@ -1,4 +1,5 @@
-(function(win, undefined) {
+(function(Testee, _, undefined) {
+	var win = Testee.window;
 	if(!(win.mocha && win.Mocha)) {
 		return;
 	}
@@ -8,7 +9,7 @@
 
 	var socket = io.connect();
 	var OldReporter = mocha._reporter;
-	var TesteeReporter= function(runner) {
+	var MochaReporter= function(runner) {
 		var self = this;
 		var pipe = function(type, converter) {
 			runner.on(type, function() {
@@ -43,7 +44,7 @@
 		});
 	};
 
-	TesteeReporter.prototype.objectify = function(data) {
+	MochaReporter.prototype.objectify = function(data) {
 		var result = {};
 		var self = this;
 
@@ -61,7 +62,7 @@
 		return result;
 	}
 
-	TesteeReporter.prototype.diff = function(obj) {
+	MochaReporter.prototype.diff = function(obj) {
 		var self = this;
 		var current = self.objectify(obj);
 		var result = {};
@@ -83,6 +84,6 @@
 		return result;
 	}
 
-	Mocha.reporters.Testee = TesteeReporter;
-	mocha.reporter(TesteeReporter);
-})(this);
+	win.Mocha.reporters.Testee = MochaReporter;
+	win.mocha.reporter(MochaReporter);
+})(Testee, Testee._);

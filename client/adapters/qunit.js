@@ -1,4 +1,5 @@
-(function (win, undefined) {
+(function (Testee, _, undefined) {
+	var win = Testee.window;
 	if(!win.QUnit) {
 		return;
 	}
@@ -80,7 +81,7 @@
 
 		socket.emit('test', {
 			id : testId,
-			title : data.message,
+			title : data.message || 'okay',
 			parent : suiteId()
 		});
 
@@ -106,4 +107,4 @@
 	add('done', function(data) {
 		socket.emit('end', data);
 	});
-})(this);
+})(Testee, Testee._);
