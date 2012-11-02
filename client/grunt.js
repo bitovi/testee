@@ -14,8 +14,8 @@ module.exports = function (grunt) {
 			dist : {
 				src : [
 					/*'<banner:meta.banner>', */
+					'lib/underscore.js',
 					'adapters/index.js',
-					'lib/lodash.custom.js',
 					'adapters/mocha.js',
 					'adapters/qunit.js',
 					'adapters/jasmine.js'
@@ -62,10 +62,10 @@ module.exports = function (grunt) {
 		var done = this.async();
 		grunt.log.writeln('Building custom lodash distributable');
 		var includes = grunt.config('lodash');
-		var iife = 'iife=;(function(window, undefined){%output%})(this.Testee);';
+		// var iife = 'iife=;(function(window, undefined){%output%})(window);';
 		grunt.utils.spawn({
 			cmd : 'lodash',
-			args : ['-d', 'include="' + includes.join(', ') + '"', iife],
+			args : ['-d', 'include="' + includes.join(', ') + '"'],
 			opts : {
 				cwd : './lib'
 			}

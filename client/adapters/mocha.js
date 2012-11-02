@@ -1,12 +1,12 @@
 (function(Testee, _, undefined) {
 	var win = Testee.window;
+
 	if(!(win.mocha && win.Mocha)) {
 		return;
 	}
 
 	// TODO find out why it detects a leak, works only in V8 anyway
 	mocha.ignoreLeaks();
-
 	var socket = io.connect();
 	var OldReporter = mocha._reporter;
 	var MochaReporter= function(runner) {
