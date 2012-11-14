@@ -1,3 +1,12 @@
 {
-  browser : 'firefox'
+  "launch" : "browserstack",
+  "tunnel" : {
+    "type" : "browserstack",
+    "secret" : "<your browserstack secret key>"
+  },
+  "browser" : {
+    "browser" : "firefox",
+    "version" : "15.0",
+    "os" : "win"
+  }
 }

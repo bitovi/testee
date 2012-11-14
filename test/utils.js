@@ -26,9 +26,25 @@ describe("Utilities", function() {
 
 	it("validateFilename", function() {
 		var root = process.cwd();
-		expect(utils.validateFilename(root, 'qunit.html')).to.be(true);
-		expect(utils.validateFilename(root, 'test/../qunit.html')).to.be(true);
-		expect(utils.validateFilename(root, '../test/../qunit.html')).to.be(false);
-		expect(utils.validateFilename(root, '/test/../../qunit.html')).to.be(false);
+		expect(utils.validateFilename(root, 'examples/qunit/qunit.html')).to.be(true);
+		expect(utils.validateFilename(root, 'examples/../../qunit/qunit.html')).to.be(false);
+	});
+
+	it("parseBrowser", function() {
+		var browser = utils.parseBrowser('ie');
+		expect(browser).to.eql({
+			browser : 'ie'
+		});
+		browser = utils.parseBrowser('firefox:15.0');
+		expect(browser).to.eql({
+			browser : 'firefox',
+			version : '15.0'
+		});
+		browser = utils.parseBrowser('safari:5.0.1@mac');
+		expect(browser).to.eql({
+			browser : 'safari',
+			version : '5.0.1',
+			os : 'mac'
+		});
 	});
 });

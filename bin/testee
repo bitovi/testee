@@ -16,7 +16,7 @@ program.version(pkg.version)
 	.description(pkg.description)
 	.option('-b, --browser [name]', 'The browser you want to run')
 	.option('-l, --launch [name]', 'The test environment you want to use. Currently supports local, browserstack or remote')
-	.option('-t, --tunnel [name]', 'The tunneling service provider to use. Currently supports local, localtunnel and pagekite')
+	.option('-t, --tunnel [name]', 'The tunneling service provider to use. Currently supports local, localtunnel, browserstack and pagekite')
 	.option('-p, --port [port]', 'The port to run the server on')
 	.option('-r, --reporter [name]', 'The name of the reporter to use')
 	.option('-v, --verbose', 'Writes a log file with debugging information')
@@ -30,15 +30,16 @@ config = _.pick(program, 'browser', 'launch', 'tunnel',
 if (program.launch === 'browserstack') {
 	program.prompt('Enter your Browserstack username: ', function (username) {
 		program.password('Your Browserstack password: ', function (pass) {
-			config = _.extend(config, {
-				tunnel : config.tunnel || 'pagekite',
+			_.extend(config, {
+				tunnel : 'localtunnel',
 				launch : {
-					type : program.launch,
+					type : 'browserstack',
 					username : username,
 					password : pass
 				}
 			});
 			runTests(config);
+			console.log(config);
 			process.stdin.destroy();
 		});
 	});
