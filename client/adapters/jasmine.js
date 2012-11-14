@@ -1,4 +1,6 @@
-(function(win, undefined) {
+(function(Testee, _, undefined) {
+	var win = Testee.window;
+
 	if(!win.jasmine) {
 		return;
 	}
@@ -19,7 +21,7 @@
                 runner : 'Jasmine'
             });
 
-            runner.suites.forEach(function (suite) {
+			_.each(runner.suites, function (suite) {
                 if (suite.parentSuite !== null) {
                     socket.emit('suite', {
                         "title": suite.description,
@@ -79,4 +81,4 @@
 	});
 
 	jasmine.getEnv().addReporter(new TesteeReporter());
-})(this);
+})(Testee, Testee._);

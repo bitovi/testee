@@ -1298,9 +1298,10 @@ Testee._ = _.noConflict();
 	}
 
 	var QUnit = win.QUnit;
+	var socket = io.connect();
+
 	var currentId = 0; // Track the current global id
 	var suites = []; // Contains all currently active suites (nested)
-	var socket = io.connect();
 	var time = function() {
 		return new Date().getTime();
 	}
@@ -1308,7 +1309,7 @@ Testee._ = _.noConflict();
 	var suiteId = function() {
 		return suites[suites.length - 1];
 	}
-	// Overwrite a QUnit hook
+	// Overwrite a QUnit hook, but keep the old ones
 	var add = function(type, fn) {
 		var old = QUnit[type];
 		QUnit[type] = function() {
@@ -1316,6 +1317,10 @@ Testee._ = _.noConflict();
 			return old.apply(QUnit, arguments);
 		}
 	};
+
+	// TODO async tests
+	// var oldstart = win.start;
+	// var oldstop = win.stop;
 
 	add('begin', function() {
 		var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
@@ -1401,7 +1406,9 @@ Testee._ = _.noConflict();
 		socket.emit('end', data);
 	});
 })(Testee, Testee._);
-(function(win, undefined) {
+(function(Testee, _, undefined) {
+	var win = Testee.window;
+
 	if(!win.jasmine) {
 		return;
 	}
@@ -1417,7 +1424,12 @@ Testee._ = _.noConflict();
 		},
 
 		reportRunnerStarting : function(runner) {
-            runner.suites.forEach(function (suite) {
+            socket.emit("start", {
+                environment : navigator.userAgent,
+                runner : 'Jasmine'
+            });
+
+			_.each(runner.suites, function (suite) {
                 if (suite.parentSuite !== null) {
                     socket.emit('suite', {
                         "title": suite.description,
@@ -1477,4 +1489,4 @@ Testee._ = _.noConflict();
 	});
 
 	jasmine.getEnv().addReporter(new TesteeReporter());
-})(this);
+})(Testee, Testee._);

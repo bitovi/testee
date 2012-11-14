@@ -5,9 +5,10 @@
 	}
 
 	var QUnit = win.QUnit;
+	var socket = io.connect();
+
 	var currentId = 0; // Track the current global id
 	var suites = []; // Contains all currently active suites (nested)
-	var socket = io.connect();
 	var time = function() {
 		return new Date().getTime();
 	}
@@ -15,7 +16,7 @@
 	var suiteId = function() {
 		return suites[suites.length - 1];
 	}
-	// Overwrite a QUnit hook
+	// Overwrite a QUnit hook, but keep the old ones
 	var add = function(type, fn) {
 		var old = QUnit[type];
 		QUnit[type] = function() {
@@ -23,6 +24,10 @@
 			return old.apply(QUnit, arguments);
 		}
 	};
+
+	// TODO async tests
+	// var oldstart = win.start;
+	// var oldstop = win.stop;
 
 	add('begin', function() {
 		var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
