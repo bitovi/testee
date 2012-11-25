@@ -3,7 +3,7 @@ var testee = require('./lib/testee');
 // Possible settings (and defaults):
 //	{
 //		launch : 'local', // local, remote, browserstack
-//			tunnel : 'local', // local, localtunnel, pagekite
+//	    tunnel : 'local', // local, localtunnel, pagekite
 //		browser : 'phantom',
 //		root : '.', // HTTP server root
 //		reporter : 'Spec',
@@ -14,7 +14,19 @@ var testee = require('./lib/testee');
 //	}
 
 testee.test('examples/qunit/qunit.html', {
-	port : 4444
+	tunnel : 'localtunnel',
+	launch : {
+		type : 'browserstack',
+		username : 'david@bitovi.com',
+		password : 'jupiterit1!'
+	},
+	browser : {
+		os : 'win',
+		version : '10.0',
+		browser : 'ie'
+	}
 }, function(error, results) {
+	console.log(arguments);
 	process.exit();
 });
+//ie:8.0@win

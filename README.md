@@ -1,6 +1,6 @@
 # Testee
 
-Cross browser test reporting that will make you less testy.
+Cross browser test reporting that will make you less cranky.
 
 > npm install -g testee
 
@@ -16,14 +16,22 @@ on your system.
 
 To run with a different local browser (e.g. Firefox) use:
 
-> testee --browser firefox qunit.html
+> testee test/qunit.html --browser firefox
 
 Note that Testee will use (and close) any already running browser instances!
 
+### Launching browsers
+
+[Launchpad]()
+
+### Localhost tunneling
+
+Testee uses the [miner] package to provide localhost tunelling.
+
 ## CI integration
 
-## GruntJS
-
 ## Browserstack and remote browsers
+
+## GruntJS
 
 ## Running tests programmatically

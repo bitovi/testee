@@ -22,7 +22,7 @@
     "connect" : "> 1.9.0",
     "underscore" : "*",
     "async" : ">= 0.1.20",
-    "launchpad" : "git+ssh://git@github.com:ekryski/launchpad.git",
-    "miner" : "git+ssh://git@github.com:daffl/miner.git"
+    "miner" : ">= 0.1.0",
+    "launchpad" : ">= 0.1.0"
 	}
 }

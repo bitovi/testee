@@ -2,7 +2,7 @@
   "launch" : "browserstack",
   "tunnel" : {
     "type" : "browserstack",
-    "secret" : "<your browserstack secret key>"
+    "key" : "<your browserstack secret key>"
   },
   "browser" : {
     "browser" : "firefox",

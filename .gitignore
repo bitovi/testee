@@ -14,6 +14,5 @@ results
 node_modules
 npm-debug.log
 
-.idea
 testee.log
-.DS_Store
+run.js

@@ -6,7 +6,6 @@ var pkg = require('../package.json');
 var config = {};
 var runTests = function (files, params) {
 	testee.test(files, params, function () {
-		console.log(arguments);
 		process.exit();
 	});
 }
@@ -21,6 +20,7 @@ program.version(pkg.version)
 	.option('-r, --reporter [name]', 'The name of the reporter to use')
 	.option('-v, --verbose', 'Writes a log file with debugging information')
 	.option('-l, --log [file]', 'If in verbose mode, the name of the logfile to write to')
+	.option('-c, --config [file]', 'Use this JSON configuration file')
 	.option('--timeout [seconds]', 'The per test timeout (in seconds)')
 	.parse(process.argv);
 
@@ -38,8 +38,7 @@ if (program.launch === 'browserstack') {
 					password : pass
 				}
 			});
-			runTests(config);
-			console.log(config);
+			runTests(program.args, config);
 			process.stdin.destroy();
 		});
 	});
