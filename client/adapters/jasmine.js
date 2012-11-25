@@ -8,7 +8,7 @@
     var socket = io.connect();
     var TesteeReporter = function() {
 
-	}
+	};
 
 	_.extend(TesteeReporter.prototype, {
 		log : function(string) {
@@ -19,22 +19,6 @@
             socket.emit("start", {
                 environment : navigator.userAgent,
                 runner : 'Jasmine'
-            });
-
-			_.each(runner.suites, function (suite) {
-                if (suite.parentSuite !== null) {
-                    socket.emit('suite', {
-                        "title": suite.description,
-                        "parent": suite.parentSuite.id,
-                        "id": suite.id
-                    });
-                } else {
-                    socket.emit('suite', {
-                        "title": suite.description,
-                        "root": true,
-                        "id": suite.id
-                    });
-                }
             });
 		},
 
@@ -65,7 +49,35 @@
             });
 		},
 
+        startSuite: function(suite) {
+            if (suite.parentSuite !== null) {
+                if (!suite.parentSuite.started) {
+                    this.startSuite(suite.parentSuite);
+                }
+            }
+
+            if (suite.parentSuite !== null) {
+                socket.emit('suite', {
+                    "title": suite.description,
+                    "parent": suite.parentSuite.id,
+                    "id": suite.id
+                });
+            } else {
+                socket.emit('suite', {
+                    "title": suite.description,
+                    "root": true,
+                    "id": suite.id
+                });
+            }
+
+            suite.started = true;
+        },
+
 		reportSpecStarting : function(spec) {
+            if (!spec.suite.started) {
+                this.startSuite(spec.suite);
+            }
+
             socket.emit("test", {
                 "title": spec.description,
                 "parent": spec.suite.id,

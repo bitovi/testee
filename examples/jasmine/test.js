@@ -1,4 +1,27 @@
 describe('Blog post test', function () {
+
+    describe('Nested describe', function () {
+        it("should pass this test", function () {
+            expect(true).toBeTruthy();
+        });
+
+        it("should also pass this test", function () {
+            expect(true).toBeTruthy();
+        });
+    });
+
+    describe('Second nested describe', function () {
+        it("should add numbers correctly", function () {
+            expect(2 + 2).toEqual(4);
+        });
+
+        describe('We need to go deeper', function () {
+            it("should've been a better movie", function () {
+                expect('Leo').toEqual('a good actor');
+            });
+        });
+    });
+
 	it('Should be published at the current time', function () {
 		var now = new Date(),
 			post = new BlogPost('Hello', 'Hello world');
