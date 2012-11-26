@@ -1,0 +1,40 @@
+{
+  "events" : {
+    "start" : "start",
+    "suite" : "suite",
+    "test" : "test",
+    "suiteEnd" : "suite end",
+    "pass" : "pass",
+    "pending" : "pending",
+    "fail" : "fail",
+    "testEnd" : "test end",
+    "end" : "end"
+  },
+  "defaults" : {
+    "suite" : {
+      "title" : "",
+      "root" : false,
+      "pending" : false
+    },
+    "test" : {
+      "async" : false,
+      "pending" : false,
+      "type" : "test"
+    },
+    "pass" : {
+      "duration" : 0,
+      "state" : "passed",
+      "speed" : "fast"
+    },
+    "fail" : {
+      "duration" : 0,
+      "state" : "failed",
+      "speed" : "fast"
+    },
+    "pending" : {
+      "sync" : true,
+      "pending" : true,
+      "type" : "test"
+    }
+  }
+}

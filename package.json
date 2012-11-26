@@ -23,6 +23,7 @@
     "underscore" : "*",
     "async" : ">= 0.1.20",
     "miner" : ">= 0.1.0",
-    "launchpad" : ">= 0.1.0"
+    "launchpad" : ">= 0.1.0",
+    "ua-parser" : ">= 0.2.4"
 	}
 }
