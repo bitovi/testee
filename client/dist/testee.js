@@ -1198,10 +1198,12 @@
 	});
 
 }).call(this);
-var Testee = window.Testee || {
-	window : window
-};
-Testee._ = _.noConflict();
+(function(window) {
+	Testee = window.Testee || {
+		window : window
+	};
+	Testee._ = _.noConflict();
+})(this);
 (function(Testee, _, undefined) {
 	var win = Testee.window;
 

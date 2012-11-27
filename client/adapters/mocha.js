@@ -9,7 +9,7 @@
 	mocha.ignoreLeaks();
 	var socket = io.connect();
 	var OldReporter = mocha._reporter;
-	var MochaReporter= function(runner) {
+	var MochaReporter = function(runner) {
 		var self = this;
 		var pipe = function(type, converter) {
 			runner.on(type, function() {

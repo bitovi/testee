@@ -1,5 +1,11 @@
 (function () {
-	Testee.window.mocha = {}
+	var Reporter;
+
+	Testee.window.mocha = {
+		reporter : function(RegisteredReporter) {
+			Reporter = RegisteredReporter;
+		}
+	};
 	Testee.window.Mocha = {
 		reporters : {}
 	}
@@ -9,6 +15,7 @@
 
 		it('Initializes', function () {
 			expect(Testee.window.Mocha).to.have.property('reporters');
+			expect(Reporter).to.be.a('function');
 		});
 
 	});
