@@ -1,11 +1,11 @@
 var EventEmitter = require('events').EventEmitter;
 var Mocha = require('mocha');
-var Converter = require('../lib/converter.js');
+var Converter = require('../lib/converter');
 
-var run = function (Reporter) {
+var run = function (converter, Reporter) {
 	var runner = new EventEmitter();
 
-	new Reporter(new Converter(runner));
+	new Reporter(converter.run(runner));
 
 	runner.emit("start", {
 		"environment": "Node",
@@ -174,13 +174,14 @@ describe('Mocha reporter compatiblity', function () {
 		// For now we just test reporters by making sure that we don't get any errors when running
 		// some dummy data through the converter
 		var fn = skip.indexOf(name) === -1 ? it : it.skip;
+		var converter = new Converter();
 		fn('Runs with ' + name, function () {
 			// We don't want stuff to log to the console
 			process.stdout.write = function () {
 			};
 			process.stderr.write = function () {
 			};
-			run(Mocha.reporters[name]);
+			run(converter, Mocha.reporters[name]);
 			// Reset it once the reporter ran
 			process.stdout.write = oldstdout;
 			process.stderr.write = oldstderr;
