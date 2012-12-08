@@ -18,7 +18,7 @@
 	}
 	// Overwrite a QUnit hook, but keep the old ones
 	var add = function(type, fn) {
-		var old = QUnit[type];
+		var old = QUnit[type] || function() {};
 		QUnit[type] = function() {
 			fn.apply(this, arguments);
 			return old.apply(QUnit, arguments);

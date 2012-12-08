@@ -2,7 +2,8 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		testee : {
-			example : 'examples/mocha/mocha.html'
+			mocha : 'examples/mocha/mocha.html',
+			qunit : 'examples/qunit/qunit.html'
 		}
 	});
 

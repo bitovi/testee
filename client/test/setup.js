@@ -1,10 +1,6 @@
 (function(window) {
-	window.io = {
-		connect : function() {
-			return new window.EventEmitter();
-		}
-	};
-	window.Testee = {
-		window : {}
-	};
+	window.io = new window.EventEmitter();
+	window.io.connect = function() {
+		return this;
+	}
 })(this);

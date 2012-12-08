@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mocha</title>
+  <title>Unit Test Framework Adapter Tests</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="../lib/mocha.css" />
+  <link rel="stylesheet" href="../lib/mocha/mocha.css"/>
 </head>
 <body>
   <div id="mocha"></div>
-  <script src="../lib/event-emitter.js" type="text/javascript"></script>
+  <div id="testarea"></div>
 
-  <script src="../lib/mocha.js" type="text/javascript"></script>
-  <script src="../lib/chai.js" type="text/javascript"></script>
-  <script type="text/javascript">
+  <script src="../lib/mocha/chai.js" type="text/javascript"></script>
+  <script src="../lib/mocha/mocha.js" type="text/javascript"></script>
+  <script>
     mocha.setup('bdd');
-    window.expect = chai.expect;
-    window.onload = function(){
+
+    onload = function () {
       mocha.run();
     };
+
+    expect = chai.expect;
   </script>
 
-  <script src="setup.js" type="text/javascript"></script>
-  <script src="mocha-adapter.js" type="text/javascript"></script>
-  <script src="../adapters/mocha.js" type="text/javascript"></script>
+  <script type="text/javascript" src="../lib/event-emitter.js"></script>
+  <script type="text/javascript" src="setup.js"></script>
+  <script type="text/javascript" src="qunit-adapter.js"></script>
+  <script type="text/javascript" src="mocha-adapter.js"></script>
+  <script type="text/javascript" src="jasmine-adapter.js"></script>
 </body>
 </html>
+
