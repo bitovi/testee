@@ -4,16 +4,16 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg : '<json:../package.json>',
 		meta : {
-			banner : '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+			banner : '/*!\n * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
 				'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-				'<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-				'* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-				' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+				'<%= pkg.homepage ? " * " + pkg.homepage + "\n" : "" %>' +
+				' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
+				' * Licensed <%= _.pluck(pkg.licenses, "name").join(", ") %>\n */'
 		},
 		concat : {
 			dist : {
 				src : [
-					/*'<banner:meta.banner>', */
+					'<banner:meta.banner>',
 					'lib/underscore.js',
 					'adapters/index.js',
 					'adapters/mocha.js',
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 		},
 		min : {
 			dist : {
-				src : [ /* '<banner:meta.banner>', */ '<config:concat.dist.dest>' ],
+				src : [ '<banner:meta.banner>', '<config:concat.dist.dest>' ],
 				dest : 'dist/<%= pkg.name %>.min.js'
 			}
 		},

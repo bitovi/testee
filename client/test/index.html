@@ -4,6 +4,14 @@
   <title>Unit Test Framework Adapter Tests</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" href="../lib/mocha/mocha.css"/>
+  <style type="text/css">
+    iframe {
+      width: 70%;
+      height: 250px;
+      margin-top: 20px;
+      border: none;
+    }
+  </style>
 </head>
 <body>
   <div id="mocha"></div>
@@ -18,11 +26,21 @@
       mocha.run();
     };
 
-    expect = chai.expect;
+    window.expect = chai.expect;
+    window.io = {};
+
+    window.initIo = function(name) {
+      if(!window.io[name]) {
+        window.io[name] = new window.EventEmitter();
+        window.io[name].connect = function() {
+          return this;
+        }
+      }
+      return window.io[name];
+    }
   </script>
 
   <script type="text/javascript" src="../lib/event-emitter.js"></script>
-  <script type="text/javascript" src="setup.js"></script>
   <script type="text/javascript" src="qunit-adapter.js"></script>
   <script type="text/javascript" src="mocha-adapter.js"></script>
   <script type="text/javascript" src="jasmine-adapter.js"></script>

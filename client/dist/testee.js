@@ -1,3 +1,10 @@
+/*!
+ * testee - v0.1.0 - 2012-12-09
+ * http://github.com/daffl/testee.js
+ * Copyright (c) 2012 David Luecke
+ * Licensed MIT
+ */
+
 //     Underscore.js 1.4.2
 //     http://underscorejs.org
 //     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
@@ -1215,7 +1222,7 @@
 	mocha.ignoreLeaks();
 	var socket = io.connect();
 	var OldReporter = mocha._reporter;
-	var MochaReporter= function(runner) {
+	var MochaReporter = function(runner) {
 		var self = this;
 		var pipe = function(type, converter) {
 			runner.on(type, function() {
@@ -1313,7 +1320,7 @@
 	}
 	// Overwrite a QUnit hook, but keep the old ones
 	var add = function(type, fn) {
-		var old = QUnit[type];
+		var old = QUnit[type] || function() {};
 		QUnit[type] = function() {
 			fn.apply(this, arguments);
 			return old.apply(QUnit, arguments);
