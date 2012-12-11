@@ -1,29 +1,54 @@
 {
-	"name": "testee",
-	"description": "Cross-browser JavaScript testrunner.",
-	"version": "0.1.0",
-	"homepage": "http://github.com/daffl/testee.js",
-	"author": "David Luecke",
-	"main": "lib/testee.js",
-  "test" : "mocha test",
-	"engines": {
-		"node": "~0.6"
-	},
-  "bin": { "testee": "./bin/testee" },
+  "name" : "testee",
+  "description" : "Cross-browser JavaScript testrunner.",
+  "version" : "0.1.0",
+  "homepage" : "http://github.com/daffl/testee.js",
+  "author" : {
+    "name" : "David Luecke",
+    "email" : "daff@neyeon.com",
+    "web" : "http://daffl.github.com"
+  },
+  "main" : "lib/testee.js",
+  "scripts" : {
+    "test" : "mocha test"
+  },
+  "engines" : {
+    "node" : "~0.8"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "git@github.com:daffl/can-compile.git"
+  },
+  "bin" : {
+    "testee" : "./bin/testee"
+  },
+  "keywords" : [
+    "gruntplugin",
+    "browserstack",
+    "testing",
+    "unit-test",
+    "phantomjs"
+  ],
+  "licenses" : [
+    {
+      "name" : "MIT",
+      "url" : "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
   "devDependencies" : {
     "expect.js" : ">= 0.1.2"
   },
-	"dependencies": {
+  "dependencies" : {
     "commander" : "> 1.0.0",
     "send" : ">= 0.0.4",
     "winston" : "> 0.6.0",
     "mocha" : "1.4.2",
-    "socket.io": ">= 0.9.6",
+    "socket.io" : ">= 0.9.6",
     "connect" : "> 1.9.0",
     "underscore" : "*",
     "async" : ">= 0.1.20",
     "miner" : ">= 0.1.0",
     "launchpad" : ">= 0.1.0",
     "ua-parser" : ">= 0.2.4"
-	}
+  }
 }

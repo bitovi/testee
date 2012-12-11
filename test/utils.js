@@ -1,3 +1,6 @@
+/*global describe, it*/
+"use strict";
+
 var expect = require('expect.js');
 var Converter = require('../lib/converter');
 var EventEmitter = require('events').EventEmitter;

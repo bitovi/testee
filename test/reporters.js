@@ -1,3 +1,6 @@
+/*global describe, it*/
+"use strict";
+
 var EventEmitter = require('events').EventEmitter;
 var Mocha = require('mocha');
 var Converter = require('../lib/converter');
@@ -164,7 +167,7 @@ var run = function (converter, Reporter) {
 	runner.emit("end", {
 		"id": 10
 	});
-}
+};
 
 describe('Mocha reporter compatiblity', function () {
 	var skip = [ 'HTML', 'Base', 'Markdown' ];

@@ -1,3 +1,6 @@
+/*global describe, it*/
+"use strict";
+
 var expect = require('expect.js');
 var Denormalizer = require('../../lib/converter/denormalizer');
 

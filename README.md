@@ -18,11 +18,11 @@ To run with a different local browser (e.g. Firefox) use:
 
 > testee test/qunit.html --browser firefox
 
-Note that Testee will use (and close) any already running browser instances!
+Note that if you try to test a local browser that is already running you will get an error message.
 
 ### Launching browsers
 
-[Launchpad]()
+[Launchpad](https://github.com/ekryski/launchpad) is the browser launcher used by Testee.
 
 ### Localhost tunneling
 
@@ -35,3 +35,10 @@ Testee uses the [miner] package to provide localhost tunelling.
 ## GruntJS
 
 ## Running tests programmatically
+
+It is just as simple to run tests programmatically with NodeJS:
+
+    var testee = require('testee');
+    testee.test(files, params, function (err, results) {
+      process.exit();
+    });
