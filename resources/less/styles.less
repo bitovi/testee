@@ -31,6 +31,7 @@
 
 h2 {
 	font-size: 36px;
+	border-bottom: 1px solid @lowLight;
 }
 
 pre {
@@ -39,17 +40,24 @@ pre {
 }
 
 blockquote, code {
+	border: none;
 	background-color: @lowLight;
 	color: @highlightText;
 	font-family: @highlightFont;
+	font-weight: normal;
 }
 
 blockquote {
+	code {
+		font-size: @baseFontSize;
+	}
+	background-color: @lowLight;
 	border-left: @baseFontSize solid @highlightOrange;
 }
 
 header {
 	padding: 30px;
+
 	h1 {
 		font-size: @baseFontSize * 4;
 		font-weight: bold;
@@ -60,15 +68,11 @@ header {
 
 section.top {
 	border-top: 2px solid @highlightComment;
-	border-bottom: 2px solid @highlightComment;
+	box-shadow: 0 4px 6px #66747C;
 	background-color: @lowLight;
-	padding-top: 60px;
-	padding-bottom: 60px;
-
-	ul.features {
-		color: @highlightText;
-		font-size: @baseFontSize;
-		line-height: @baseLineHeight * 2;
-		font-family: @highlightFont;
-	}
+	padding: 60px 0;
+	color: @highlightText;
+	font-size: @baseFontSize;
+	line-height: @baseLineHeight * 2;
+	font-family: @highlightFont;
 }

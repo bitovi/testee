@@ -4,12 +4,14 @@ layout: default
 
 ## Getting started
 
-> npm install -g testee
+You need [NodeJS](http://nodejs.org/) installed in order to use Testee which makes the installation as easy as:
 
-`cd` into the main folder of your JavaScript project and point testee to your QUnit, Mocha or Jasmine
+> `npm install -g testee`
+
+`cd` into the main folder of your JavaScript project and run `testee` with your QUnit, Mocha or Jasmine
 test HTML page:
 
-> testee tests/qunit.html
+> `testee tests/qunit.html`
 
 ## Command line testing
 
@@ -18,18 +20,18 @@ on your system.
 
 To run with a different local browser (e.g. Firefox) use:
 
-> testee test/qunit.html --browser firefox
+> `testee tests/qunit.html --browser firefox`
 
-Note that if you try to test a local browser that is already running you will get an error message.
+Note that the browser you are using for testing shouldn't be already running.
 
 ### Command line options
 
-The following options are available:
+On the command line, you have the following options available:
 
 * `-h`, `--help`: output usage information
 * `-V`, `--version`: output the version number
 * `-b`, `--browser` `[name]`: The browser you want to run (default: `phantom`)
-* `-l`, `--launch` `[name]`: The test environment you want to use. Currently supports `local`, `browserstack` or `remote` (default: `local`)
+* `-l`, `--launch` `[name]` (*default: `local`*): The test environment you want to use.
 * `-t`, `--tunnel` `[name]`: The tunneling service provider to use. Currently supports local, localtunnel, browserstack and pagekite (default: `local`)
 * `-p`, `--port` `[port]`: The port to run the server on (default: `3996`)
 * `-r`, `--reporter` `[name]`: The name of the reporter to use (default: `Dot`)
@@ -40,15 +42,61 @@ The following options are available:
 
 ### Examples
 
+Run `test.html` in the `/var/www/app/` folder using Safari:
+
+> `testee --root /var/www/app/ --browser safari test.html`
+
+Run `tests/qunit.html` with PhantomJS from the current folder, use port `8080` instead of `3996` and
+use the `Spec` reporter which prints more detailed test results:
+
+> `testee --port 8080 --reporter Spec tests/qunit.html`
+
+Run `tests/mocha.html` using `testee.json` as the configuration file (see the [configuration API](#configuration_api)
+for how this file should look like):
+
+> `testee -c testee.json tests/mocha.html`
+
+Run `tests/jasmine.html` using [Google Chrome Canary](https://www.google.com/intl/en/chrome/browser/canary.html):
+
+> `testee --browser canary tests/jasmine.html`
+
 ### Command line Browserstack
+
+It is also possible to start tests using a [Browserstack](http://browserstack.com) worker from the command
+line by setting the `launch` option to `browserstack` and the `browser` to a string in the form of
+`<browser>:<version>@<os>`. You will then be prompted for your Browserstack username and password.
+Because workers don't have direct access to your local system, a [localhost tunneling](#localhost_tunneling)
+service will be started ([localtunnel](http://progrium.com/localtunnel/) by default).
+
+For example, run `tests/qunit.html` on Internet Explorer 8:
+
+> `testee --browser ie:8.0@win --launch browserstack qunit/test.html`
+
+Or Firefox 15 on MacOS:
+
+> `testee --browser firefox:15.0@macos --launch browserstack qunit/test.html`
+
+The use of a configuration file is generally the better choice when using Browserstack. For more options, read up
+in the [configuration API](#configuration_api) section. To use different tunelling services (like the [Browserstack command line tunnel](http://www.browserstack.com/local-testing)) jump to [Localhost Tunelling](#localhost_tunneling) and for Browserstack specific options read more in the [Browserstack section](#browserstack).
 
 ### CI integration
 
+Because Testee allows to use different reporters for the test result output it is easy to obtain XUnit
+style XML files that integrate with CI servers like [Jenkins](http://jenkins-ci.org/). Just use the `XUnit`
+reporter and write the output into a file. The following example runs `tests/qunit.html` in Firefox and writes
+the result XML into `testresults.xml`:
+
+> `testee --browser firefox --reporter XUnit > testresults.xml`
+
+You can get more information about the available reporters in the [Reporters](#reporters) section.
+
 ## Configuration API
 
-Besides the command line options you can also configure Testee through a JSON configuration file,
-as a [GruntJS task]() or programatically as a NodeJS module. The configuration format is the same in
-all three cases, available options are descibed below.
+The following sections describe the available options for
+
+* the JSON configuration file if you run Testee from the command line using the `-c` or `--config` option
+* the [GruntJS task](#gruntjs) task configuration
+* programmatic usage with NodeJS
 
 ### Default configuration
 
@@ -56,17 +104,41 @@ Any options will be merged with the following default configuration:
 
 <pre>
 <code data-language="javascript">{
-	launch : 'local', // local, remote, browserstack
-	tunnel : 'local', // local, localtunnel, pagekite, browserstack
-	browser : 'phantom',
-	root : '.', // HTTP server root
-	reporter : 'Spec',
-	port : 3996,
-	verbose : true,
-	log : './testee.log',
-	timeout : 120
+  root : '.',
+  port : 3996,
+  verbose : false,
+  log : './testee.log',
+  timeout : 120,
+  launch : 'local',
+  tunnel : 'local',
+  browser : 'phantom',
+  reporter : 'Dot'
 }</code>
 </pre>
+
+### General settings
+
+`root` *{String}*<br />
+Every time when running a test, Testee will start a static file server, by default in the current folder.
+That way, any test HTML file you reference will be loaded properly. The `root` option allows you to change
+the root path of the static fileserver.
+
+`port` *{Integer}*<br />
+The port for the static file server to start on. This will also be used by [Localhost tunneling services](#localhost_tunneling). The default is `3996`.
+
+`verbose` *{Boolean}*, `log` *{String}*<br />
+Set this option to `true` if you would like Testee to output debugging information into a `log` file.
+It is not possible to output debugging information on the console since it is used by the reporters.
+
+`timeout` *{Integer}*<br />
+The time (in seconds) to wait for a test page to report back and after which an error will be thrown.
+The default is 2 minutes. This timeout might, for example, occurr when the given file doesn't exist the
+browser didn't start or the localhost tunnel isn't running.
+
+### Reporters
+
+The `reporter` option allows you to use almost any of the console reporters included in the
+[Mocha testing library](http://visionmedia.github.com/mocha/#reporters).
 
 ### Launching browsers
 
@@ -74,8 +146,38 @@ Any options will be merged with the following default configuration:
 
 ### Localhost tunneling
 
-Testee uses the [miner] package to provide localhost tunelling.
+A localhost tunneling service makes your local system available to the outside world. This is great
+if you want to run tests on another system which can't easily reach your local machine. Testee
+relies on localhost tunneling services especially for giving Browserstack workers an endpoint to
+communicate with.
+
+Testee uses the [Miner](http://daffl.github.com/miner/) package to provide localhost tunneling which
+makes it possible to use any of the services Miner currently supports (LocalTunnel, Pagekite and Browserstack).Localtunnel doesn't need any configuration at all and will install itself if you have Ruby available.
+
+If you would like to use Pagekite you need to set it up with your username and then pass it to the `launch` option
+like this:
+
+	launch : {
+		type : 'pagekite',
+		username : 'daffl'
+	}
+
+It is also possible to use the [Browserstack command line tunnel](http://www.browserstack.com/automated-browser-testing-api) which you have to provide with your command line tunnel API key:
+
+	launch : {
+		type : 'browserstack',
+		key : 'your command line tunnel API key'
+	}
 
 ### Running tests programmatically
 
 ## GruntJS
+
+## FAQ
+
+*__Can I test more than one file and browser at once?__*<br />
+No. At the moment Testee only allows running one test file on one browser. The ability to
+test multiple files is under development (see issue [#6]()).
+
+*__Something isn't working, where can I get help?__*<br />
+Everywhere!
