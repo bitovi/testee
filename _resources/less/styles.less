@@ -13,15 +13,15 @@
 // Base CSS
 @import "bootstrap/type.less";
 @import "bootstrap/code.less";
-@import "bootstrap/forms.less";
-@import "bootstrap/tables.less";
+// @import "bootstrap/forms.less";
+// @import "bootstrap/tables.less";
 
 // Components: common
-@import "bootstrap/sprites.less";
-@import "bootstrap/dropdowns.less";
-@import "bootstrap/wells.less";
-@import "bootstrap/component-animations.less";
-@import "bootstrap/close.less";
+// @import "bootstrap/sprites.less";
+// @import "bootstrap/dropdowns.less";
+// @import "bootstrap/wells.less";
+// @import "bootstrap/component-animations.less";
+// @import "bootstrap/close.less";
 
 @import "bootswatch.less";
 
@@ -29,9 +29,19 @@
 
 @import "highlighter.less";
 
+.scroll-fix {
+	position: fixed;
+	background-color: #FFFFFF;
+	margin: 0;
+}
+
 h2 {
 	font-size: 36px;
-	border-bottom: 1px solid @lowLight;
+	border-bottom: 1px solid @highlightComment;
+}
+
+h4 {
+	font-size: @baseFontSize;
 }
 
 pre {
@@ -39,30 +49,29 @@ pre {
 	padding-left: @baseLineHeight;
 }
 
-blockquote, code {
-	border: none;
-	background-color: @lowLight;
-	color: @highlightText;
+code {
+	color: @lowLight;
 	font-family: @highlightFont;
-	font-weight: normal;
+	font-weight: bold;
 }
 
+
 blockquote {
-	code {
-		font-size: @baseFontSize;
-	}
 	background-color: @lowLight;
 	border-left: @baseFontSize solid @highlightOrange;
+
+	code {
+		background-color: transparent;
+		color: @highlightText;
+		border: none;
+	}
 }
 
 header {
 	padding: 30px;
 
-	h1 {
-		font-size: @baseFontSize * 4;
-		font-weight: bold;
-		color: @lowLight;
-		text-shadow: -1px 1px 2px @highlightComment;
+	img {
+		display: block;
 	}
 }
 
@@ -70,9 +79,16 @@ section.top {
 	border-top: 2px solid @highlightComment;
 	box-shadow: 0 4px 6px #66747C;
 	background-color: @lowLight;
-	padding: 60px 0;
+	padding: 40px 0;
 	color: @highlightText;
 	font-size: @baseFontSize;
-	line-height: @baseLineHeight * 2;
 	font-family: @highlightFont;
+
+	ul {
+		margin-top: @baseLineHeight;
+
+		li {
+			list-style-image: url("checkmark.png");
+		}
+	}
 }

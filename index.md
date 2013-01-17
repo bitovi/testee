@@ -13,6 +13,7 @@ test HTML page:
 
 > `testee tests/qunit.html`
 
+
 ## Command line testing
 
 The default browser is [PhantomJS](http://phantomjs.org/), just make sure you have it installed anywhere
@@ -23,6 +24,7 @@ To run with a different local browser (e.g. Firefox) use:
 > `testee tests/qunit.html --browser firefox`
 
 Note that the browser you are using for testing shouldn't be already running.
+
 
 ### Command line options
 
@@ -39,6 +41,7 @@ On the command line, you have the following options available:
 * `-l`, `--log` `[file]`: If in verbose mode, the name of the logfile to write to (default: `testee.log`)
 * `-c`, `--config` `[file]`: Use this JSON configuration file (can be overwritten by command line options)
 * `--timeout` `[seconds]`: The per test timeout (in seconds)
+
 
 ### Examples
 
@@ -60,6 +63,7 @@ Run `tests/jasmine.html` using [Google Chrome Canary](https://www.google.com/int
 
 > `testee --browser canary tests/jasmine.html`
 
+
 ### Command line Browserstack
 
 It is also possible to start tests using a [Browserstack](http://browserstack.com) worker from the command
@@ -79,6 +83,7 @@ Or Firefox 15 on MacOS:
 The use of a configuration file is generally the better choice when using Browserstack. For more options, read up
 in the [configuration API](#configuration_api) section. To use different tunelling services (like the [Browserstack command line tunnel](http://www.browserstack.com/local-testing)) jump to [Localhost Tunelling](#localhost_tunneling) and for Browserstack specific options read more in the [Browserstack section](#browserstack).
 
+
 ### CI integration
 
 Because Testee allows to use different reporters for the test result output it is easy to obtain XUnit
@@ -90,6 +95,7 @@ the result XML into `testresults.xml`:
 
 You can get more information about the available reporters in the [Reporters](#reporters) section.
 
+
 ## Configuration API
 
 The following sections describe the available options for
@@ -98,51 +104,103 @@ The following sections describe the available options for
 * the [GruntJS task](#gruntjs) task configuration
 * programmatic usage with NodeJS
 
+
 ### Default configuration
 
 Any options will be merged with the following default configuration:
 
-<pre>
-<code data-language="javascript">{
-  root : '.',
-  port : 3996,
-  verbose : false,
-  log : './testee.log',
-  timeout : 120,
-  launch : 'local',
-  tunnel : 'local',
-  browser : 'phantom',
-  reporter : 'Dot'
-}</code>
-</pre>
+<pre><code data-language="javascript">{
+  "root" : ".",
+  "port" : 3996,
+  "verbose" : false,
+  "log" : "./testee.log",
+  "timeout" : 120,
+  "launch" : "local",
+  "tunnel" : "local",
+  "browser" : "phantom",
+  "reporter" : "Dot"
+}</code></pre>
+
 
 ### General settings
 
-`root` *{String}*<br />
+__`root` *{String}*__<br />
 Every time when running a test, Testee will start a static file server, by default in the current folder.
 That way, any test HTML file you reference will be loaded properly. The `root` option allows you to change
 the root path of the static fileserver.
 
-`port` *{Integer}*<br />
+__`port` *{Integer}*__<br />
 The port for the static file server to start on. This will also be used by [Localhost tunneling services](#localhost_tunneling). The default is `3996`.
 
-`verbose` *{Boolean}*, `log` *{String}*<br />
+__`verbose` *{Boolean}*, `log` *{String}*__<br />
 Set this option to `true` if you would like Testee to output debugging information into a `log` file.
 It is not possible to output debugging information on the console since it is used by the reporters.
 
-`timeout` *{Integer}*<br />
+__`timeout` *{Integer}*__<br />
 The time (in seconds) to wait for a test page to report back and after which an error will be thrown.
 The default is 2 minutes. This timeout might, for example, occurr when the given file doesn't exist the
 browser didn't start or the localhost tunnel isn't running.
+
 
 ### Reporters
 
 The `reporter` option allows you to use almost any of the console reporters included in the
 [Mocha testing library](http://visionmedia.github.com/mocha/#reporters).
 
+
 ### Launching browsers
 
-[Launchpad](https://github.com/ekryski/launchpad) is the browser launcher used by Testee.
+The `launch` and `browser` options are used to set the environment and the browser you want
+to start. [Launchpad](https://github.com/ekryski/launchpad) is the browser launcher library used
+by Testee which allows you to start most locally installed browsers as well as Browserstack workers
+and even browsers on remote systems running the [Launchpad Server](https://github.com/ekryski/launchpad#the-launchpad-server).
+
+The most common case will be launching a local browser (which is also the default) with no settings:
+
+<pre><code data-language="javascript">{
+  "browser" : "firefox"
+}</code></pre>
+
+#### Browserstack
+
+Browserstack hosts virtual machines running specific versions of web browsers. It is an extremely useful
+tool for cross-browser testing running a remote desktop in you browser. To use BrowserStack via the configuration
+API you need to provide a username and password:
+
+<pre><code data-language="javascript">{
+  launch: {
+    type: "browserstack",
+    username: "your browserstack username",
+    password: "your browserstack password"
+  }
+}</code></pre>
+
+To start a worker, you must provide a valid [browser object](https://github.com/scottgonzalez/node-browserstack#browser-objects) to the `browser` option:
+
+<pre><code data-language="javascript">{
+  browser: {
+    os: "win",
+    browser: "ie",
+    version: 8.0
+  }
+}</code></pre>
+
+An example configuration that runs your tests on an iPad 4 emulator using BrowserStack in a CI environment
+(outputting XUnit logs) could look like this:
+
+<pre><code data-language="javascript">{
+    "reporter" : "XUnit",
+    launch: {
+      type: "browserstack",
+      username: "your browserstack username",
+      password: "your browserstack password"
+    },
+    browser: {
+      device: "ipad4",
+      version: 6.0
+    }
+  }
+}</code></pre>
 
 ### Localhost tunneling
 
@@ -151,27 +209,37 @@ if you want to run tests on another system which can't easily reach your local m
 relies on localhost tunneling services especially for giving Browserstack workers an endpoint to
 communicate with.
 
-Testee uses the [Miner](http://daffl.github.com/miner/) package to provide localhost tunneling which
+Testee uses the [Miner](https://github.com/daffl/miner) package to provide localhost tunneling which
 makes it possible to use any of the services Miner currently supports (LocalTunnel, Pagekite and Browserstack).Localtunnel doesn't need any configuration at all and will install itself if you have Ruby available.
 
 If you would like to use Pagekite you need to set it up with your username and then pass it to the `launch` option
 like this:
 
-	launch : {
-		type : 'pagekite',
-		username : 'daffl'
+<pre><code data-language="javascript">
+  "launch" : {
+		"type" : "pagekite",
+		"username" : "pagekit user"
 	}
+</code></pre>
 
 It is also possible to use the [Browserstack command line tunnel](http://www.browserstack.com/automated-browser-testing-api) which you have to provide with your command line tunnel API key:
 
-	launch : {
-		type : 'browserstack',
-		key : 'your command line tunnel API key'
+<pre><code data-language="javascript">
+	"launch" : {
+		"type" : "browserstack",
+		"key" : "your command line tunnel API key"
 	}
+</code></pre>
+
+For all available tunneling services and options follow up in the [Miner documentation](http://daffl.github.com/miner/).
 
 ### Running tests programmatically
 
+
 ## GruntJS
+
+The Testee NodeJS package also provides a [GruntJS](http://grunsj.com) task so you can easily run
+tests in your Grunt file.
 
 ## FAQ
 
