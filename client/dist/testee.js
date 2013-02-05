@@ -1,7 +1,7 @@
 /*!
- * testee - v0.1.0 - 2012-12-09
+ * testee - v0.1.0 - 2013-02-05
  * http://github.com/daffl/testee.js
- * Copyright (c) 2012 David Luecke
+ * Copyright (c) 2013 David Luecke
  * Licensed MIT
  */
 
@@ -1205,309 +1205,340 @@
 	});
 
 }).call(this);
-(function(window) {
-	Testee = window.Testee || {
-		window : window
-	};
-	Testee._ = _.noConflict();
-})(this);
-(function(Testee, _, undefined) {
-	var win = Testee.window;
+!function () {
+	'use strict';
 
-	if(!(win.mocha && win.Mocha)) {
-		return;
-	}
-
-	// TODO find out why it detects a leak, works only in V8 anyway
-	mocha.ignoreLeaks();
-	var socket = io.connect();
-	var OldReporter = mocha._reporter;
-	var MochaReporter = function(runner) {
-		var self = this;
-		var pipe = function(type, converter) {
-			runner.on(type, function() {
-				var args = converter.apply(converter, arguments);
-				socket.emit.apply(socket, [type].concat(args));
+	var Testee = window.Testee = _.extend({
+		window: window,
+		_: _.noConflict(),
+		adapters: [],
+		init: function() {
+			var _ = this._;
+			var win = this.window;
+			_.each(this.adapters, function(adapter) {
+				adapter.call(Testee, win, _);
 			});
+		},
+		addAdapter: function(fn) {
+			this.adapters.push(fn);
+		}
+	}, window.Testee);
+}();
+!function (Testee, undefined) {
+	'use strict';
+
+	Testee.addAdapter(function (win, _) {
+		if (!(win.mocha && win.Mocha)) {
+			return;
 		}
 
-		this.originalReporter = new OldReporter(runner);
-		this.ids = [];
-		this.last = {};
-
-		pipe("start", function() {
-			return {
-				environment : navigator.userAgent,
-				runner : 'Mocha',
-				time : new Date().getTime()
+		// TODO find out why it detects a leak, works only in V8 anyway
+		mocha.ignoreLeaks();
+		var socket = io.connect();
+		var OldReporter = mocha._reporter;
+		var MochaReporter = function (runner) {
+			var self = this;
+			var pipe = function (type, converter) {
+				runner.on(type, function () {
+					var args = converter.apply(converter, arguments);
+					socket.emit.apply(socket, [type].concat(args));
+				});
 			}
-		});
 
-		pipe("fail", function(data, err) {
-			var diff = self.diff(data);
-			diff.err = {
-				message : err.message,
-				stack : err.stack || ''
-			}
-			return diff;
-		});
+			this.originalReporter = new OldReporter(runner);
+			this.ids = [];
+			this.last = {};
 
-		_.each(["suite", "suite end", "pending", "test", "pass", "pending", "test end", "end"], function(name) {
-			pipe(name, _.bind(self.diff, self));
-		});
-	};
-
-	MochaReporter.prototype.objectify = function(data) {
-		var result = {};
-		var self = this;
-
-		_.each(data, function(value, key) {
-			var isPrivate = key.indexOf('_') === 0 || key.indexOf('$') === 0;
-			if(typeof value === 'object' && !isPrivate) {
-				var idx = _.indexOf(self.ids, value);
-				if(!!~idx) {
-					result[key] = idx;
+			pipe("start", function () {
+				return {
+					environment: navigator.userAgent,
+					runner: 'Mocha',
+					time: new Date().getTime()
 				}
-			} else if(typeof value !== 'function' && !isPrivate && value !== undefined) {
-				result[key] = value;
-			}
-		});
-		return result;
-	}
+			});
 
-	MochaReporter.prototype.diff = function(obj) {
-		var self = this;
-		var current = self.objectify(obj);
-		var result = {};
-		var idx = _.indexOf(self.ids, obj);
+			pipe("fail", function (data, err) {
+				var diff = self.diff(data);
+				diff.err = {
+					message: err.message,
+					stack: err.stack || ''
+				}
+				return diff;
+			});
 
-		if(!~idx) {
-			idx = self.ids.push(obj) - 1;
-			result = _.clone(current || {});
-		} else {
-			_.each(current, function(value, key) {
-				if(self.last[idx][key] !== value) {
+			_.each(["suite", "suite end", "pending", "test", "pass", "pending", "test end", "end"], function (name) {
+				pipe(name, _.bind(self.diff, self));
+			});
+		};
+
+		MochaReporter.prototype.objectify = function (data) {
+			var result = {};
+			var self = this;
+
+			_.each(data, function (value, key) {
+				var isPrivate = key.indexOf('_') === 0 || key.indexOf('$') === 0;
+				if (typeof value === 'object' && !isPrivate) {
+					var idx = _.indexOf(self.ids, value);
+					if (!!~idx) {
+						result[key] = idx;
+					}
+				} else if (typeof value !== 'function' && !isPrivate && value !== undefined) {
 					result[key] = value;
 				}
 			});
+			return result;
 		}
 
-		self.last[idx] = current;
-		result.id = idx;
-		return result;
-	}
+		MochaReporter.prototype.diff = function (obj) {
+			var self = this;
+			var current = self.objectify(obj);
+			var result = {};
+			var idx = _.indexOf(self.ids, obj);
 
-	win.Mocha.reporters.Testee = MochaReporter;
-	win.mocha.reporter(MochaReporter);
-})(Testee, Testee._);
-(function (Testee, _, undefined) {
-	var win = Testee.window;
-	if(!win.QUnit) {
-		return;
-	}
+			if (!~idx) {
+				idx = self.ids.push(obj) - 1;
+				result = _.clone(current || {});
+			} else {
+				_.each(current, function (value, key) {
+					if (self.last[idx][key] !== value) {
+						result[key] = value;
+					}
+				});
+			}
 
-	var QUnit = win.QUnit;
-	var socket = io.connect();
-
-	var currentId = 0; // Track the current global id
-	var suites = []; // Contains all currently active suites (nested)
-	var time = function() {
-		return new Date().getTime();
-	}
-	// Returns the id of the currently active test suite (last one pushed)
-	var suiteId = function() {
-		return suites[suites.length - 1];
-	}
-	// Overwrite a QUnit hook, but keep the old ones
-	var add = function(type, fn) {
-		var old = QUnit[type] || function() {};
-		QUnit[type] = function() {
-			fn.apply(this, arguments);
-			return old.apply(QUnit, arguments);
+			self.last[idx] = current;
+			result.id = idx;
+			return result;
 		}
-	};
 
-	// TODO async tests
-	// var oldstart = win.start;
-	// var oldstop = win.stop;
-
-	add('begin', function() {
-		var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
-
-		socket.emit('start', {
-			environment : navigator.userAgent,
-			runner : 'QUnit',
-			time : time()
-		});
-
-		socket.emit('suite', {
-			title : titleEl ? titleEl.innerHTML : '',
-			root : true,
-			id : currentId
-		});
-
-		suites.push(currentId);
+		win.Mocha.reporters.Testee = MochaReporter;
+		win.mocha.reporter(MochaReporter);
 	});
+}(Testee);
+!function (Testee, undefined) {
+	'use strict';
 
-	add('moduleStart', function(data) {
-		socket.emit('suite', {
-			title : data.name,
-			parent : suiteId(),
-			id : (++currentId)
-		});
-		suites.push(currentId);
-	});
+	Testee.addAdapter(function (win, _) {
+		if (!win.QUnit) {
+			return;
+		}
 
-	add('moduleDone', function(data) {
-		socket.emit('suite end', {
-			failed : data.failed,
-			total : data.total,
-			id : suiteId()
-		});
-		suites.pop();
-	});
+		var QUnit = win.QUnit;
+		var socket = io.connect();
 
-	add('testStart', function(data) {
-		socket.emit('suite', {
-			title : data.name,
-			parent : suiteId(),
-			id : (++currentId)
-		});
-		suites.push(currentId);
-	});
+		var currentId = 0; // Track the current global id
+		var suites = []; // Contains all currently active suites (nested)
+		var time = function () {
+			return new Date().getTime();
+		}
+		// Returns the id of the currently active test suite (last one pushed)
+		var suiteId = function () {
+			return suites[suites.length - 1];
+		}
+		// Overwrite a QUnit hook, but keep the old ones
+		var add = function (type, fn) {
+			var old = QUnit[type] || function () {
+			};
+			QUnit[type] = function () {
+				fn.apply(this, arguments);
+				return old.apply(QUnit, arguments);
+			}
+		};
 
-	add('testDone', function(data) {
-		socket.emit('suite end', {
-			"id" : suiteId()
-		});
-		suites.pop();
-	});
+		// TODO async tests
+		// var oldstart = win.start;
+		// var oldstop = win.stop;
 
-	add('log', function(data) {
-		var testId = (++currentId);
+		add('begin', function () {
+			var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
 
-		socket.emit('test', {
-			id : testId,
-			title : data.message || 'okay',
-			parent : suiteId()
-		});
-
-		if(data.result) {
-			socket.emit('pass', {
-				id : testId
+			socket.emit('start', {
+				environment: navigator.userAgent,
+				runner: 'QUnit',
+				time: time()
 			});
-		} else {
-			socket.emit('fail', {
-				id : testId,
-				err : {
-					message : data.message,
-					stack : 'Expected ' + data.expected + ' but was ' + data.actual + '\n    ' + (data.source || '')
+
+			socket.emit('suite', {
+				title: titleEl ? titleEl.innerHTML : '',
+				root: true,
+				id: currentId
+			});
+
+			suites.push(currentId);
+		});
+
+		add('moduleStart', function (data) {
+			socket.emit('suite', {
+				title: data.name,
+				parent: suiteId(),
+				id: (++currentId)
+			});
+			suites.push(currentId);
+		});
+
+		add('moduleDone', function (data) {
+			socket.emit('suite end', {
+				failed: data.failed,
+				total: data.total,
+				id: suiteId()
+			});
+			suites.pop();
+		});
+
+		add('testStart', function (data) {
+			socket.emit('suite', {
+				title: data.name,
+				parent: suiteId(),
+				id: (++currentId)
+			});
+			suites.push(currentId);
+		});
+
+		add('testDone', function (data) {
+			socket.emit('suite end', {
+				"id": suiteId()
+			});
+			suites.pop();
+		});
+
+		add('log', function (data) {
+			var testId = (++currentId);
+
+			socket.emit('test', {
+				id: testId,
+				title: data.message || 'okay',
+				parent: suiteId()
+			});
+
+			if (data.result) {
+				socket.emit('pass', {
+					id: testId
+				});
+			} else {
+				socket.emit('fail', {
+					id: testId,
+					err: {
+						message: data.message,
+						stack: 'Expected ' + data.expected + ' but was ' + data.actual + '\n    ' + (data.source || '')
+					}
+				});
+			}
+
+			socket.emit('test end', {
+				id: testId
+			});
+		});
+
+		add('done', function (data) {
+			socket.emit('end', data);
+		});
+	});
+}(Testee);
+!function (Testee, undefined) {
+	'use strict';
+
+	Testee.addAdapter(function (win, _) {
+		if (!win.jasmine) {
+			return;
+		}
+
+		var socket = io.connect();
+		var TesteeReporter = function () {
+
+		};
+
+		_.extend(TesteeReporter.prototype, {
+			log: function (string) {
+
+			},
+
+			reportRunnerStarting: function (runner) {
+				socket.emit("start", {
+					environment: navigator.userAgent,
+					runner: 'Jasmine'
+				});
+			},
+
+			reportRunnerResults: function (runner) {
+				socket.emit("end", {});
+			},
+
+			reportSpecResults: function (spec) {
+				if (spec.results_.failedCount) {
+					var message = spec.results_.items_[0].message;
+					var stack = spec.results_.items_[0].trace.stack;
+					socket.emit("fail", {
+						"id": spec.id,
+						"err": {
+							"message": message,
+							"stack": stack
+						}
+					});
+				} else if (spec.results_.passedCount) {
+					socket.emit("pass", {
+						"duration": 0,
+						"id": spec.id
+					});
 				}
-			});
-		}
 
-		socket.emit('test end', {
-			id : testId
+				socket.emit("test end", {
+					"id": spec.id
+				});
+			},
+
+			startSuite: function (suite) {
+				if (suite.parentSuite !== null) {
+					if (!suite.parentSuite.started) {
+						this.startSuite(suite.parentSuite);
+					}
+				}
+
+				if (suite.parentSuite !== null) {
+					socket.emit('suite', {
+						"title": suite.description,
+						"parent": suite.parentSuite.id,
+						"id": suite.id
+					});
+				} else {
+					socket.emit('suite', {
+						"title": suite.description,
+						"root": true,
+						"id": suite.id
+					});
+				}
+
+				suite.started = true;
+			},
+
+			reportSpecStarting: function (spec) {
+				if (!spec.suite.started) {
+					this.startSuite(spec.suite);
+				}
+
+				socket.emit("test", {
+					"title": spec.description,
+					"parent": spec.suite.id,
+					"id": spec.id
+				})
+			},
+
+			reportSuiteResults: function (suite) {
+				socket.emit("suite end", {
+					"id": suite.id
+				});
+			}
 		});
-	});
 
-	add('done', function(data) {
-		socket.emit('end', data);
+		jasmine.getEnv().addReporter(new TesteeReporter());
 	});
-})(Testee, Testee._);
-(function(Testee, _, undefined) {
-	var win = Testee.window;
-
-	if(!win.jasmine) {
-		return;
+}(Testee);
+!function(Testee) {
+	if(window.steal) {
+		steal.one('end', function() {
+			Testee.init();
+		});
+	} else {
+		Testee.init();
 	}
-
-    var socket = io.connect();
-    var TesteeReporter = function() {
-
-	};
-
-	_.extend(TesteeReporter.prototype, {
-		log : function(string) {
-
-		},
-
-		reportRunnerStarting : function(runner) {
-            socket.emit("start", {
-                environment : navigator.userAgent,
-                runner : 'Jasmine'
-            });
-		},
-
-		reportRunnerResults : function(runner) {
-            socket.emit("end", {});
-		},
-
-		reportSpecResults : function(spec) {
-            if (spec.results_.failedCount) {
-                var message = spec.results_.items_[0].message;
-                var stack = spec.results_.items_[0].trace.stack;
-                socket.emit("fail", {
-                    "id": spec.id,
-                    "err": {
-                        "message": message,
-                        "stack": stack
-                    }
-                });
-            } else if (spec.results_.passedCount) {
-                socket.emit("pass", {
-                    "duration": 0,
-                    "id": spec.id
-                });
-            }
-
-            socket.emit("test end", {
-                "id": spec.id
-            });
-		},
-
-        startSuite: function(suite) {
-            if (suite.parentSuite !== null) {
-                if (!suite.parentSuite.started) {
-                    this.startSuite(suite.parentSuite);
-                }
-            }
-
-            if (suite.parentSuite !== null) {
-                socket.emit('suite', {
-                    "title": suite.description,
-                    "parent": suite.parentSuite.id,
-                    "id": suite.id
-                });
-            } else {
-                socket.emit('suite', {
-                    "title": suite.description,
-                    "root": true,
-                    "id": suite.id
-                });
-            }
-
-            suite.started = true;
-        },
-
-		reportSpecStarting : function(spec) {
-            if (!spec.suite.started) {
-                this.startSuite(spec.suite);
-            }
-
-            socket.emit("test", {
-                "title": spec.description,
-                "parent": spec.suite.id,
-                "id": spec.id
-            })
-		},
-
-		reportSuiteResults : function(suite) {
-            socket.emit("suite end", {
-                "id": suite.id
-            });
-		}
-	});
-
-	jasmine.getEnv().addReporter(new TesteeReporter());
-})(Testee, Testee._);
+	// TODO something for RequireJS
+}(Testee);

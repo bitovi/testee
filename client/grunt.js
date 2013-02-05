@@ -18,7 +18,8 @@ module.exports = function (grunt) {
 					'adapters/index.js',
 					'adapters/mocha.js',
 					'adapters/qunit.js',
-					'adapters/jasmine.js'
+					'adapters/jasmine.js',
+					'adapters/bootstrap.js'
 				],
 				dest : 'dist/<%= pkg.name %>.js'
 			}
