@@ -40,7 +40,6 @@
   },
   "dependencies" : {
     "commander" : "> 1.0.0",
-    "send" : ">= 0.0.4",
     "winston" : "> 0.6.0",
     "mocha" : "1.4.2",
     "socket.io" : ">= 0.9.6",
@@ -49,6 +48,8 @@
     "async" : ">= 0.1.20",
     "miner" : ">= 0.1.0",
     "launchpad" : ">= 0.1.0",
-    "ua-parser" : ">= 0.2.4"
+    "ua-parser" : ">= 0.2.4",
+    "connect-injector": ">= 0.1.0",
+    "http-proxy": ">= 0.8.7"
   }
 }
