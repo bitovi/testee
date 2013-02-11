@@ -3,10 +3,13 @@ var program = require('commander');
 var testee = require('../lib/testee');
 var _ = require('underscore');
 var pkg = require('../package.json');
+var fs = require('fs');
+
 var config = {};
 var runTests = function (files, params) {
-	testee.test(files, params, function (err) {
-		process.exit();
+	testee.test(files, params, function (err, stats) {
+		var exitCode = (err || (stats && stats.failed)) ? 1 : 0;
+		process.exit(exitCode);
 	});
 }
 
@@ -24,8 +27,12 @@ program.version(pkg.version)
 	.option('--timeout [seconds]', 'The per test timeout (in seconds)')
 	.parse(process.argv);
 
-config = _.pick(program, 'browser', 'launch', 'tunnel',
-	'port', 'verbose', 'log', 'timeout', 'reporter');
+if(program.config) {
+	config = require(program.config);
+}
+
+config = _.extend(config, _.pick(program, 'browser', 'launch', 'tunnel',
+	'port', 'verbose', 'log', 'timeout', 'reporter'));
 
 if (program.launch === 'browserstack') {
 	program.prompt('Enter your Browserstack username: ', function (username) {
