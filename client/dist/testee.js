@@ -1,5 +1,5 @@
 /*!
- * testee - v0.1.0 - 2013-02-05
+ * testee - v0.1.0 - 2013-02-13
  * http://github.com/daffl/testee.js
  * Copyright (c) 2013 David Luecke
  * Licensed MIT
@@ -1221,6 +1221,12 @@
 		},
 		addAdapter: function(fn) {
 			this.adapters.push(fn);
+		},
+		done: function(){
+			var socket = io.connect();
+			if(window.__coverage__){
+				socket.emit("coverage", __coverage__);
+			}
 		}
 	}, window.Testee);
 }();
@@ -1242,6 +1248,9 @@
 				runner.on(type, function () {
 					var args = converter.apply(converter, arguments);
 					socket.emit.apply(socket, [type].concat(args));
+					if(type === "end"){
+						Testee.done();
+					}
 				});
 			}
 
@@ -1431,6 +1440,7 @@
 
 		add('done', function (data) {
 			socket.emit('end', data);
+			Testee.done();
 		});
 	});
 }(Testee);
@@ -1461,6 +1471,7 @@
 
 			reportRunnerResults: function (runner) {
 				socket.emit("end", {});
+				Testee.done();
 			},
 
 			reportSpecResults: function (spec) {

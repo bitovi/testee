@@ -25,6 +25,7 @@
 
 			reportRunnerResults: function (runner) {
 				socket.emit("end", {});
+				Testee.done();
 			},
 
 			reportSpecResults: function (spec) {

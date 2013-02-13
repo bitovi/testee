@@ -16,6 +16,9 @@
 				runner.on(type, function () {
 					var args = converter.apply(converter, arguments);
 					socket.emit.apply(socket, [type].concat(args));
+					if(type === "end"){
+						Testee.done();
+					}
 				});
 			}
 

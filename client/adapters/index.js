@@ -14,6 +14,12 @@
 		},
 		addAdapter: function(fn) {
 			this.adapters.push(fn);
+		},
+		done: function(){
+			var socket = io.connect();
+			if(window.__coverage__){
+				socket.emit("coverage", __coverage__);
+			}
 		}
 	}, window.Testee);
 }();

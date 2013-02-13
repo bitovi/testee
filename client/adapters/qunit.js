@@ -114,6 +114,7 @@
 
 		add('done', function (data) {
 			socket.emit('end', data);
+			Testee.done();
 		});
 	});
 }(Testee);
