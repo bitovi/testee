@@ -1,14 +1,12 @@
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _) {
+	Testee.addAdapter(function (win, _, socket) {
 		if (!win.QUnit) {
 			return;
 		}
 
 		var QUnit = win.QUnit;
-		var socket = io.connect();
-
 		var currentId = 0; // Track the current global id
 		var suites = []; // Contains all currently active suites (nested)
 		var time = function () {
@@ -79,7 +77,7 @@
 
 		add('testDone', function (data) {
 			socket.emit('suite end', {
-				"id": suiteId()
+				id: suiteId()
 			});
 			suites.pop();
 		});
@@ -116,5 +114,7 @@
 			socket.emit('end', data);
 			Testee.done();
 		});
+
+		return QUnit;
 	});
 }(Testee);

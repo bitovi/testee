@@ -52,7 +52,7 @@ module.exports = function (grunt) {
 			}
 		},
 		watch: {
-			files: '<config:concat.dist.src>',
+			files: 'adapters/**/*.js',
 			tasks: 'concat min'
 		},
 		uglify : {},

@@ -7,4 +7,5 @@
 		Testee.init();
 	}
 	// TODO something for RequireJS
+	// see: https://github.com/jrburke/requirejs/wiki/Internal-API:-onResourceLoad
 }(Testee);

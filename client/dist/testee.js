@@ -1208,24 +1208,22 @@
 !function () {
 	'use strict';
 
-	var Testee = window.Testee = _.extend({
-		window: window,
+	window.Testee = _.extend({
+		win: window,
 		_: _.noConflict(),
 		adapters: [],
+		socket: io.connect(),
 		init: function() {
-			var _ = this._;
-			var win = this.window;
-			_.each(this.adapters, function(adapter) {
-				adapter.call(Testee, win, _);
-			});
+			this._.each(this.adapters, function(adapter) {
+				adapter.call(this, this.win, this._, this.socket);
+			}, this);
 		},
 		addAdapter: function(fn) {
 			this.adapters.push(fn);
 		},
 		done: function(){
-			var socket = io.connect();
 			if(window.__coverage__){
-				socket.emit("coverage", __coverage__);
+				this.socket.emit('coverage', __coverage__);
 			}
 		}
 	}, window.Testee);
@@ -1233,14 +1231,13 @@
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _) {
+	Testee.addAdapter(function (win, _, socket) {
 		if (!(win.mocha && win.Mocha)) {
 			return;
 		}
 
 		// TODO find out why it detects a leak, works only in V8 anyway
 		mocha.ignoreLeaks();
-		var socket = io.connect();
 		var OldReporter = mocha._reporter;
 		var MochaReporter = function (runner) {
 			var self = this;
@@ -1248,7 +1245,7 @@
 				runner.on(type, function () {
 					var args = converter.apply(converter, arguments);
 					socket.emit.apply(socket, [type].concat(args));
-					if(type === "end"){
+					if(type === 'end'){
 						Testee.done();
 					}
 				});
@@ -1258,7 +1255,7 @@
 			this.ids = [];
 			this.last = {};
 
-			pipe("start", function () {
+			pipe('start', function () {
 				return {
 					environment: navigator.userAgent,
 					runner: 'Mocha',
@@ -1266,7 +1263,7 @@
 				}
 			});
 
-			pipe("fail", function (data, err) {
+			pipe('fail', function (data, err) {
 				var diff = self.diff(data);
 				diff.err = {
 					message: err.message,
@@ -1275,7 +1272,7 @@
 				return diff;
 			});
 
-			_.each(["suite", "suite end", "pending", "test", "pass", "pending", "test end", "end"], function (name) {
+			_.each(['suite', 'suite end', 'pending', 'test', 'pass', 'pending', 'test end', 'end'], function (name) {
 				pipe(name, _.bind(self.diff, self));
 			});
 		};
@@ -1322,19 +1319,18 @@
 
 		win.Mocha.reporters.Testee = MochaReporter;
 		win.mocha.reporter(MochaReporter);
+		return MochaReporter;
 	});
 }(Testee);
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _) {
+	Testee.addAdapter(function (win, _, socket) {
 		if (!win.QUnit) {
 			return;
 		}
 
 		var QUnit = win.QUnit;
-		var socket = io.connect();
-
 		var currentId = 0; // Track the current global id
 		var suites = []; // Contains all currently active suites (nested)
 		var time = function () {
@@ -1405,7 +1401,7 @@
 
 		add('testDone', function (data) {
 			socket.emit('suite end', {
-				"id": suiteId()
+				id: suiteId()
 			});
 			suites.pop();
 		});
@@ -1442,35 +1438,33 @@
 			socket.emit('end', data);
 			Testee.done();
 		});
+
+		return QUnit;
 	});
 }(Testee);
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _) {
+	Testee.addAdapter(function (win, _, socket) {
 		if (!win.jasmine) {
 			return;
 		}
-
-		var socket = io.connect();
 		var TesteeReporter = function () {
-
 		};
 
 		_.extend(TesteeReporter.prototype, {
 			log: function (string) {
-
 			},
 
 			reportRunnerStarting: function (runner) {
-				socket.emit("start", {
+				socket.emit('start', {
 					environment: navigator.userAgent,
 					runner: 'Jasmine'
 				});
 			},
 
 			reportRunnerResults: function (runner) {
-				socket.emit("end", {});
+				socket.emit('end', {});
 				Testee.done();
 			},
 
@@ -1478,22 +1472,22 @@
 				if (spec.results_.failedCount) {
 					var message = spec.results_.items_[0].message;
 					var stack = spec.results_.items_[0].trace.stack;
-					socket.emit("fail", {
-						"id": spec.id,
-						"err": {
-							"message": message,
-							"stack": stack
+					socket.emit('fail', {
+						id: spec.id,
+						err: {
+							message: message,
+							stack: stack
 						}
 					});
 				} else if (spec.results_.passedCount) {
-					socket.emit("pass", {
-						"duration": 0,
-						"id": spec.id
+					socket.emit('pass', {
+						duration: 0,
+						id: spec.id
 					});
 				}
 
-				socket.emit("test end", {
-					"id": spec.id
+				socket.emit('test end', {
+					id: spec.id
 				});
 			},
 
@@ -1506,15 +1500,15 @@
 
 				if (suite.parentSuite !== null) {
 					socket.emit('suite', {
-						"title": suite.description,
-						"parent": suite.parentSuite.id,
-						"id": suite.id
+						title: suite.description,
+						parent: suite.parentSuite.id,
+						id: suite.id
 					});
 				} else {
 					socket.emit('suite', {
-						"title": suite.description,
-						"root": true,
-						"id": suite.id
+						title: suite.description,
+						root: true,
+						id: suite.id
 					});
 				}
 
@@ -1526,16 +1520,16 @@
 					this.startSuite(spec.suite);
 				}
 
-				socket.emit("test", {
-					"title": spec.description,
-					"parent": spec.suite.id,
-					"id": spec.id
+				socket.emit('test', {
+					title: spec.description,
+					parent: spec.suite.id,
+					id: spec.id
 				})
 			},
 
 			reportSuiteResults: function (suite) {
-				socket.emit("suite end", {
-					"id": suite.id
+				socket.emit('suite end', {
+					id: suite.id
 				});
 			}
 		});
@@ -1552,4 +1546,5 @@
 		Testee.init();
 	}
 	// TODO something for RequireJS
+	// see: https://github.com/jrburke/requirejs/wiki/Internal-API:-onResourceLoad
 }(Testee);

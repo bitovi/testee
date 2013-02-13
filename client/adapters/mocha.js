@@ -1,14 +1,13 @@
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _) {
+	Testee.addAdapter(function (win, _, socket) {
 		if (!(win.mocha && win.Mocha)) {
 			return;
 		}
 
 		// TODO find out why it detects a leak, works only in V8 anyway
 		mocha.ignoreLeaks();
-		var socket = io.connect();
 		var OldReporter = mocha._reporter;
 		var MochaReporter = function (runner) {
 			var self = this;
@@ -16,7 +15,7 @@
 				runner.on(type, function () {
 					var args = converter.apply(converter, arguments);
 					socket.emit.apply(socket, [type].concat(args));
-					if(type === "end"){
+					if(type === 'end'){
 						Testee.done();
 					}
 				});
@@ -26,7 +25,7 @@
 			this.ids = [];
 			this.last = {};
 
-			pipe("start", function () {
+			pipe('start', function () {
 				return {
 					environment: navigator.userAgent,
 					runner: 'Mocha',
@@ -34,7 +33,7 @@
 				}
 			});
 
-			pipe("fail", function (data, err) {
+			pipe('fail', function (data, err) {
 				var diff = self.diff(data);
 				diff.err = {
 					message: err.message,
@@ -43,7 +42,7 @@
 				return diff;
 			});
 
-			_.each(["suite", "suite end", "pending", "test", "pass", "pending", "test end", "end"], function (name) {
+			_.each(['suite', 'suite end', 'pending', 'test', 'pass', 'pending', 'test end', 'end'], function (name) {
 				pipe(name, _.bind(self.diff, self));
 			});
 		};
@@ -90,5 +89,6 @@
 
 		win.Mocha.reporters.Testee = MochaReporter;
 		win.mocha.reporter(MochaReporter);
+		return MochaReporter;
 	});
 }(Testee);
