@@ -33,13 +33,13 @@
 		add('begin', function () {
 			var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
 
-			socket.emit('start', {
+			Testee.start({
 				environment: navigator.userAgent,
 				runner: 'QUnit',
 				time: time()
 			});
 
-			socket.emit('suite', {
+			Testee.suite({
 				title: titleEl ? titleEl.innerHTML : '',
 				root: true,
 				id: currentId
@@ -49,7 +49,7 @@
 		});
 
 		add('moduleStart', function (data) {
-			socket.emit('suite', {
+			Testee.suite({
 				title: data.name,
 				parent: suiteId(),
 				id: (++currentId)
@@ -58,7 +58,7 @@
 		});
 
 		add('moduleDone', function (data) {
-			socket.emit('suite end', {
+			Testee.suiteEnd({
 				failed: data.failed,
 				total: data.total,
 				id: suiteId()
@@ -67,7 +67,7 @@
 		});
 
 		add('testStart', function (data) {
-			socket.emit('suite', {
+			Testee.suite({
 				title: data.name,
 				parent: suiteId(),
 				id: (++currentId)
@@ -76,7 +76,7 @@
 		});
 
 		add('testDone', function (data) {
-			socket.emit('suite end', {
+			Testee.suiteEnd({
 				id: suiteId()
 			});
 			suites.pop();
@@ -85,18 +85,18 @@
 		add('log', function (data) {
 			var testId = (++currentId);
 
-			socket.emit('test', {
+			Testee.test({
 				id: testId,
 				title: data.message || 'okay',
 				parent: suiteId()
 			});
 
 			if (data.result) {
-				socket.emit('pass', {
+				Testee.pass({
 					id: testId
 				});
 			} else {
-				socket.emit('fail', {
+				Testee.fail({
 					id: testId,
 					err: {
 						message: data.message,
@@ -105,14 +105,13 @@
 				});
 			}
 
-			socket.emit('test end', {
+			Testee.testEnd({
 				id: testId
 			});
 		});
 
 		add('done', function (data) {
-			socket.emit('end', data);
-			Testee.done();
+			Testee.end(data);
 		});
 
 		return QUnit;

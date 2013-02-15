@@ -6,18 +6,20 @@
 			return;
 		}
 
-		// TODO find out why it detects a leak, works only in V8 anyway
+		// TODO find out why it detects a leak, only in V8
 		mocha.ignoreLeaks();
 		var OldReporter = mocha._reporter;
 		var MochaReporter = function (runner) {
 			var self = this;
+			var methodMappings = {
+				'test end': 'testEnd',
+				'suite end': 'suiteEnd'
+			}
 			var pipe = function (type, converter) {
 				runner.on(type, function () {
-					var args = converter.apply(converter, arguments);
-					socket.emit.apply(socket, [type].concat(args));
-					if(type === 'end'){
-						Testee.done();
-					}
+					var data = converter.apply(converter, arguments);
+					var method = methodMappings[type] || type;
+					Testee[method](data);
 				});
 			}
 
@@ -42,7 +44,7 @@
 				return diff;
 			});
 
-			_.each(['suite', 'suite end', 'pending', 'test', 'pass', 'pending', 'test end', 'end'], function (name) {
+			_.each(['suite', 'suite end', 'pending', 'test', 'test end', 'pass', 'end'], function (name) {
 				pipe(name, _.bind(self.diff, self));
 			});
 		};

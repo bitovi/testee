@@ -14,10 +14,20 @@
 				expect(data.environment).to.equal(navigator.userAgent);
 			});
 
-//			socket.on('suite', function(data) {
-//				console.log('suite', data);
-//			});
-//
+			socket.once('suite', function(data) {
+				expect(data.root).to.equal(true);
+				expect(data.id).to.equal(0);
+				socket.once('suite', function(data) {
+					expect(data.title).to.equal('Test module');
+					expect(data.parent).to.equal(0);
+					expect(data.id).to.equal(1);
+					socket.once('suite', function(data) {
+						expect(data.title).to.equal('It does something');
+						console.log(data);
+					});
+				});
+			});
+
 //			socket.on('test', function(data) {
 //				console.log('test', data);
 //			});

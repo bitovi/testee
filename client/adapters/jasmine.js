@@ -1,7 +1,7 @@
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _, socket) {
+	Testee.addAdapter(function (win, _) {
 		if (!win.jasmine) {
 			return;
 		}
@@ -13,22 +13,21 @@
 			},
 
 			reportRunnerStarting: function (runner) {
-				socket.emit('start', {
+				Testee.start({
 					environment: navigator.userAgent,
 					runner: 'Jasmine'
 				});
 			},
 
 			reportRunnerResults: function (runner) {
-				socket.emit('end', {});
-				Testee.done();
+				Testee.end({});
 			},
 
 			reportSpecResults: function (spec) {
 				if (spec.results_.failedCount) {
 					var message = spec.results_.items_[0].message;
 					var stack = spec.results_.items_[0].trace.stack;
-					socket.emit('fail', {
+					Testee.fail({
 						id: spec.id,
 						err: {
 							message: message,
@@ -36,13 +35,13 @@
 						}
 					});
 				} else if (spec.results_.passedCount) {
-					socket.emit('pass', {
+					Testee.pass({
 						duration: 0,
 						id: spec.id
 					});
 				}
 
-				socket.emit('test end', {
+				Testee.testEnd({
 					id: spec.id
 				});
 			},
@@ -55,13 +54,13 @@
 				}
 
 				if (suite.parentSuite !== null) {
-					socket.emit('suite', {
+					Testee.suite({
 						title: suite.description,
 						parent: suite.parentSuite.id,
 						id: suite.id
 					});
 				} else {
-					socket.emit('suite', {
+					Testee.suite({
 						title: suite.description,
 						root: true,
 						id: suite.id
@@ -76,15 +75,15 @@
 					this.startSuite(spec.suite);
 				}
 
-				socket.emit('test', {
+				Testee.test({
 					title: spec.description,
 					parent: spec.suite.id,
 					id: spec.id
-				})
+				});
 			},
 
 			reportSuiteResults: function (suite) {
-				socket.emit('suite end', {
+				Testee.suiteEnd({
 					id: suite.id
 				});
 			}

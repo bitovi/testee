@@ -1,5 +1,5 @@
 /*!
- * testee - v0.1.0 - 2013-02-13
+ * testee - v0.1.0 - 2013-02-15
  * http://github.com/daffl/testee.js
  * Copyright (c) 2013 David Luecke
  * Licensed MIT
@@ -1215,16 +1215,41 @@
 		socket: io.connect(),
 		init: function() {
 			this._.each(this.adapters, function(adapter) {
-				adapter.call(this, this.win, this._, this.socket);
+				adapter.call(this, this.win, this._);
 			}, this);
 		},
 		addAdapter: function(fn) {
 			this.adapters.push(fn);
 		},
-		done: function(){
+		start: function(data) {
+			this.socket.emit('start', data);
+		},
+		suite: function(data) {
+			this.socket.emit('suite', data);
+		},
+		test: function(data) {
+			this.socket.emit('test', data);
+		},
+		pending: function(data) {
+			this.socket.emit('pending', data);
+		},
+		pass: function(data) {
+			this.socket.emit('pass', data);
+		},
+		fail: function(data) {
+			this.socket.emit('fail', data);
+		},
+		testEnd: function(data) {
+			this.socket.emit('test end', data);
+		},
+		suiteEnd: function(data) {
+			this.socket.emit('suite end', data);
+		},
+		end: function(data) {
 			if(window.__coverage__){
 				this.socket.emit('coverage', __coverage__);
 			}
+			this.socket.emit('end', data);
 		}
 	}, window.Testee);
 }();
@@ -1236,18 +1261,20 @@
 			return;
 		}
 
-		// TODO find out why it detects a leak, works only in V8 anyway
+		// TODO find out why it detects a leak, only in V8
 		mocha.ignoreLeaks();
 		var OldReporter = mocha._reporter;
 		var MochaReporter = function (runner) {
 			var self = this;
+			var methodMappings = {
+				'test end': 'testEnd',
+				'suite end': 'suiteEnd'
+			}
 			var pipe = function (type, converter) {
 				runner.on(type, function () {
-					var args = converter.apply(converter, arguments);
-					socket.emit.apply(socket, [type].concat(args));
-					if(type === 'end'){
-						Testee.done();
-					}
+					var data = converter.apply(converter, arguments);
+					var method = methodMappings[type] || type;
+					Testee[method](data);
 				});
 			}
 
@@ -1272,7 +1299,7 @@
 				return diff;
 			});
 
-			_.each(['suite', 'suite end', 'pending', 'test', 'pass', 'pending', 'test end', 'end'], function (name) {
+			_.each(['suite', 'suite end', 'pending', 'test', 'test end', 'pass', 'end'], function (name) {
 				pipe(name, _.bind(self.diff, self));
 			});
 		};
@@ -1357,13 +1384,13 @@
 		add('begin', function () {
 			var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
 
-			socket.emit('start', {
+			Testee.start({
 				environment: navigator.userAgent,
 				runner: 'QUnit',
 				time: time()
 			});
 
-			socket.emit('suite', {
+			Testee.suite({
 				title: titleEl ? titleEl.innerHTML : '',
 				root: true,
 				id: currentId
@@ -1373,7 +1400,7 @@
 		});
 
 		add('moduleStart', function (data) {
-			socket.emit('suite', {
+			Testee.suite({
 				title: data.name,
 				parent: suiteId(),
 				id: (++currentId)
@@ -1382,7 +1409,7 @@
 		});
 
 		add('moduleDone', function (data) {
-			socket.emit('suite end', {
+			Testee.suiteEnd({
 				failed: data.failed,
 				total: data.total,
 				id: suiteId()
@@ -1391,7 +1418,7 @@
 		});
 
 		add('testStart', function (data) {
-			socket.emit('suite', {
+			Testee.suite({
 				title: data.name,
 				parent: suiteId(),
 				id: (++currentId)
@@ -1400,7 +1427,7 @@
 		});
 
 		add('testDone', function (data) {
-			socket.emit('suite end', {
+			Testee.suiteEnd({
 				id: suiteId()
 			});
 			suites.pop();
@@ -1409,18 +1436,18 @@
 		add('log', function (data) {
 			var testId = (++currentId);
 
-			socket.emit('test', {
+			Testee.test({
 				id: testId,
 				title: data.message || 'okay',
 				parent: suiteId()
 			});
 
 			if (data.result) {
-				socket.emit('pass', {
+				Testee.pass({
 					id: testId
 				});
 			} else {
-				socket.emit('fail', {
+				Testee.fail({
 					id: testId,
 					err: {
 						message: data.message,
@@ -1429,14 +1456,13 @@
 				});
 			}
 
-			socket.emit('test end', {
+			Testee.testEnd({
 				id: testId
 			});
 		});
 
 		add('done', function (data) {
-			socket.emit('end', data);
-			Testee.done();
+			Testee.end(data);
 		});
 
 		return QUnit;
@@ -1445,7 +1471,7 @@
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _, socket) {
+	Testee.addAdapter(function (win, _) {
 		if (!win.jasmine) {
 			return;
 		}
@@ -1457,22 +1483,21 @@
 			},
 
 			reportRunnerStarting: function (runner) {
-				socket.emit('start', {
+				Testee.start({
 					environment: navigator.userAgent,
 					runner: 'Jasmine'
 				});
 			},
 
 			reportRunnerResults: function (runner) {
-				socket.emit('end', {});
-				Testee.done();
+				Testee.end({});
 			},
 
 			reportSpecResults: function (spec) {
 				if (spec.results_.failedCount) {
 					var message = spec.results_.items_[0].message;
 					var stack = spec.results_.items_[0].trace.stack;
-					socket.emit('fail', {
+					Testee.fail({
 						id: spec.id,
 						err: {
 							message: message,
@@ -1480,13 +1505,13 @@
 						}
 					});
 				} else if (spec.results_.passedCount) {
-					socket.emit('pass', {
+					Testee.pass({
 						duration: 0,
 						id: spec.id
 					});
 				}
 
-				socket.emit('test end', {
+				Testee.testEnd({
 					id: spec.id
 				});
 			},
@@ -1499,13 +1524,13 @@
 				}
 
 				if (suite.parentSuite !== null) {
-					socket.emit('suite', {
+					Testee.suite({
 						title: suite.description,
 						parent: suite.parentSuite.id,
 						id: suite.id
 					});
 				} else {
-					socket.emit('suite', {
+					Testee.suite({
 						title: suite.description,
 						root: true,
 						id: suite.id
@@ -1520,15 +1545,15 @@
 					this.startSuite(spec.suite);
 				}
 
-				socket.emit('test', {
+				Testee.test({
 					title: spec.description,
 					parent: spec.suite.id,
 					id: spec.id
-				})
+				});
 			},
 
 			reportSuiteResults: function (suite) {
-				socket.emit('suite end', {
+				Testee.suiteEnd({
 					id: suite.id
 				});
 			}
