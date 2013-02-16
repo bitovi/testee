@@ -49,8 +49,9 @@
     "miner" : ">= 0.1.0",
     "launchpad" : ">= 0.1.0",
     "ua-parser" : ">= 0.2.4",
-    "connect-injector": ">= 0.1.0",
+    "connect-injector": ">= 0.2.0",
     "http-proxy": ">= 0.8.7",
-    "istanbul": ">= 0.1.30"
+    "istanbul": ">= 0.1.30",
+    "minimatch": ">= 0.2.9"
   }
 }

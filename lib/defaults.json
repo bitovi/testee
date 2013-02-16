@@ -2,7 +2,6 @@
   "launch": "local",
   "tunnel": "local",
   "browser": "phantom",
-  "root": ".",
   "reporter": "Spec",
   "port": 3996,
   "verbose": true,

@@ -2,11 +2,30 @@
 "use strict";
 
 var expect = require('expect.js');
-var Converter = require('../lib/converter');
-var EventEmitter = require('events').EventEmitter;
+var fs = require('fs');
 var utils = require('../lib/utils');
 
 describe("Utilities", function() {
+	it("getRoot", function() {
+		var root = utils.getRoot('http://localhost:3996/test/qunit.html');
+		expect(root.hostname).to.be('localhost')
+		expect(root.port).to.be('3996');
+		expect(root.path).to.be('/test/qunit.html');
+
+		root = utils.getRoot('client/examples/test.html');
+		expect(root.path).to.be(fs.realpathSync(__dirname + '/../'));
+
+		root = utils.getRoot('test.html', 'test');
+		expect(root.path).to.be(__dirname);
+
+		root = utils.getRoot('test.html', '.');
+		expect(root.path).to.be(fs.realpathSync(__dirname + '/../'));
+
+		root = utils.getRoot('test.html', 'http://test.com:8998')
+		expect(root.hostname).to.be('test.com')
+		expect(root.port).to.be('8998');
+	});
+
 	it("generateToken", function() {
 		for(var i = 0; i < 25; i++) {
 			expect(utils.generateToken().length).to.be(6);
@@ -25,12 +44,6 @@ describe("Utilities", function() {
 
 		url = utils.getUrl('https://localhost', 'test/qunit.html', { token : 'testing' });
 		expect(url).to.be('https://localhost/test/qunit.html?token=testing');
-	});
-
-	it("validateFilename", function() {
-		var root = process.cwd();
-		expect(utils.validateFilename(root, 'examples/qunit/qunit.html')).to.be(true);
-		expect(utils.validateFilename(root, 'examples/../../qunit/qunit.html')).to.be(false);
 	});
 
 	it("parseBrowser", function() {
