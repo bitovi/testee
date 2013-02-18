@@ -1,7 +1,7 @@
 !function (Testee, undefined) {
 	'use strict';
 
-	Testee.addAdapter(function (win, _, socket) {
+	Testee.addAdapter(function (win, _) {
 		if (!(win.mocha && win.Mocha)) {
 			return;
 		}
