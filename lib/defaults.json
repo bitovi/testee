@@ -6,6 +6,6 @@
   "port": 3996,
   "verbose": true,
   "log": "./testee.log",
-  "timeout": 120,
+  "timeout": 60,
   "coverage": false
 }
