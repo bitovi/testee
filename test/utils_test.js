@@ -1,12 +1,12 @@
 /*global describe, it*/
-"use strict";
+'use strict';
 
 var expect = require('expect.js');
 var fs = require('fs');
 var utils = require('../lib/utils');
 
-describe("Utilities", function() {
-	it("getRoot", function() {
+describe('Utilities', function() {
+	it('getRoot', function() {
 		var root = utils.getRoot('http://localhost:3996/test/qunit.html');
 		expect(root.hostname).to.be('localhost')
 		expect(root.port).to.be('3996');
@@ -26,13 +26,13 @@ describe("Utilities", function() {
 		expect(root.port).to.be('8998');
 	});
 
-	it("generateToken", function() {
+	it('generateToken', function() {
 		for(var i = 0; i < 25; i++) {
 			expect(utils.generateToken().length).to.be(6);
 		}
 	});
 
-	it("getUrl", function() {
+	it('getUrl', function() {
 		var url = utils.getUrl('http://localhost', 'qunit.html');
 		expect(url).to.be('http://localhost/qunit.html');
 
@@ -46,7 +46,7 @@ describe("Utilities", function() {
 		expect(url).to.be('https://localhost/test/qunit.html?token=testing');
 	});
 
-	it("parseBrowser", function() {
+	it('parseBrowser', function() {
 		var browser = utils.parseBrowser('ie');
 		expect(browser).to.eql({
 			browser : 'ie'

@@ -14,18 +14,14 @@
 				expect(data.environment).to.equal(navigator.userAgent);
 			});
 
-			socket.on('suite', function (data) {
-				switch (data.id) {
-					case 0:
-						expect(data.title).to.equal('QUnit example');
-						break;
-					case 1:
+			socket.once('suite', function (data) {
+				expect(data.title).to.equal('QUnit example');
+				socket.once('suite', function (data) {
 						expect(data.title).to.equal('Test module');
-						break;
-					case 2:
+					socket.once('suite', function (data) {
 						expect(data.title).to.equal('It does something');
-						break;
-				}
+					});
+				});
 			});
 
 			socket.on('test', function() {

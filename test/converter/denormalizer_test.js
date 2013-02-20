@@ -1,11 +1,11 @@
 /*global describe, it*/
-"use strict";
+'use strict';
 
 var expect = require('expect.js');
 var Denormalizer = require('../../lib/converter/denormalizer');
 
-describe("Denormalizer", function() {
-	it("converts data, adds fullTitle", function() {
+describe('Denormalizer', function() {
+	it('converts data, adds fullTitle', function() {
 		var d = new Denormalizer();
 		var result = d.convert({
 			id : 0,
@@ -17,7 +17,7 @@ describe("Denormalizer", function() {
 		expect(result[0].fullTitle()).to.be('The title');
 	});
 
-	it("converts data, adds prefix, sets defaults", function() {
+	it('converts data, adds prefix, sets defaults', function() {
 		var d = new Denormalizer();
 		var result = d.convert({
 			id : 0
@@ -30,7 +30,7 @@ describe("Denormalizer", function() {
 		expect(result[0].title).to.be('The default title');
 	});
 
-	it("converts data, adds prefix, sets parent, returns fullTitle", function() {
+	it('converts data, adds prefix, sets parent, returns fullTitle', function() {
 		var d = new Denormalizer(' || ');
 		var result = d.convert({
 			id : 0
@@ -51,7 +51,7 @@ describe("Denormalizer", function() {
 		expect(result.fullTitle()).to.be('The default title || Default title 2');
 	});
 
-	it("converts errors", function() {
+	it('converts errors', function() {
 		var d = new Denormalizer(' || ');
 		var result = d.convert({
 			id : 0,

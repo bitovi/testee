@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 		var done = this.async();
 		testee.test(files, configuration, function (error, stats) {
 			if(error) {
-				return grunt.warn(err);
+				return grunt.warn(error);
 			}
 			if(stats.failed) {
 				return grunt.warn(stats.failed + ' test(s) failed');
