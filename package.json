@@ -1,7 +1,7 @@
 {
   "name" : "testee",
-  "description" : "Cross-browser JavaScript testrunner.",
-  "version" : "0.1.0",
+  "description" : "Automated cross-browser testing made easy.",
+  "version" : "0.0.1",
   "homepage" : "http://github.com/daffl/testee.js",
   "author" : {
     "name" : "David Luecke",
@@ -14,10 +14,6 @@
   },
   "engines" : {
     "node" : "~0.8"
-  },
-  "repository" : {
-    "type" : "git",
-    "url" : "git@github.com:daffl/can-compile.git"
   },
   "bin" : {
     "testee" : "./bin/testee"
