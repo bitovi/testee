@@ -29,8 +29,15 @@ module.exports = function(grunt) {
 			globals: {
 				exports: true
 			}
+		},
+		testee: {
+			headless: {
+				src: 'examples/qunit/qunit.html'
+			}
 		}
 	});
+
+	grunt.loadTasks('./tasks');
 
 	// Default task.
 	grunt.registerTask('default', 'lint');

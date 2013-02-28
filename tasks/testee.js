@@ -2,8 +2,8 @@ var testee = require('../lib/testee');
 
 module.exports = function(grunt) {
 	grunt.registerMultiTask('testee', 'Run tests', function() {
-		var configuration = grunt.config(['testee', this.target]);
-		var files = grunt.file.expand(this.file.src);
+		var configuration = this.data;
+		var files = this.files[0].src;
 		var done = this.async();
 		testee.test(files, configuration, function (error, stats) {
 			if(error) {

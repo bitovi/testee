@@ -32,7 +32,8 @@
     }
   ],
   "devDependencies" : {
-    "expect.js" : ">= 0.1.2"
+    "expect.js" : ">= 0.1.2",
+    "grunt": "~ 0.4.0"
   },
   "dependencies" : {
     "commander" : "> 1.0.0",
