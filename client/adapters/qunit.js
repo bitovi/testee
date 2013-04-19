@@ -84,6 +84,7 @@
 
 		add('log', function (data) {
 			var testId = (++currentId);
+			var errorMessage = '';
 
 			Testee.test({
 				id: testId,
@@ -96,11 +97,14 @@
 					id: testId
 				});
 			} else {
+				errorMessage = data.expected ? 'Expected ' + data.expected + ' but was ' + data.actual:
+					'Expected assertion to be truthy but it was not';
+
 				Testee.fail({
 					id: testId,
 					err: {
 						message: data.message,
-						stack: 'Expected ' + data.expected + ' but was ' + data.actual + '\n    ' + (data.source || '')
+						stack: errorMessage + '\n    ' + (data.source || '')
 					}
 				});
 			}

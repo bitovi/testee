@@ -11,6 +11,11 @@
 				adapter.call(this, this.win, this._);
 			}, this);
 		},
+		log: function() {
+			if(this.debug) {
+				console.log.apply(console, arguments);
+			}
+		},
 		addAdapter: function(fn) {
 			this.adapters.push(fn);
 		},

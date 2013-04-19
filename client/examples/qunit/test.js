@@ -25,5 +25,5 @@ test('Generates HTML', function() {
 });
 
 test('Fails epicly', function() {
-	equal(true, false, 'This assertion totally failed');
+	ok(false, 'Everything is going to be allright');
 });

@@ -1,54 +1,57 @@
 {
-  "name" : "testee",
-  "description" : "Automated cross-browser testing made easy.",
-  "version" : "0.0.2",
-  "homepage" : "http://github.com/daffl/testee.js",
-  "author" : {
-    "name" : "David Luecke",
-    "email" : "daff@neyeon.com",
-    "web" : "http://daffl.github.com"
+  "name": "testee",
+  "description": "Automated cross-browser testing made easy.",
+  "version": "0.0.2",
+  "homepage": "http://github.com/daffl/testee.js",
+  "author": {
+    "name": "David Luecke",
+    "email": "daff@neyeon.com",
+    "web": "http://daffl.github.com"
   },
-  "main" : "lib/testee.js",
-  "scripts" : {
-    "test" : "mocha test"
+  "main": "lib/testee.js",
+  "scripts": {
+    "test": "mocha test"
   },
-  "engines" : {
-    "node" : "~0.8"
+  "engines": {
+    "node": "~0.8"
   },
-  "bin" : {
-    "testee" : "./bin/testee"
+  "bin": {
+    "testee": "./bin/testee"
   },
-  "keywords" : [
+  "keywords": [
     "gruntplugin",
     "browserstack",
     "testing",
     "unit-test",
     "phantomjs"
   ],
-  "licenses" : [
+  "licenses": [
     {
-      "name" : "MIT",
-      "url" : "http://www.opensource.org/licenses/mit-license.php"
+      "name": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
     }
   ],
-  "devDependencies" : {
-    "expect.js" : ">= 0.1.2",
-    "grunt": "~ 0.4.0"
+  "devDependencies": {
+    "expect.js": ">= 0.1.2",
+    "grunt": "~ 0.4.0",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-concat": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.0"
   },
-  "dependencies" : {
-    "commander" : "> 1.0.0",
-    "winston" : "> 0.6.0",
-    "mocha" : "1.4.2",
-    "socket.io" : ">= 0.9.6",
-    "connect" : "> 1.9.0",
-    "underscore" : "*",
-    "async" : ">= 0.1.20",
-    "miner" : ">= 0.1.0",
-    "launchpad" : ">= 0.1.0",
-    "ua-parser" : ">= 0.2.4",
-    "connect-injector": ">= 0.2.0",
-    "http-proxy": ">= 0.8.7",
-    "istanbul": ">= 0.1.30",
-    "minimatch": ">= 0.2.9"
+  "dependencies": {
+    "commander": "~1.0.0",
+    "winston": "~0.6.0",
+    "mocha": "1.4.2",
+    "socket.io": "~0.9.6",
+    "connect": "~1.9.0",
+    "underscore": "*",
+    "async": "~0.2.7",
+    "miner": "~0.1.0",
+    "launchpad": "git+ssh://git@github.com:ekryski/launchpad.git",
+    "ua-parser": "~0.2.4",
+    "http-proxy": "~0.8.7",
+    "istanbul": "~0.1.30",
+    "minimatch": "~0.2.9",
+    "stream-buffers": "~0.2.4"
   }
 }

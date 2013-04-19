@@ -1,0 +1,13 @@
+{
+  "browser": {
+    "version": "4.0",
+    "device": "Samsung Galaxy Nexus",
+    "os": "android"
+  },
+  "launch": {
+    "type": "browserstack",
+    "username": "browserstackuser",
+    "password": "supersecret"
+  },
+  "reporter": "Dot"
+}

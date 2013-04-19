@@ -30,7 +30,7 @@ program.version(pkg.version)
 	.parse(process.argv);
 
 if(program.config) {
-	config = require(program.config);
+	config = JSON.parse(fs.readFileSync(program.config));
 }
 
 config = _.extend(config, _.pick(program, 'browser', 'launch', 'tunnel',
