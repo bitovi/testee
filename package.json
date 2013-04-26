@@ -1,7 +1,7 @@
 {
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "http://github.com/daffl/testee.js",
   "author": {
     "name": "David Luecke",
@@ -47,7 +47,7 @@
     "underscore": "*",
     "async": "~0.2.7",
     "miner": "~0.1.0",
-    "launchpad": "git+ssh://git@github.com:ekryski/launchpad.git",
+    "launchpad": "https://github.com/ekryski/launchpad/tarball/master",
     "ua-parser": "~0.2.4",
     "http-proxy": "~0.8.7",
     "istanbul": "~0.1.30",
