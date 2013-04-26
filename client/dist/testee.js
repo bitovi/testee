@@ -1,5 +1,5 @@
 /*!
- * testee - v0.0.2 - 2013-04-18
+ * testee - v0.0.2 - 2013-04-19
  * http://github.com/daffl/testee.js
  * Copyright (c) 2013 David Luecke
  * Licensed MIT
@@ -1240,9 +1240,15 @@
 		adapters: [],
 		socket: io.connect(),
 		init: function() {
+			var oldEmit = this.socket.emit;
+			var self = this;
 			this._.each(this.adapters, function(adapter) {
 				adapter.call(this, this.win, this._);
 			}, this);
+			this.socket.emit = function() {
+				self.log.apply(Testee, arguments);
+				return oldEmit.apply(this, arguments);
+			}
 		},
 		log: function() {
 			if(this.debug) {
@@ -1506,6 +1512,10 @@
 !function (Testee, undefined) {
 	'use strict';
 
+	var suiteId = function(id) {
+		return 'suite/' + id;
+	}
+	
 	Testee.addAdapter(function (win, _) {
 		if (!win.jasmine) {
 			return;
@@ -1561,14 +1571,14 @@
 				if (suite.parentSuite !== null) {
 					Testee.suite({
 						title: suite.description,
-						parent: suite.parentSuite.id,
-						id: suite.id
+						parent: suiteId(suite.parentSuite.id),
+						id: suiteId(suite.id)
 					});
 				} else {
 					Testee.suite({
 						title: suite.description,
 						root: true,
-						id: suite.id
+						id: suiteId(suite.id)
 					});
 				}
 
@@ -1582,14 +1592,14 @@
 
 				Testee.test({
 					title: spec.description,
-					parent: spec.suite.id,
+					parent: suiteId(spec.suite.id),
 					id: spec.id
 				});
 			},
 
 			reportSuiteResults: function (suite) {
 				Testee.suiteEnd({
-					id: suite.id
+					id: suiteId(suite.id)
 				});
 			}
 		});

@@ -7,9 +7,15 @@
 		adapters: [],
 		socket: io.connect(),
 		init: function() {
+			var oldEmit = this.socket.emit;
+			var self = this;
 			this._.each(this.adapters, function(adapter) {
 				adapter.call(this, this.win, this._);
 			}, this);
+			this.socket.emit = function() {
+				self.log.apply(Testee, arguments);
+				return oldEmit.apply(this, arguments);
+			}
 		},
 		log: function() {
 			if(this.debug) {

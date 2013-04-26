@@ -1,6 +1,10 @@
 !function (Testee, undefined) {
 	'use strict';
 
+	var suiteId = function(id) {
+		return 'suite/' + id;
+	}
+	
 	Testee.addAdapter(function (win, _) {
 		if (!win.jasmine) {
 			return;
@@ -56,14 +60,14 @@
 				if (suite.parentSuite !== null) {
 					Testee.suite({
 						title: suite.description,
-						parent: suite.parentSuite.id,
-						id: suite.id
+						parent: suiteId(suite.parentSuite.id),
+						id: suiteId(suite.id)
 					});
 				} else {
 					Testee.suite({
 						title: suite.description,
 						root: true,
-						id: suite.id
+						id: suiteId(suite.id)
 					});
 				}
 
@@ -77,14 +81,14 @@
 
 				Testee.test({
 					title: spec.description,
-					parent: spec.suite.id,
+					parent: suiteId(spec.suite.id),
 					id: spec.id
 				});
 			},
 
 			reportSuiteResults: function (suite) {
 				Testee.suiteEnd({
-					id: suite.id
+					id: suiteId(suite.id)
 				});
 			}
 		});
