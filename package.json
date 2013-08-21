@@ -52,6 +52,7 @@
     "http-proxy": "~0.8.7",
     "istanbul": "~0.1.30",
     "minimatch": "~0.2.9",
-    "stream-buffers": "~0.2.4"
+    "stream-buffers": "~0.2.4",
+    "connect-injector": "~0.2.2"
   }
 }
