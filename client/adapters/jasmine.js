@@ -87,6 +87,10 @@
 			},
 
 			reportSuiteResults: function (suite) {
+				if (!suite.started) {
+					this.startSuite(suite);
+				}
+
 				Testee.suiteEnd({
 					id: suiteId(suite.id)
 				});
