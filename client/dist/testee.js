@@ -1598,13 +1598,11 @@
 			},
 
 			reportSuiteResults: function (suite) {
-				if (!suite.started) {
-					this.startSuite(suite);
+				if (suite.started) {
+					Testee.suiteEnd({
+						id: suiteId(suite.id)
+					});
 				}
-
-				Testee.suiteEnd({
-					id: suiteId(suite.id)
-				});
 			}
 		});
 
