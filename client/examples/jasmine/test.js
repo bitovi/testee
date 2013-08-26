@@ -11,12 +11,24 @@ describe('Blog post test', function () {
     });
 
     describe('Second nested describe', function () {
-        it("should add numbers correctly", function () {
+        xit("should add numbers correctly", function () {
             expect(2 + 2).toEqual(4);
         });
 
         describe('We need to go deeper', function () {
-            it("should've been a better movie", function () {
+            xit("should've been a better movie", function () {
+                expect('Leo').toEqual('a good actor');
+            });
+        });
+    });
+
+    describe('Second nested describe with xits', function () {
+        xit("should add numbers correctly", function () {
+            expect(2 + 2).toEqual(4);
+        });
+
+        describe('We need to go deeper', function () {
+            xit("should've been a better movie", function () {
                 expect('Leo').toEqual('a good actor');
             });
         });

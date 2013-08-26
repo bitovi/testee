@@ -1,5 +1,5 @@
 /*!
- * testee - v0.0.2 - 2013-04-19
+ * testee - v0.0.4 - 2013-08-23
  * http://github.com/daffl/testee.js
  * Copyright (c) 2013 David Luecke
  * Licensed MIT
@@ -1598,9 +1598,11 @@
 			},
 
 			reportSuiteResults: function (suite) {
-				Testee.suiteEnd({
-					id: suiteId(suite.id)
-				});
+				if (suite.started) {
+					Testee.suiteEnd({
+						id: suiteId(suite.id)
+					});
+				}
 			}
 		});
 

@@ -87,9 +87,11 @@
 			},
 
 			reportSuiteResults: function (suite) {
-				Testee.suiteEnd({
-					id: suiteId(suite.id)
-				});
+				if (suite.started) {
+					Testee.suiteEnd({
+						id: suiteId(suite.id)
+					});
+				}
 			}
 		});
 
