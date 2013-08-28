@@ -5,13 +5,16 @@ module.exports = function(grunt) {
 		var configuration = this.data;
 		var files = this.files[0].src;
 		var done = this.async();
+
 		testee.test(files, configuration, function (error, stats) {
 			if(error) {
-				return grunt.warn(error);
+				grunt.fail.fatal(error);
 			}
+
 			if(stats.failed) {
-				return grunt.warn(stats.failed + ' test(s) failed');
+				grunt.fail.warn(stats.failed + ' test(s) failed');
 			}
+
 			done();
 		});
 	});
