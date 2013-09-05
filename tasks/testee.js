@@ -1,21 +1,28 @@
 var testee = require('../lib/testee');
+var async = require('async');
+var extend = require('util')._extend;
+var _ = require('underscore');
 
 module.exports = function(grunt) {
 	grunt.registerMultiTask('testee', 'Run tests', function() {
-		var configuration = this.data;
-		var files = this.files[0].src;
 		var done = this.async();
 
-		testee.test(files, configuration, function (error, stats) {
-			if(error) {
-				grunt.fail.fatal(error);
-			}
-
-			if(stats.failed) {
-				grunt.fail.warn(stats.failed + ' test(s) failed');
-			}
-
-			done();
+		var opts = this.options({
+			urls: [],
+			browsers: []
 		});
+
+		var workers = _.map(opts.browsers, function(browser) {
+			var testeeOptions = _.extend({
+				browser: browser
+			}, _.omit(opts, 'browsers', 'urls'));
+
+			return function(callback) {
+				grunt.log.writeln('Running testee on ' + browser, testeeOptions);
+				testee.test(opts.urls[0], testeeOptions, callback);
+			}
+		});
+
+		async.series(workers, done);
 	});
 }

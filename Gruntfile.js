@@ -64,12 +64,42 @@ module.exports = function (grunt) {
 					'<%= meta.dist %>/<%= pkg.name %>.min.js': '<%= meta.dist %>/<%= pkg.name %>.js'
 				}
 			}
+		},
+		testee: {
+			local: {
+				options: {
+					urls: ['http://pivotal.github.io/jasmine/'],
+					browsers: ['safari']
+				}
+			},
+
+			win7: {
+				options: {
+					port: 4040,
+					urls: ['http://pivotal.github.io/jasmine/'],
+					browsers: ['ie'],
+					tunnel: {
+						"type": "local",
+						"hostname": "192.168.2.100"
+					},
+					"launch": {
+						"type": "remote",
+						"host": "192.168.179.129",
+						port: 8080,
+						"username": "launcher",
+						"password": "testing"
+					}
+				}
+			}
 		}
+
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+
+	grunt.loadTasks('tasks');
 
 	grunt.registerTask('adapters', [ 'concat', 'uglify' ]);
 	// Default task.

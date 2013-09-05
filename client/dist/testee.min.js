@@ -1,5 +1,5 @@
 /*!
- * testee - v0.0.4 - 2013-08-23
+ * testee - v0.0.4 - 2013-09-05
  * http://github.com/daffl/testee.js
  * Copyright (c) 2013 David Luecke
  * Licensed MIT

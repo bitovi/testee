@@ -53,6 +53,7 @@
     "istanbul": "~0.1.30",
     "minimatch": "~0.2.9",
     "stream-buffers": "~0.2.4",
-    "connect-injector": "~0.2.2"
+    "connect-injector": "~0.2.2",
+    "promised-io": "~0.3.3"
   }
 }
