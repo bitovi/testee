@@ -36,7 +36,8 @@
     "grunt": "~ 0.4.0",
     "grunt-contrib-jshint": "~0.4.3",
     "grunt-contrib-concat": "~0.2.0",
-    "grunt-contrib-uglify": "~0.2.0"
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-release": "~0.5.1"
   },
   "dependencies": {
     "commander": "~1.0.0",
@@ -47,7 +48,7 @@
     "underscore": "*",
     "async": "~0.2.7",
     "miner": "~0.1.0",
-    "launchpad": "https://github.com/ekryski/launchpad/tarball/master",
+    "launchpad": "~0.2.0",
     "ua-parser": "~0.2.4",
     "http-proxy": "~0.8.7",
     "istanbul": "~0.1.30",
