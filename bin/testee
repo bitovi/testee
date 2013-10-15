@@ -26,6 +26,7 @@ program.version(pkg.version)
 	.option('-l, --log [file]', 'If in verbose mode, the name of the logfile to write to')
 	.option('-c, --config [file]', 'Use this JSON configuration file')
 	.option('-C, --coverage', 'Calculate coverage statistics')
+	.option('-d, --debug', 'Testee debug mode')
 	.option('--timeout [seconds]', 'The per test timeout (in seconds)')
 	.parse(process.argv);
 
@@ -34,7 +35,7 @@ if(program.config) {
 }
 
 config = _.extend(config, _.pick(program, 'browser', 'launch', 'tunnel',
-	'port', 'verbose', 'log', 'timeout', 'reporter', 'coverage', 'root'));
+	'port', 'verbose', 'log', 'timeout', 'reporter', 'coverage', 'root', 'debug'));
 
 if (program.launch === 'browserstack') {
 	program.prompt('Enter your Browserstack username: ', function (username) {
