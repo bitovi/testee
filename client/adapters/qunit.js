@@ -30,7 +30,7 @@
 		// var oldstart = win.start;
 		// var oldstop = win.stop;
 
-		add('begin', function () {
+		QUnit.begin(function () {
 			var titleEl = document.getElementsByTagName('title')[0] || document.getElementsByTagName('h1')[0];
 
 			Testee.start({
@@ -48,7 +48,7 @@
 			suites.push(currentId);
 		});
 
-		add('moduleStart', function (data) {
+		QUnit.moduleStart(function (data) {
 			Testee.suite({
 				title: data.name,
 				parent: suiteId(),
@@ -57,7 +57,7 @@
 			suites.push(currentId);
 		});
 
-		add('moduleDone', function (data) {
+		QUnit.moduleDone(function (data) {
 			Testee.suiteEnd({
 				failed: data.failed,
 				total: data.total,
@@ -66,7 +66,7 @@
 			suites.pop();
 		});
 
-		add('testStart', function (data) {
+		QUnit.testStart(function (data) {
 			Testee.suite({
 				title: data.name,
 				parent: suiteId(),
@@ -75,14 +75,14 @@
 			suites.push(currentId);
 		});
 
-		add('testDone', function (data) {
+		QUnit.testDone(function (data) {
 			Testee.suiteEnd({
 				id: suiteId()
 			});
 			suites.pop();
 		});
 
-		add('log', function (data) {
+		QUnit.log(function (data) {
 			var testId = (++currentId);
 			var errorMessage = '';
 
@@ -114,7 +114,7 @@
 			});
 		});
 
-		add('done', function (data) {
+		QUnit.done(function (data) {
 			Testee.end(data);
 		});
 
