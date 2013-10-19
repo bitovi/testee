@@ -1600,7 +1600,7 @@
 		jasmine.getEnv().addReporter(new TesteeReporter());
 	});
 }(Testee);
-(function(window) {
+!function(Testee) {
 	"use strict";
 
 	// Define a local copy of $
@@ -1704,12 +1704,6 @@
 	// Is the DOM ready to be used? Set to true once it occurs.
 	$.isReady = false;
 
-	// Expose $ to the global object
-	window.$ = $;
-
-})(window);
-
-!function(Testee) {
 	$(function() {
 		if(window.steal) {
 			steal.one('end', function() {
@@ -1720,6 +1714,4 @@
 		}
 	});
 
-	// TODO something for RequireJS
-	// see: https://github.com/jrburke/requirejs/wiki/Internal-API:-onResourceLoad
 }(Testee);
