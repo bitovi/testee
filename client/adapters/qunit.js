@@ -16,15 +16,6 @@
 		var suiteId = function () {
 			return suites[suites.length - 1];
 		}
-		// Overwrite a QUnit hook, but keep the old ones
-		var add = function (type, fn) {
-			var old = QUnit[type] || function () {
-			};
-			QUnit[type] = function () {
-				fn.apply(this, arguments);
-				return old.apply(QUnit, arguments);
-			}
-		};
 
 		// TODO async tests
 		// var oldstart = win.start;
