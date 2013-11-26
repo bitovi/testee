@@ -39,8 +39,9 @@
 						}
 					});
 				} else if (spec.results_.passedCount) {
+					var duration = (new Date() - spec.startTime) || 0;
 					Testee.pass({
-						duration: 0,
+						duration: duration,
 						id: spec.id
 					});
 				}
@@ -78,7 +79,10 @@
 				if (!spec.suite.started) {
 					this.startSuite(spec.suite);
 				}
-
+	            spec.startTime = new Date();
+	            if (!spec.suite.startTime) {
+	                spec.suite.startTime = spec.startTime;
+	            }
 				Testee.test({
 					title: spec.description,
 					parent: suiteId(spec.suite.id),
