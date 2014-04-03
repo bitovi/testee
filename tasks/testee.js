@@ -23,6 +23,14 @@ module.exports = function(grunt) {
 			}
 		});
 
-		async.series(workers, done);
+        var failOrPass = function (err, results) {
+            var resultsPerBrowser = _.map(results, function (result) { return result[0]; });
+            var failuresPerBrowser = _.pluck(resultsPerBrowser, 'failed');
+            var failureCount = _.reduce(failuresPerBrowser, function (total, failed) { return total + failed; }, 0);
+            done(failureCount === 0);
+        };
+
+        async.series(workers, failOrPass);
+
 	});
 }
