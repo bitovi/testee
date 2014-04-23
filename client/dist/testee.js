@@ -1,7 +1,7 @@
 /*!
- * testee - v0.0.8 - 2013-10-20
+ * testee - v0.0.9 - 2014-04-23
  * http://github.com/daffl/testee.js
- * Copyright (c) 2013 David Luecke
+ * Copyright (c) 2014 David Luecke
  * Licensed MIT
  */
 //     Underscore.js 1.4.4
@@ -1709,13 +1709,7 @@
 	$.isReady = false;
 
 	$(function() {
-		if(window.steal) {
-			steal.one('end', function() {
-				Testee.init();
-			});
-		} else {
-			Testee.init();
-		}
+    Testee.init();
 	});
 
 }(Testee);

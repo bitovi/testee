@@ -118,13 +118,7 @@
 	$.isReady = false;
 
 	$(function() {
-		if(window.steal) {
-			steal.one('end', function() {
-				Testee.init();
-			});
-		} else {
-			Testee.init();
-		}
+    Testee.init();
 	});
 
 }(Testee);
