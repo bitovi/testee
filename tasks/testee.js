@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 		});
 
         var failOrPass = function (err, results) {
-          if(result) {
+          if(results) {
             var resultsPerBrowser = _.map(results, function (result) { return result[0]; });
             var failuresPerBrowser = _.pluck(resultsPerBrowser, 'failed');
             var failureCount = _.reduce(failuresPerBrowser, function (total, failed) { return total + failed; }, 0);
@@ -32,6 +32,7 @@ module.exports = function(grunt) {
           } else {
             console.error(err);
             console.error(err.stack);
+            done(err);
           }
         };
 
