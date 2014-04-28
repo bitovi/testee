@@ -18,16 +18,21 @@ module.exports = function(grunt) {
 			}, _.omit(opts, 'browsers', 'urls'));
 
 			return function(callback) {
-				grunt.log.writeln('Running testee on ' + browser, testeeOptions);
+				grunt.log.writeln('Running testee on ', browser);
 				testee.test(opts.urls[0], testeeOptions, callback);
 			}
 		});
 
         var failOrPass = function (err, results) {
+          if(result) {
             var resultsPerBrowser = _.map(results, function (result) { return result[0]; });
             var failuresPerBrowser = _.pluck(resultsPerBrowser, 'failed');
             var failureCount = _.reduce(failuresPerBrowser, function (total, failed) { return total + failed; }, 0);
             done(failureCount === 0);
+          } else {
+            console.error(err);
+            console.error(err.stack);
+          }
         };
 
         async.series(workers, failOrPass);
