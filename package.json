@@ -48,7 +48,7 @@
     "connect": "~1.9.0",
     "underscore": "*",
     "async": "~0.2.7",
-    "miner": "~0.1.0",
+    "miner": "~0.2.0",
     "launchpad": "~0.2.0",
     "ua-parser": "~0.2.4",
     "http-proxy": "~0.10.3",
