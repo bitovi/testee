@@ -21,7 +21,7 @@
 		return "<h1>" + this.title + "</h1>" +
 			"<h6>Published on " + this.date.toString() + "</h6>" +
 			"<p>" + this.content + "</p>";
-	}
+  }
 
-	namespace.BlogPost = BlogPost;
+  namespace.BlogPost = BlogPost;
 })(this);

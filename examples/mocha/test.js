@@ -19,8 +19,9 @@ describe('BlogPost test', function() {
 	});
 
 	it('Generates some neat HTML', function(done) {
-		var now = new Date(),
-			newpost = new BlogPost('Hello', 'Hello world');
+		var now = new Date();
+	  var newpost = new BlogPost('Hello', 'Hello world');
+
 		newpost.publish(function(post) {
 			assert(post.toString() == "<h1>Hello</h1>" +
 				"<h6>Published on " + now.toString() + "</h6>" +

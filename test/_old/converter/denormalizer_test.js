@@ -2,7 +2,7 @@
 'use strict';
 
 var expect = require('expect.js');
-var Denormalizer = require('../../lib/converter/denormalizer');
+var Denormalizer = require('../../lib/reporter/denormalizer');
 
 describe('Denormalizer', function() {
 	it('converts data, adds fullTitle', function() {

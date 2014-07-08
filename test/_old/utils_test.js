@@ -3,7 +3,7 @@
 
 var expect = require('expect.js');
 var fs = require('fs');
-var utils = require('../lib/utils');
+var utils = require('../../lib/utils');
 
 describe('Utilities', function() {
 	it('getRoot', function() {
