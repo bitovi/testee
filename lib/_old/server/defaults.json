@@ -1,7 +1,0 @@
-{
-  "token": "__token",
-  "exitEvent": "end",
-  "startEvent": "start",
-  "adapterPath": "__testee",
-  "adapters": "testee.js"
-}
