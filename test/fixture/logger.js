@@ -19,7 +19,7 @@ var runner = new Mocha({
   reporter: MyReporter
 });
 
-runner.addFile(__dirname + '/fixture/blogpost.test.js');
+runner.addFile(__dirname + '/blogpost.test.js');
 
 runner.run(function() {
   console.log(arguments);
