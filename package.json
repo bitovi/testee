@@ -1,7 +1,7 @@
 {
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
-  "version": "0.0.13",
+  "version": "0.8.0",
   "homepage": "http://github.com/bitovi/testee.js",
   "author": {
     "name": "David Luecke",
@@ -45,6 +45,7 @@
     "bower": "~1.2.7"
   },
   "dependencies": {
+    "commander": "^2.3.0",
     "connect-injector": "^0.4.0",
     "feathers": "1.0.0-pre.5",
     "feathers-hooks": "^0.3.1",
@@ -54,7 +55,6 @@
     "lodash": "^2.4.1",
     "miner": "^0.2.0",
     "mocha": "^1.20.1",
-    "q": "^1.0.1",
-    "useragent": "^2.0.9"
+    "q": "^1.0.1"
   }
 }
