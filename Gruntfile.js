@@ -68,8 +68,8 @@ module.exports = function (grunt) {
 		testee: {
 			local: {
 				options: {
-					urls: ['http://pivotal.github.io/jasmine/'],
-					browsers: ['safari']
+					urls: ['client/examples/qunit/index.html'],
+					browsers: ['ie']
 				}
 			},
 
