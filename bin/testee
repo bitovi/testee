@@ -8,19 +8,20 @@ var fs = require('fs');
 var config = {};
 
 program.version(pkg.version)
-	.usage('[options] <files ...>')
-	.description(pkg.description)
-	.option('-b, --browsers [names]', 'The browser you want to run')
-	.option('-R, --root [path]', 'The server root path the files are relative to')
-	.option('-r, --reporter [name]', 'The name of the reporter to use')
-	.option('--timeout [seconds]', 'The per test timeout (in seconds)')
+  .usage('[options] <files ...>')
+  .description(pkg.description)
+  .option('-b, --browsers [names]', 'The browser you want to run')
+  .option('-p, --port [port]', 'The server port')
+  .option('-R, --root [path]', 'The server root path the files are relative to')
+  .option('-r, --reporter [name]', 'The name of the reporter to use')
+  .option('--timeout [seconds]', 'The per test timeout (in seconds)')
   .option('-s, --server', 'Only start server')
-	.parse(process.argv);
+  .parse(process.argv);
 
 if(program.config) {
-	config = JSON.parse(fs.readFileSync(program.config));
+  config = JSON.parse(fs.readFileSync(program.config));
 }
 
-config = _.extend(config, _.pick(program, 'browsers', 'port', 'verbose', 'timeout', 'reporter', 'root', 'server'));
+config = _.extend(config, _.pick(program, 'browsers', 'port', 'verbose', 'timeout', 'reporter', 'root', 'server', 'port'));
 
 testee.test(program.args, (program.browsers || '').split(','), config);
