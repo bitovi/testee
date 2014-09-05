@@ -15,6 +15,7 @@ program.version(pkg.version)
   .option('-R, --root [path]', 'The server root path the files are relative to')
   .option('-r, --reporter [name]', 'The name of the reporter to use')
   .option('--timeout [seconds]', 'The per test timeout (in seconds)')
+  .option('--delay [seconds]', 'The delay (in ms) to wait before reopening the same browser again')
   .option('-s, --server', 'Only start server')
   .parse(process.argv);
 
@@ -24,4 +25,4 @@ if(program.config) {
 
 config = _.extend(config, _.pick(program, 'browsers', 'port', 'verbose', 'timeout', 'reporter', 'root', 'server', 'port'));
 
-testee.test(program.args, (program.browsers || '').split(','), config);
+testee.test(program.args, (program.browsers || 'phantom').split(','), config);
