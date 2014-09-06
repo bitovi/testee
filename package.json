@@ -1,12 +1,16 @@
 {
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
-  "version": "0.0.13",
-  "homepage": "http://github.com/daffl/testee.js",
+  "version": "0.8.0",
+  "homepage": "http://github.com/bitovi/testee.js",
   "author": {
     "name": "David Luecke",
     "email": "daff@neyeon.com",
     "web": "http://daffl.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:bitovi/testee.js.git"
   },
   "main": "lib/testee.js",
   "scripts": {
@@ -41,21 +45,17 @@
     "bower": "~1.2.7"
   },
   "dependencies": {
-    "commander": "~1.0.0",
-    "winston": "~0.6.0",
-    "mocha": "1.4.2",
-    "socket.io": "~0.9.6",
-    "connect": "~1.9.0",
-    "underscore": "*",
-    "async": "~0.2.7",
-    "miner": "~0.2.0",
-    "launchpad": "~0.2.0",
-    "ua-parser": "~0.2.4",
-    "http-proxy": "~0.10.3",
-    "istanbul": "~0.1.30",
-    "minimatch": "~0.2.9",
-    "stream-buffers": "~0.2.4",
-    "connect-injector": "~0.2.2",
-    "promised-io": "~0.3.3"
+    "commander": "^2.3.0",
+    "connect-injector": "^0.4.0",
+    "feathers": "1.0.0-pre.5",
+    "feathers-hooks": "^0.3.1",
+    "feathers-memory": "^0.3.3",
+    "http-proxy": "^1.1.4",
+    "launchpad": "^0.3.0",
+    "lodash": "^2.4.1",
+    "miner": "^0.2.0",
+    "mocha": "^1.20.1",
+    "q": "^1.0.1",
+    "useragent": "^2.0.9"
   }
 }
