@@ -30,6 +30,10 @@ describe('BlogPost test', function() {
 		});
 	});
 
+  it.skip('This is a skipped test', function() {
+
+  });
+
 	it('Fails epicly', function() {
 		assert(false);
 	});

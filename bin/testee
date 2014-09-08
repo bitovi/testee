@@ -31,11 +31,7 @@ if(config.server) {
   testee.test(program.args, (program.browsers || 'phantom').split(','), config)
     .then(function() {
       process.exit(0);
-    }, function(error) {
-      if(error instanceof Error) {
-        console.error(error.stack);
-      }
-
+    }, function() {
       process.exit(1);
     });
 }
