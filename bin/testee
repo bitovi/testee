@@ -25,4 +25,17 @@ if(program.config) {
 
 config = _.extend(config, _.pick(program, 'browsers', 'port', 'verbose', 'timeout', 'reporter', 'root', 'server', 'port'));
 
-testee.test(program.args, (program.browsers || 'phantom').split(','), config);
+if(config.server) {
+  testee.server(config);
+} else {
+  testee.test(program.args, (program.browsers || 'phantom').split(','), config)
+    .then(function() {
+      process.exit(0);
+    }, function(error) {
+      if(error instanceof Error) {
+        console.error(error.stack);
+      }
+
+      process.exit(1);
+    });
+}
