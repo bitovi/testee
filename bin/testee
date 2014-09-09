@@ -14,16 +14,18 @@ program.version(pkg.version)
   .option('-p, --port [port]', 'The server port')
   .option('-R, --root [path]', 'The server root path the files are relative to')
   .option('-r, --reporter [name]', 'The name of the reporter to use')
+  .option('-c --config [filename]', 'Use a JSON configuration file')
+  .option('--coverage [filename]', 'Write a coverage report to the console or a file')
   .option('--timeout [seconds]', 'The per test timeout (in seconds)')
-  .option('--delay [seconds]', 'The delay (in ms) to wait before reopening the same browser again')
-  .option('-s, --server', 'Only start server')
+  .option('--delay [ms]', 'The delay (in ms) to wait before reopening the same browser again')
+  .option('-s, --server', 'Only run the server')
   .parse(process.argv);
 
 if(program.config) {
   config = JSON.parse(fs.readFileSync(program.config));
 }
 
-config = _.extend(config, _.pick(program, 'browsers', 'port', 'verbose', 'timeout', 'reporter', 'root', 'server', 'port'));
+config = _.extend(config, _.pick(program, 'browsers', 'port', 'root', 'reporter', 'timeout', 'delay', 'coverage', 'server'));
 
 if(config.server) {
   testee.server(config);

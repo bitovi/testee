@@ -47,6 +47,7 @@
     "feathers-hooks": "^0.3.1",
     "feathers-memory": "^0.3.3",
     "http-proxy": "^1.1.4",
+    "istanbul": "^0.3.2",
     "launchpad": "^0.3.0",
     "lodash": "^2.4.1",
     "miner": "^0.2.0",
