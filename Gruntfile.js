@@ -1,35 +1,23 @@
 'use strict';
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
-	// Project configuration.
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
-		jshint: {
-//			options: {
-//				jshintrc: {
-//					options: {
-//						curly: true,
-//						eqeqeq: true,
-//						immed: true,
-//						latedef: true,
-//						newcap: true,
-//						noarg: true,
-//						sub: true,
-//						undef: true,
-//						boss: true,
-//						eqnull: true,
-//						node: true
-//					}
-//				},
-//				globals: {
-//					exports: true
-//				}
-//			},
-			lib: [ 'lib/**/*.js' ]
-		},
+  // Project configuration.
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
+      lib: ['lib/**/*.js', 'Gruntfile.js'],
+      test: 'test/**/*.js'
+    },
 
     release: {},
+
+    simplemocha: {
+      all: ['test/**/*.js']
+    },
 
     testee: {
       options: {
@@ -41,12 +29,14 @@ module.exports = function (grunt) {
         'examples/jasmine/index.html'
       ]
     }
-	});
+  });
 
   grunt.loadNpmTasks('grunt-release');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-simple-mocha');
 
-	grunt.loadTasks('tasks');
+  grunt.loadTasks('tasks');
 
-	// Default task.
-	grunt.registerTask('default', 'jshint');
+  grunt.registerTask('test', [ 'jshint', 'simplemocha' ]);
+  grunt.registerTask('default', 'test');
 };

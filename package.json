@@ -2,7 +2,7 @@
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
   "version": "0.8.0",
-  "homepage": "http://github.com/bitovi/testee.js",
+  "homepage": "http://github.com/bitovi/testee",
   "author": {
     "name": "David Luecke",
     "email": "daff@neyeon.com",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:bitovi/testee.js.git"
+    "url": "git@github.com:bitovi/testee.git"
   },
   "main": "lib/testee.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "grunt test"
   },
   "engines": {
-    "node": "~0.8"
+    "node": "~0.10"
   },
   "bin": {
     "testee": "./bin/testee"
@@ -36,9 +36,10 @@
     }
   ],
   "devDependencies": {
-    "expect.js": ">= 0.1.2",
     "grunt": "~ 0.4.0",
-    "grunt-release": "~0.5.1"
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-release": "~0.5.1",
+    "grunt-simple-mocha": "^0.4.0"
   },
   "dependencies": {
     "commander": "^2.3.0",

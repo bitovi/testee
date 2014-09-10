@@ -44,7 +44,7 @@ describe('BufferManager test', function() {
       assert.deepEqual(data, first, 'Data got flushed to runner right away');
       done();
     });
-    manager.get(1).emit('ev', first)
+    manager.get(1).emit('ev', first);
   });
 
   it('two buffer events are chained', function(done) {
