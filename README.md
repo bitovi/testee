@@ -15,6 +15,8 @@ You need [NodeJS](http://nodejs.org/) installed in order to use Testee which mak
 
 > `npm install -g testee`
 
+The default browser used by Testee is [PhantomJS](http://phantomjs.org/), so make sure you have it installed somewhere on your system. Read [here](http://phantomjs.org/download.html) for installation instructions.
+
 `cd` into the main folder of your JavaScript project and run `testee` with your QUnit, Mocha or Jasmine
 test HTML page:
 
@@ -22,15 +24,11 @@ test HTML page:
 
 ## Command line testing
 
-The default browser is [PhantomJS](http://phantomjs.org/), just make sure you have it installed anywhere
-on your system.
+The default browser is `phantom`. To run with a different local browser (e.g. Firefox) use:
 
-To run with a different local browser (e.g. Firefox) use:
+> `testee tests/qunit.html --browsers firefox`
 
-> `testee tests/qunit.html --browser firefox`
-
-Note that the browser you are using for testing shouldn't be already running.
-
+**NOTE**:  the browser you are using for testing shouldn't be already running.
 
 ### Command line options
 
@@ -38,7 +36,7 @@ On the command line, you have the following options available:
 
 * `-h`, `--help`: output usage information
 * `-V`, `--version`: output the version number
-* `-b`, `--browser` `[name]`: The browser you want to run (default: `phantom`)
+* `-b`, `--browsers` `[name]`: The browser(s) you want to run (default: `phantom`)
 * `-l`, `--launch` `[name]` (*default: `local`*): The test environment you want to use.
 * `-t`, `--tunnel` `[name]`: The tunneling service provider to use. Currently supports local, localtunnel, browserstack and pagekite (default: `local`)
 * `-p`, `--port` `[port]`: The port to run the server on (default: `3996`)
@@ -53,7 +51,7 @@ On the command line, you have the following options available:
 
 Run `test.html` in the `/var/www/app/` folder using Safari:
 
-> `testee --root /var/www/app/ --browser safari test.html`
+> `testee --root /var/www/app/ --browsers safari test.html`
 
 Run `tests/qunit.html` with PhantomJS from the current folder, use port `8080` instead of `3996` and
 use the `Spec` reporter which prints more detailed test results:
@@ -67,7 +65,7 @@ for how this file should look like):
 
 Run `tests/jasmine.html` using [Google Chrome Canary](https://www.google.com/intl/en/chrome/browser/canary.html):
 
-> `testee --browser canary tests/jasmine.html`
+> `testee --browsers canary tests/jasmine.html`
 
 
 ### Command line Browserstack
@@ -80,11 +78,11 @@ service will be started ([localtunnel](http://progrium.com/localtunnel/) by defa
 
 For example, run `tests/qunit.html` on Internet Explorer 8:
 
-> `testee --browser ie:8.0@win --launch browserstack qunit/test.html`
+> `testee --browsers ie:8.0@win --launch browserstack qunit/test.html`
 
 Or Firefox 15 on MacOS:
 
-> `testee --browser firefox:15.0@macos --launch browserstack qunit/test.html`
+> `testee --browsers firefox:15.0@macos --launch browserstack qunit/test.html`
 
 The use of a configuration file is generally the better choice when using Browserstack. For more options, read up
 in the [configuration API](#configuration_api) section. To use different tunelling services (like the [Browserstack command line tunnel](http://www.browserstack.com/local-testing)) jump to [Localhost Tunelling](#localhost_tunneling) and for Browserstack specific options read more in the [Browserstack section](#browserstack).
@@ -97,7 +95,7 @@ style XML files that integrate with CI servers like [Jenkins](http://jenkins-ci.
 reporter and write the output into a file. The following example runs `tests/qunit.html` in Firefox and writes
 the result XML into `testresults.xml`:
 
-> `testee --browser firefox --reporter XUnit > testresults.xml`
+> `testee --browsers firefox --reporter XUnit > testresults.xml`
 
 You can get more information about the available reporters in the [Reporters](#reporters) section.
 
@@ -218,13 +216,12 @@ communicate with.
 Testee uses the [Miner](https://github.com/daffl/miner) package to provide localhost tunneling which
 makes it possible to use any of the services Miner currently supports (LocalTunnel, Pagekite and Browserstack).Localtunnel doesn't need any configuration at all and will install itself if you have Ruby available.
 
-If you would like to use Pagekite you need to set it up with your username and then pass it to the `launch` option
-like this:
+If you would like to use Pagekite you need to set it up with your username and then pass it to the `tunnel` option like this:
 
 <pre><code data-language="javascript">
-  "launch" : {
+	"tunnel" : {
 		"type" : "pagekite",
-		"username" : "pagekit user"
+		"name" : "pagekite-name"
 	}
 </code></pre>
 
