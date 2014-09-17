@@ -30,7 +30,7 @@ config = _.extend(config, _.pick(program, 'browsers', 'port', 'root', 'reporter'
 if(config.server) {
   testee.server(config);
 } else {
-  testee.test(program.args, (program.browsers || 'phantom').split(','), config)
+  testee.test(program.args, (config.browsers || 'phantom').split(','), config)
     .then(function() {
       process.exit(0);
     }, function() {
