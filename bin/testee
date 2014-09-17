@@ -27,7 +27,7 @@ if(program.config) {
 
 config = _.extend(config, _.pick(program, 'browsers', 'port', 'root', 'reporter', 'timeout', 'delay', 'coverage', 'server'));
 
-var browsers = _.isArray(config.browsers) ? config.browser :
+var browsers = _.isArray(config.browsers) ? config.browsers :
   (config.browsers || 'phantom').split(',');
 
 if(config.server) {
