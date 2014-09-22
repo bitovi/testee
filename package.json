@@ -47,7 +47,6 @@
     "connect-injector": "^0.4.0",
     "debug": "^2.0.0",
     "feathers": "1.0.0-pre.5",
-    "feathers-hooks": "^0.3.1",
     "feathers-memory": "^0.3.3",
     "http-proxy": "^1.1.4",
     "istanbul": "^0.3.2",
