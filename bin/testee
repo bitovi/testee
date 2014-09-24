@@ -10,7 +10,7 @@ var config = {};
 program.version(pkg.version)
   .usage('[options] <files ...>')
   .description(pkg.description)
-  .option('-b, --browsers [names]', 'The browser you want to run')
+  .option('-b, --browsers [names]', 'The browser(s) you want to run (comma-separated)')
   .option('-p, --port [port]', 'The server port')
   .option('-R, --root [path]', 'The server root path the files are relative to')
   .option('-r, --reporter [name]', 'The name of the reporter to use')
