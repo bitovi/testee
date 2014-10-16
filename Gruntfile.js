@@ -16,6 +16,9 @@ module.exports = function(grunt) {
     release: {},
 
     simplemocha: {
+      options: {
+        timeout: 30000
+      },
       all: ['test/**/*.js']
     },
 
