@@ -8,6 +8,8 @@ Run your QUnit, Mocha or Jasmine tests from the command line with any browser.
 - BrowserStack support
 - Code coverage
 - GruntJS Task
+- Remote URL testing
+
 
 ## Getting started
 
@@ -20,16 +22,21 @@ test HTML page:
 
 > `testee tests/qunit.html`
 
+
 ## Command line testing
 
 The default browser is [PhantomJS](http://phantomjs.org/), just make sure you have it installed anywhere
 on your system.
 
-To run with a different local browser (e.g. Firefox) use:
+To run with different local browsers (e.g. Firefox and Safari) use:
 
-> `testee tests/qunit.html --browser firefox`
+> `testee tests/qunit.html --browsers firefox,safari`
 
-Note that the browser you are using for testing shouldn't be already running.
+Or run multiple tests in multiple browsers:
+
+> `testee tests/unit.html tests/components.html --browsers firefox,safari`
+
+Note that the browser you are using for testing shouldn't be already running (except for PhantomJS which can be started multiple times).
 
 
 ### Command line options
@@ -38,56 +45,40 @@ On the command line, you have the following options available:
 
 * `-h`, `--help`: output usage information
 * `-V`, `--version`: output the version number
-* `-b`, `--browser` `[name]`: The browser you want to run (default: `phantom`)
-* `-l`, `--launch` `[name]` (*default: `local`*): The test environment you want to use.
-* `-t`, `--tunnel` `[name]`: The tunneling service provider to use. Currently supports local, localtunnel, browserstack and pagekite (default: `local`)
+* `-b`, `--browsers` `[name]`: A comma separated list of browsers you want to run (default: `phantom`)
+* `-R`, `--root [path|URL]`: The server root path or URL the files are relative to
 * `-p`, `--port` `[port]`: The port to run the server on (default: `3996`)
 * `-r`, `--reporter` `[name]`: The name of the reporter to use (default: `Dot`)
-* `-v`, `--verbose`: Writes a log file with debugging information
-* `-l`, `--log` `[file]`: If in verbose mode, the name of the logfile to write to (default: `testee.log`)
 * `-c`, `--config` `[file]`: Use this JSON configuration file (can be overwritten by command line options)
 * `--timeout` `[seconds]`: The per test timeout (in seconds)
+* `--delay` `[ms]`: When running multiple tests, the time to wait for the browser to shut down before starting it with a new page.
+* `-s`, `--server`: Only run the server
+* `--coverage`: Enable code coverage
 
 
 ### Examples
 
 Run `test.html` in the `/var/www/app/` folder using Safari:
 
-> `testee --root /var/www/app/ --browser safari test.html`
+> `testee test.html --root /var/www/app/ --browsers safari`
+
+Run the online [Underscore](http://underscorejs.org/) QUnit tests in Phantom and Firefox and output code coverage statistics:
+
+> `testee test/index.html --root http://underscorejs.org --browsers phantom,firefox`
 
 Run `tests/qunit.html` with PhantomJS from the current folder, use port `8080` instead of `3996` and
 use the `Spec` reporter which prints more detailed test results:
 
-> `testee --port 8080 --reporter Spec tests/qunit.html`
+> `testee tests/qunit.html --port 8080 --reporter Spec`
 
 Run `tests/mocha.html` using `testee.json` as the configuration file (see the [configuration API](#configuration_api)
 for how this file should look like):
 
-> `testee -c testee.json tests/mocha.html`
+> `testee tests/mocha.html -c testee.json`
 
 Run `tests/jasmine.html` using [Google Chrome Canary](https://www.google.com/intl/en/chrome/browser/canary.html):
 
-> `testee --browser canary tests/jasmine.html`
-
-
-### Command line Browserstack
-
-It is also possible to start tests using a [Browserstack](http://browserstack.com) worker from the command
-line by setting the `launch` option to `browserstack` and the `browser` to a string in the form of
-`<browser>:<version>@<os>`. You will then be prompted for your Browserstack username and password.
-Because workers don't have direct access to your local system, a [localhost tunneling](#localhost_tunneling)
-service will be started ([localtunnel](http://progrium.com/localtunnel/) by default).
-
-For example, run `tests/qunit.html` on Internet Explorer 8:
-
-> `testee --browser ie:8.0@win --launch browserstack qunit/test.html`
-
-Or Firefox 15 on MacOS:
-
-> `testee --browser firefox:15.0@macos --launch browserstack qunit/test.html`
-
-The use of a configuration file is generally the better choice when using Browserstack. For more options, read up
-in the [configuration API](#configuration_api) section. To use different tunelling services (like the [Browserstack command line tunnel](http://www.browserstack.com/local-testing)) jump to [Localhost Tunelling](#localhost_tunneling) and for Browserstack specific options read more in the [Browserstack section](#browserstack).
+> `testee tests/jasmine.html --browsers canary`
 
 
 ### CI integration
@@ -97,9 +88,17 @@ style XML files that integrate with CI servers like [Jenkins](http://jenkins-ci.
 reporter and write the output into a file. The following example runs `tests/qunit.html` in Firefox and writes
 the result XML into `testresults.xml`:
 
-> `testee --browser firefox --reporter XUnit > testresults.xml`
+> `testee test/index.html --browsers firefox --reporter XUnit > testresults.xml`
 
 You can get more information about the available reporters in the [Reporters](#reporters) section.
+
+
+### Debugging
+
+Testee uses the Node [debug](https://github.com/visionmedia/debug) module. Detailed debugging information can be enabled
+in any environment (command line, Grunt, programatically) by setting the `DEBUG` environment variable to `testee:*`:
+
+> `DEBUG=testee:* testee --browsers canary tests/jasmine.html`
 
 
 ## Configuration API
@@ -115,17 +114,21 @@ The following sections describe the available options for
 
 Any options will be merged with the following default configuration:
 
-<pre><code data-language="javascript">{
-  "root" : ".",
-  "port" : 3996,
-  "verbose" : false,
-  "log" : "./testee.log",
-  "timeout" : 120,
-  "launch" : "local",
-  "tunnel" : "local",
-  "browser" : "phantom",
-  "reporter" : "Dot"
-}</code></pre>
+```js
+{
+  port: 3996,
+  root: process.cwd(),
+  reporter: 'Dot',
+  timeout: 120,
+  delay: 1000,
+  tunnel: {
+    type: 'local'
+  },
+  launch: {
+    type: 'local'
+  }
+}
+```
 
 
 ### General settings
@@ -138,34 +141,35 @@ the root path of the static fileserver.
 __`port` *{Integer}*__<br />
 The port for the static file server to start on. This will also be used by [Localhost tunneling services](#localhost_tunneling). The default is `3996`.
 
-__`verbose` *{Boolean}*, `log` *{String}*__<br />
-Set this option to `true` if you would like Testee to output debugging information into a `log` file.
-It is not possible to output debugging information on the console since it is used by the reporters.
-
 __`timeout` *{Integer}*__<br />
 The time (in seconds) to wait for a test page to report back and after which an error will be thrown.
 The default is 2 minutes. This timeout might, for example, occurr when the given file doesn't exist the
 browser didn't start or the localhost tunnel isn't running.
 
+__`delay` *{Integer}*__<br />
+Multiple test files will be run in sequence on the same browser. This option sets the delay (in ms) between
+launching the browser again with the same file.
 
 ### Reporters
 
-The `reporter` option allows you to use almost any of the console reporters included in the
+The `reporter` option allows you to use all of the console reporters included in the
 [Mocha testing library](http://visionmedia.github.com/mocha/#reporters).
 
 
 ### Launching browsers
 
-The `launch` and `browser` options are used to set the environment and the browser you want
+The `launch` and `browsers` options are used to set the environment and the browsers you want
 to start. [Launchpad](https://github.com/ekryski/launchpad) is the browser launcher library used
 by Testee which allows you to start most locally installed browsers as well as Browserstack workers
 and even browsers on remote systems running the [Launchpad Server](https://github.com/ekryski/launchpad#the-launchpad-server).
 
 The most common case will be launching a local browser (which is also the default) with no settings:
 
-<pre><code data-language="javascript">{
-  "browser" : "firefox"
-}</code></pre>
+```js
+{
+  "browsers" : [ "firefox", "safari" ]
+}
+```
 
 #### Browserstack
 
@@ -173,40 +177,62 @@ Browserstack hosts virtual machines running specific versions of web browsers. I
 tool for cross-browser testing running a remote desktop in you browser. To use BrowserStack via the configuration
 API you need to provide a username and password:
 
-<pre><code data-language="javascript">{
-  launch: {
-    type: "browserstack",
-    username: "your browserstack username",
-    password: "your browserstack password"
+```js
+{
+  "launch": {
+    "type": "browserstack",
+    "username": "your browserstack username",
+    "password": "your browserstack password",
+    "version": "browserstack API version (recommended: 2)"
   }
-}</code></pre>
+}
+```
 
 To start a worker, you must provide a valid [browser object](https://github.com/scottgonzalez/node-browserstack#browser-objects) to the `browser` option:
 
-<pre><code data-language="javascript">{
-  browser: {
+```js
+{
+  browsers: [{
     os: "win",
     browser: "ie",
     version: 8.0
-  }
-}</code></pre>
+  }, {
+    os: "win",
+    browser: "ie",
+    version: 11.0
+ }]
+}
+```
 
-An example configuration that runs your tests on an iPad 4 emulator using BrowserStack in a CI environment
-(outputting XUnit logs) could look like this:
+An example configuration that runs your tests on an iPad Mini and Samsung Galaxy S3 emulator using BrowserStack
+in a CI environment (outputting XUnit logs) could look like this:
 
-<pre><code data-language="javascript">{
+```js
+{
     "reporter" : "XUnit",
-    launch: {
-      type: "browserstack",
-      username: "your browserstack username",
-      password: "your browserstack password"
+    "tunnel": {
+      "type": "browserstack",
+      "key": "your browserstack key"
     },
-    browser: {
-      device: "ipad4",
-      version: 6.0
-    }
+    "launch": {
+      "type": "browserstack",
+      "username": "your browserstack username",
+      "password": "your browserstack password",
+      "version": 2
+    },
+    "browsers": [{
+      "os": "ios",
+      "device": "iPad Mini",
+      "version": 6.0
+    }, {
+      "os": "android",
+      "device": "Samsung Galaxy S III",
+      "version": "4.1"
+    }]
   }
-}</code></pre>
+}
+```
+
 
 ### Localhost tunneling
 
@@ -216,25 +242,104 @@ relies on localhost tunneling services especially for giving Browserstack worker
 communicate with.
 
 Testee uses the [Miner](https://github.com/daffl/miner) package to provide localhost tunneling which
-makes it possible to use any of the services Miner currently supports (LocalTunnel, Pagekite and Browserstack).Localtunnel doesn't need any configuration at all and will install itself if you have Ruby available.
+makes it possible to use any of the services Miner currently supports (LocalTunnel, Pagekite and Browserstack).
+Localtunnel doesn't need any configuration at all and will install itself if you have Ruby available.
 
 If you would like to use Pagekite you need to set it up with your username and then pass it to the `launch` option
 like this:
 
-<pre><code data-language="javascript">
-  "launch" : {
-		"type" : "pagekite",
-		"username" : "pagekit user"
-	}
-</code></pre>
+```js
+"launch" : {
+  "type" : "pagekite",
+  "username" : "pagekit user"
+}
+```
 
-It is also possible to use the [Browserstack command line tunnel](http://www.browserstack.com/automated-browser-testing-api) which you have to provide with your command line tunnel API key:
+It is also possible to use the [Browserstack tunnel API](http://www.browserstack.com/automated-browser-testing-api) which you have to provide with your command line tunnel API key:
 
-<pre><code data-language="javascript">
-	"launch" : {
-		"type" : "browserstack",
-		"key" : "your command line tunnel API key"
-	}
-</code></pre>
+```js
+"launch" : {
+  "type" : "browserstack",
+  "key" : "your command line tunnel API key"
+}
+```
 
 For all available tunneling services and options follow up in the [Miner documentation](http://daffl.github.com/miner/).
+
+
+## Grunt task
+
+Testee comes with a Grunt task that takes the same options as described above (`src` should be set to your source test files).
+The following is an example that runs `test/index.html` with `public/` as the root folder and `Spec` as the reporter in either
+
+- PhantomJS
+- PhantomJS with code coverage ignoring the `bower_components` and `test/` folder
+- On Browserstack on iPad Mini and Samsung Galaxy S3 with `BROWSERSTACK_USER` and `BROWSERSTACK_PASSWORD` taken from environment variables
+
+```js
+module.exports = function(grunt) {
+  grunt.initConfig({
+    testee: {
+      options: {
+        root: 'public',
+        reporter: 'Spec'
+      },
+      phantom: ['test/index.html'],
+      coverage: {
+        options: {
+          coverage: {
+            ignore: ['bower_components/', 'test/']
+          }
+        },
+        src: ['test/index.html']
+      },
+      browserstack: {
+        options: {
+          timeout: 600,
+          tunnel: {
+            type: 'browserstack',
+            key: process.env.BROWSERSTACK_PASSWORD
+          },
+          launch: {
+            type: 'browserstack',
+            username: process.env.BROWSERSTACK_USER,
+            password: process.env.BROWSERSTACK_PASSWORD,
+            version: 2
+          },
+          browsers: [{
+            "os": "ios",
+            "device": "iPad Mini",
+            "version": 6.0
+          }, {
+            "os": "android",
+            "device": "Samsung Galaxy S III",
+            "version": "4.1"
+          }]
+        },
+        src: ['test/index.html']
+      }
+    }
+  });
+  
+  grunt.loadNpmTasks('testee');
+};
+```
+
+## Client side configuration
+
+In most cases there is no need to change your actual test code. The exception is when you load your testing library
+using an asynchronous client side loader like Steal or RequireJS because Testee won't know which library to listen
+for. In this case, pre-initialize a `window.Testee` object with `autoInit` set to `false` like this:
+ 
+```js
+<script type="text/javascript">
+window.Testee = {
+  autoInit: false
+}
+
+define(['qunit'], function() {
+  window.Testee.init();
+  QUnit.start();
+});
+</script>
+```
