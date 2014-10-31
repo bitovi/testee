@@ -320,26 +320,25 @@ module.exports = function(grunt) {
       }
     }
   });
-  
+
   grunt.loadNpmTasks('testee');
 };
 ```
 
 ## Client side configuration
 
-In most cases there is no need to change your actual test code. The exception is when you load your testing library
-using an asynchronous client side loader like Steal or RequireJS because Testee won't know which library to listen
-for. In this case, pre-initialize a `window.Testee` object with `autoInit` set to `false` like this:
- 
+In most cases there is no need to change your actual test code. The exception is when you load your testing library using an asynchronous client side loader like Steal or RequireJS because Testee won't know which library adapters to attach. In this case, you need to call `Testee.init()` manually once the test library is loaded:
+
 ```js
 <script type="text/javascript">
-window.Testee = {
-  autoInit: false
-}
+  define(['qunit'], function() {
+    // Needs to check because it will only be available
+    // when running the test with Testee
+    if(window.Testee) {
+      window.Testee.init();
+    }
 
-define(['qunit'], function() {
-  window.Testee.init();
-  QUnit.start();
-});
+    QUnit.start();
+  });
 </script>
 ```
