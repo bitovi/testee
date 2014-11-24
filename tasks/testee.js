@@ -5,9 +5,9 @@ module.exports = function (grunt) {
     var done = this.async();
     var options = this.options();
     var browsers = options.browsers || ['phantom'];
-    var files = grunt.util._.flatten(this.files.map(function(file) {
+    var files = grunt.file.expand(grunt.util._.flatten(this.files.map(function(file) {
       return file.orig.src;
-    }));
+    })));
 
     testee.test(files, browsers, options).then(function() {
       done();
