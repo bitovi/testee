@@ -8,13 +8,15 @@ module.exports = function (grunt) {
     var browsers = options.browsers || ['phantom'];
     var files = grunt.file.expand(grunt.util._.flatten(this.files.map(function (file) {
       // Test file path need to be absolute to the root so that grunt.file.expand can glob them
-      return path.join(options.root || '', file.orig.src.toString());
-    })));
+      return file.orig.src;
+    })).map(function(filename) {
+      return path.join(options.root || '', filename);
+    }));
 
     if(options.root) {
       // Each file in the globbed list needs to be converted back to their relative paths
       files = files.map(function (file) {
-        return path.relative(options.root, file);
+        return path.relative(options.root || '', file);
       });
     }
 
