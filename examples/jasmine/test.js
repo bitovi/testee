@@ -65,7 +65,7 @@ describe('Blog post test', function () {
 
 		runs(function () {
 			expect(publishedPost.toString()).toBe("<h1>Hello</h1>" +
-				"<h6>Published on " + now.toString() + "</h6>" +
+				"<h6>Published on " + now.format("dd-m-yy") + "</h6>" +
 				"<p>Hello world</p>");
 		});
 	});
