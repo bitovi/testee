@@ -24,7 +24,7 @@ describe('BlogPost test', function() {
 
 		newpost.publish(function(post) {
 			assert(post.toString() == "<h1>Hello</h1>" +
-				"<h6>Published on " + now.toString() + "</h6>" +
+				"<h6>Published on " + now.format("dd-m-yy") + "</h6>" +
 				"<p>Hello world</p>");
 			done();
 		});
