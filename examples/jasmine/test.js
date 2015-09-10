@@ -36,7 +36,7 @@ describe('Blog post test', function () {
 
 	it('Should be published at the current time', function () {
 		var now = new Date(),
-			post = new BlogPost('Hello', 'Hello world');
+			post = new BlogPost('Hello', 'Hello world', now);
 		expect(post.date.getTime()).toBe(now.getTime());
 	});
 

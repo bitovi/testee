@@ -19,3 +19,5 @@ testee.log
 run.js
 
 client/components
+
+test/coverage

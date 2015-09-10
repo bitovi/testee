@@ -3,36 +3,27 @@ var path = require('path');
 var testee = require('../lib/testee');
 
 describe('Testee', function() {
-  var oldLog;
   var config = {
+    reporter: 'Dot',
     root: path.join(__dirname, '..', 'examples')
   };
 
-  beforeEach(function() {
-    oldLog = console.log;
-    console.log = function() {};
-  });
-
-  afterEach(function() {
-    console.log = oldLog;
-  });
-
   it('QUnit example', function(done) {
-    testee.test([ 'qunit/index.html' ], [ 'phantom' ], config).fail(function(error) {
+    testee.test([ 'qunit/index.html' ], [ 'firefox' ], config).fail(function(error) {
       assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
       done();
     });
   });
 
   it('Jasmine example', function(done) {
-    testee.test([ 'jasmine/index.html' ], [ 'phantom' ], config).fail(function(error) {
+    testee.test([ 'jasmine/index.html' ], [ 'firefox' ], config).fail(function(error) {
       assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
       done();
     });
   });
 
   it('Mocha example', function(done) {
-    testee.test([ 'mocha/index.html' ], [ 'phantom' ], config).fail(function() {
+    testee.test([ 'mocha/index.html' ], [ 'firefox' ], config).fail(function() {
       done();
     });
   });
