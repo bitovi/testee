@@ -12,10 +12,11 @@ test('Unpublished post throws exception', function() {
 
 test('Generates HTML', function() {
   stop();
-  var newpost = new BlogPost('Hello', 'Hello world');
+  var now = new Date();
+  var newpost = new BlogPost('Hello', 'Hello world', now);
   newpost.publish(function(post) {
     equal(post.toString(), "<h1>Hello</h1>" +
-      "<h6>Published on " + new Date().toString() + "</h6>" +
+      "<h6>Published on " + now.toString() + "</h6>" +
       "<p>Hello world</p>", 'Generated expected HTML');
     start();
   });

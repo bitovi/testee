@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         jshintrc: '.jshintrc'
       },
       lib: ['lib/**/*.js', 'Gruntfile.js'],
-      test: 'test/**/*.js'
+      test: ['test/**/*.js', '!test/coverage/**/*.js']
     },
 
     release: {},
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
       options: {
         timeout: 30000
       },
-      all: ['test/**/*.js']
+      all: ['test/**/*.js', '!test/coverage/**/*.js']
     },
 
     testee: {

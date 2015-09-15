@@ -233,6 +233,18 @@ in a CI environment (outputting XUnit logs) could look like this:
 }
 ```
 
+### Code Coverage
+
+The `coverage` options is used to instrument and report code coverage using [Istanbul](https://github.com/gotwarlost/istanbul). There are several options available for configuring how code coverage is reported:
+
+__`reporters` *{Array}*__<br />
+The type of reporter(s) to use. Multiple formats are available, including `text` and `html`.
+
+__`dir` *{String}*__<br />
+The directory where the coverage data should be written. `text` reports will be written to the console.
+
+__`ignore` *{Array}*__<br />
+List of regex patterns to match files that should be ignored by coverage instrumentation and reporting.
 
 ### Localhost tunneling
 
@@ -284,10 +296,12 @@ module.exports = function(grunt) {
         root: 'public',
         reporter: 'Spec'
       },
-      phantom: ['test/index.html'],
       coverage: {
         options: {
+          browsers: ['phantom'],
           coverage: {
+            dir: 'test/coverage/',
+            reporters: ['text', 'html'],
             ignore: ['bower_components/', 'test/']
           }
         },
