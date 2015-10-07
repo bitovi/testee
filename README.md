@@ -153,7 +153,7 @@ launching the browser again with the same file.
 ### Reporters
 
 The `reporter` option allows you to use all of the console reporters included in the
-[Mocha testing library](http://visionmedia.github.com/mocha/#reporters).
+[Mocha testing library](https://mochajs.org/#reporters).
 
 
 ### Launching browsers
