@@ -64,14 +64,14 @@ Run `test.html` in the `/var/www/app/` folder using Safari:
 
 Run the online [Underscore](http://underscorejs.org/) QUnit tests in Phantom and Firefox and output code coverage statistics:
 
-> `testee test/index.html --root http://underscorejs.org --browsers phantom,firefox`
+> `testee test/index.html --root http://underscorejs.org --browsers phantom,firefox --coverage`
 
 Run `tests/qunit.html` with PhantomJS from the current folder, use port `8080` instead of `3996` and
 use the `Spec` reporter which prints more detailed test results:
 
 > `testee tests/qunit.html --port 8080 --reporter Spec`
 
-Run `tests/mocha.html` using `testee.json` as the configuration file (see the [configuration API](#configuration_api)
+Run `tests/mocha.html` using `testee.json` as the configuration file (see the [configuration API](#configuration-api)
 for how this file should look like):
 
 > `testee tests/mocha.html -c testee.json`
