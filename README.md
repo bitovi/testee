@@ -10,6 +10,8 @@ Run your QUnit, Mocha or Jasmine tests from the command line with any browser.
 - GruntJS Task
 - Remote URL testing
 
+For questions or discussion checkout our [forums](http://forums.donejs.com/c/testing).
+
 
 ## Getting started
 
