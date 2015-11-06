@@ -62,5 +62,8 @@
     "q": "^1.0.1",
     "testee-client": "^0.3.0",
     "useragent": "^2.0.9"
+  },
+  "system": {
+    "npmDependencies": []
   }
 }
