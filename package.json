@@ -52,6 +52,7 @@
     "feathers": "^1.3.0",
     "feathers-memory": "^0.3.4",
     "http-proxy": "^1.1.4",
+    "isparta": "^3.5.3",
     "istanbul": "^0.4.0",
     "launchpad": "^0.5.1",
     "lodash": "^2.4.1",
