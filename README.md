@@ -341,6 +341,18 @@ module.exports = function(grunt) {
 };
 ```
 
+## Programmatic Use
+
+You can also use Testee programmatically from gulp or another Node script.
+
+```js
+gulp.task('test', function() {
+    return testee.test(['test/test.html'], 'phantom', {
+        reporter: 'Spec'
+    });
+});
+```
+
 ## Client side configuration
 
 In most cases there is no need to change your actual test code. The exception is when you load your testing library using an asynchronous client side loader like Steal or RequireJS because Testee won't know which library adapters to attach. In this case, you need to call `Testee.init()` manually once the test library is loaded:
