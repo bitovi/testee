@@ -1,7 +1,7 @@
 {
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
-  "version": "0.2.5",
+  "version": "0.2.5-pre",
   "homepage": "http://github.com/bitovi/testee",
   "author": {
     "name": "David Luecke",
@@ -52,7 +52,7 @@
     "feathers": "^1.3.0",
     "feathers-memory": "^0.3.4",
     "http-proxy": "^1.1.4",
-    "istanbul": "^0.4.0",
+    "istanbul-lib-instrument": "^1.1.0-alpha.2",
     "launchpad": "^0.5.1",
     "lodash": "^2.4.1",
     "mime-types": "^2.1.6",
