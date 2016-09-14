@@ -14,7 +14,7 @@ describe('BlogPost test', function() {
 		}
 		catch(e) {
 			assert(true);
-			assert(e == "This blog post is not published");
+			assert(e.message === "This blog post is not published");
 		}
 	});
 

@@ -16,8 +16,4 @@ node_modules
 npm-debug.log
 
 testee.log
-run.js
-
-client/components
-
 test/coverage

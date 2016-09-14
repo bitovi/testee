@@ -16,7 +16,7 @@
 
 	BlogPost.prototype.toString = function() {
 		if(!this.published) {
-			throw "This blog post is not published";
+			throw new Error("This blog post is not published");
 		}
 		return "<h1>" + this.title + "</h1>" +
 			"<h6>Published on " + this.date.toString() + "</h6>" +
