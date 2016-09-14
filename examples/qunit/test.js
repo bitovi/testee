@@ -7,7 +7,7 @@ test('Date set to current time', function() {
 
 test('Unpublished post throws exception', function() {
   var post = new BlogPost('Hello', 'Hello world');
-  throws(post.toString, "This blog post is not published", "Got exception");
+  throws(post.toString, new Error("This blog post is not published"), "Got exception");
 });
 
 test('Generates HTML', function() {
