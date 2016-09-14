@@ -35,8 +35,8 @@ if(config.server) {
 } else {
   testee.test(program.args, browsers, config)
     .then(function() {
-      process.exit(0);
+      process.exitCode = 0;
     }, function() {
-      process.exit(1);
+      process.exitCode = 1;
     });
 }
