@@ -42,12 +42,12 @@
     }
   ],
   "devDependencies": {
-    "async": "^1.4.2",
+    "async": "^2.0.1",
     "chai": "^3.5.0",
     "del": "^2.0.2",
     "jshint": "^2.9.3",
-    "mocha": "^2.5.3",
-    "qunitjs": "^1.23.1"
+    "mocha": "^3.0.2",
+    "qunitjs": "^2.0.1"
   },
   "dependencies": {
     "commander": "^2.3.0",
@@ -63,7 +63,7 @@
     "lodash": "^4.13.1",
     "mime-types": "^2.1.6",
     "miner": "^0.2.1",
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.2",
     "path": "^0.12.7",
     "q": "^1.0.1",
     "testee-client": "^0.4.0-pre.1",
