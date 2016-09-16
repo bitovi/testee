@@ -18,7 +18,7 @@ test('Generates HTML', function() {
     equal(post.toString(), "<h1>Hello</h1>" +
       "<h6>Published on " + now.toString() + "</h6>" +
       "<p>Hello world</p>", 'Generated expected HTML');
-    start();
+    // start();
   });
 
 });
