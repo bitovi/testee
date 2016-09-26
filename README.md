@@ -355,7 +355,9 @@ gulp.task('test', function() {
 
 ## Client side configuration
 
-In most cases there is no need to change your actual test code. The exception is when you load your testing library using an asynchronous client side loader like Steal or RequireJS because Testee won't know which library adapters to attach. In this case, you need to call `Testee.init()` manually once the test library is loaded:
+In most cases there is no need to change your actual test code. 
+
+One exception is when you load your testing library using an asynchronous client side loader like Steal or RequireJS because Testee won't know which library adapters to attach. In this case, you need to call `Testee.init()` manually once the test library is loaded:
 
 ```js
 <script type="text/javascript">
@@ -368,5 +370,17 @@ In most cases there is no need to change your actual test code. The exception is
 
     QUnit.start();
   });
+</script>
+```
+
+In some testing environments, reporting test progress via REST may work better than socket.io. In this case, you specify a `provider.type` or `'rest'`:
+
+```js
+<script type="text/javascript">
+  window.Testee = {
+    provider: {
+      type: 'rest'
+    }
+  };
 </script>
 ```
