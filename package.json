@@ -46,7 +46,7 @@
     "chai": "^3.5.0",
     "del": "^2.0.2",
     "jshint": "^2.9.3",
-    "mocha": "^2.5.3",
+    "mocha": "^3.1.0",
     "qunitjs": "^1.23.1"
   },
   "dependencies": {
