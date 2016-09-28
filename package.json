@@ -1,7 +1,7 @@
 {
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
-  "version": "0.3.0-pre.1",
+  "version": "0.3.0-pre.2",
   "homepage": "http://github.com/bitovi/testee",
   "author": {
     "name": "David Luecke",
