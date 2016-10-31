@@ -62,7 +62,7 @@
     "http-proxy": "^1.1.4",
     "istanbul": "^0.4.0",
     "launchpad": "^0.5.1",
-    "lodash": "^4.13.1",
+    "lodash": "^4.16.5",
     "mime-types": "^2.1.6",
     "miner": "^0.2.1",
     "mocha": "^2.5.3",
