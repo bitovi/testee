@@ -24,7 +24,7 @@
     "release:major": "npm version major && npm publish"
   },
   "engines": {
-    "node": "~0.10"
+    "node": ">= 4"
   },
   "bin": {
     "testee": "./bin/testee"
