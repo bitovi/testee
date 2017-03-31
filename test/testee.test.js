@@ -2,7 +2,7 @@ var assert = require('assert');
 var path = require('path');
 var testee = require('../lib/testee');
 
-describe.only('Testee', function() {
+describe('Testee', function() {
   var config = {
     reporter: 'Dot',
     root: path.join(__dirname, '..')
