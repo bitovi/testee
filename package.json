@@ -51,6 +51,9 @@
     "qunitjs": "^1.23.1"
   },
   "dependencies": {
+    "babel-core": "^6.24.0",
+    "babel-plugin-istanbul": "^4.1.1",
+    "babel-preset-es2015": "^6.24.0",
     "body-parser": "^1.15.2",
     "commander": "^2.3.0",
     "connect-injector": "^0.4.0",

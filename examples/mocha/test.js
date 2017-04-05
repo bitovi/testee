@@ -1,7 +1,7 @@
 describe('BlogPost test', function() {
 
-	it('Should be published at the current time', function() {
-		var now = new Date(),
+	it('Should be published at the current time', () => {
+		const now = new Date(),
 			post = new BlogPost('Hello', 'Hello world', now);
 		assert(post.date.getTime() == now.getTime());
 	});
