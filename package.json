@@ -14,9 +14,10 @@
   },
   "main": "lib/testee.js",
   "scripts": {
-    "test": "npm run jshint && npm run mocha",
+    "test": "npm run jshint && npm run mocha && npm run mocha:coverage",
     "jshint": "jshint lib/*.js test/*.js --config",
     "mocha": "mocha test/ --recursive --timeout 30000",
+    "mocha:coverage": "mocha test-coverage/ --recursive --timeout 30000",
     "release:pre": "npm version prerelease && npm publish",
     "publish": "git push origin && git push origin --tags",
     "release:patch": "npm version patch && npm publish",
