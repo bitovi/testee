@@ -16,4 +16,4 @@ node_modules
 npm-debug.log
 
 testee.log
-test/coverage
+test-coverage/coverage
