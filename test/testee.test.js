@@ -4,19 +4,23 @@ var testee = require('../lib/testee');
 
 describe('Testee', function() {
   var config = {
-    reporter: 'Dot',
-    root: path.join(__dirname, '..')
+    root: path.join(__dirname, '..'),
+    reporter: function () {
+      // print nothing
+    }
   };
+  var browser = process.env.TEST_BROWSER || 'firefox';
+  var browsers = [ browser ];
 
   describe('QUnit example', function() {
     it('socketio provider', function(done) {
-      testee.test([ 'examples/qunit/index.html' ], [ 'firefox' ], config).fail(function(error) {
+      testee.test([ 'examples/qunit/index.html' ], browsers, config).fail(function(error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         done();
       });
     });
     it('rest provider', function(done) {
-      testee.test([ 'examples/qunit/rest.html' ], [ 'firefox' ], config).fail(function(error) {
+      testee.test([ 'examples/qunit/rest.html' ], browsers, config).fail(function(error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         done();
       });
@@ -25,13 +29,13 @@ describe('Testee', function() {
 
   describe('Jasmine example', function() {
     it('socketio provider', function(done) {
-      testee.test([ 'examples/jasmine/index.html' ], [ 'firefox' ], config).fail(function(error) {
+      testee.test([ 'examples/jasmine/index.html' ], browsers, config).fail(function(error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         done();
       });
     });
     it('rest provider', function(done) {
-      testee.test([ 'examples/jasmine/rest.html' ], [ 'firefox' ], config).fail(function(error) {
+      testee.test([ 'examples/jasmine/rest.html' ], browsers, config).fail(function(error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         done();
       });
@@ -40,12 +44,12 @@ describe('Testee', function() {
 
   describe('Mocha example', function() {
     it('socketio provider', function(done) {
-      testee.test([ 'examples/mocha/index.html' ], [ 'firefox' ], config).fail(function() {
+      testee.test([ 'examples/mocha/index.html' ], browsers, config).fail(function() {
         done();
       });
     });
     it('rest provider', function(done) {
-      testee.test([ 'examples/mocha/rest.html' ], [ 'firefox' ], config).fail(function() {
+      testee.test([ 'examples/mocha/rest.html' ], browsers, config).fail(function() {
         done();
       });
     });
