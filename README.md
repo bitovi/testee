@@ -355,7 +355,7 @@ gulp.task('test', function() {
 
 ## Client side configuration
 
-In most cases there is no need to change your actual test code. 
+In most cases there is no need to change your actual test code.
 
 One exception is when you load your testing library using an asynchronous client side loader like Steal or RequireJS because Testee won't know which library adapters to attach. In this case, you need to call `Testee.init()` manually once the test library is loaded:
 
@@ -384,3 +384,9 @@ In some testing environments, reporting test progress via REST may work better t
   };
 </script>
 ```
+
+## Troubleshooting
+
+#### Browser caching
+On Safari, disable caching by choosing `Develop -> Disable Caches` and also `Develop -> Empty Caches`. Without these preferences, updated tests may not
+load in the browser.
