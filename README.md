@@ -1,5 +1,7 @@
 # Testee
 
+[![Join the chat at https://gitter.im/bitovi/testee](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bitovi/testee?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Run your QUnit, Mocha or Jasmine tests from the command line with any browser.
 
 - Runs on all browsers (supporting SocketIO)
