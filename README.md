@@ -248,6 +248,25 @@ The directory where the coverage data should be written. `text` reports will be 
 __`ignore` *{Array}*__<br />
 List of regex patterns to match files that should be ignored by coverage instrumentation and reporting.
 
+**Note:** the [`babel-plugin-istanbul`](https://github.com/istanbuljs/babel-plugin-istanbul) package instruments ES6 code automatically.
+
+##### Coverage configuration example
+
+```js
+{
+  coverage: {
+    dir: 'coverage/', // create a top-level "coverage" folder
+    reporters: ['text', 'html'],
+    // see all istanbul reporters:
+    // https://github.com/gotwarlost/istanbul/tree/master/lib/report
+    ignore: [
+      'node_modules' // will not instrument node_modules/* files
+    ]
+  }
+  // other config options...
+}
+```
+
 ### Localhost tunneling
 
 A localhost tunneling service makes your local system available to the outside world. This is great
