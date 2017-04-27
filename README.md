@@ -97,7 +97,7 @@ You can get more information about the available reporters in the [Reporters](#r
 
 ### Capturing `console.log` and `console.error`
 
-Testee tracks all calls to `console.log` and `console.error` in a test. To get the output during a test run, set the `DEBUG` environment vairable to `testee:console-log`:
+Testee tracks all calls to `console.log` and `console.error` in a test. To get the output during a test run, set the `DEBUG` environment variable to `testee:console-log`:
 
 > `DEBUG=testee:console-log testee --browsers canary tests/jasmine.html`
 
