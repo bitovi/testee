@@ -4,6 +4,8 @@ describe('BlogPost test', function() {
 		const now = new Date(),
 			post = new BlogPost('Hello', 'Hello world', now);
 		assert(post.date.getTime() == now.getTime());
+
+		console.log('Hi there!');
 	});
 
 	it('Should throw an exception', function() {
@@ -28,6 +30,8 @@ describe('BlogPost test', function() {
 				"<p>Hello world</p>");
 			done();
 		});
+
+		console.error('Blog post is', newpost);
 	});
 
   it.skip('This is a skipped test', function() {
