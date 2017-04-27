@@ -95,6 +95,12 @@ the result XML into `testresults.xml`:
 You can get more information about the available reporters in the [Reporters](#reporters) section.
 
 
+### Capturing `console.log` and `console.error`
+
+Testee tracks all calls to `console.log` and `console.error` in a test. To get the output during a test run, set the `DEBUG` environment vairable to `testee:console-log`:
+
+> `DEBUG=testee:console-log testee --browsers canary tests/jasmine.html`
+
 ### Debugging
 
 Testee uses the Node [debug](https://github.com/visionmedia/debug) module. Detailed debugging information can be enabled
