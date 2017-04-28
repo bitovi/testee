@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var program = require('commander');
 var _ = require('lodash');
-var fs = require('fs');
+var path = require('path');
 
 var testee = require('../lib/testee');
 var pkg = require('../package.json');
@@ -14,7 +14,7 @@ program.version(pkg.version)
   .option('-p, --port [port]', 'The server port')
   .option('-R, --root [path]', 'The server root path the files are relative to')
   .option('-r, --reporter [name]', 'The name of the reporter to use')
-  .option('-c --config [filename]', 'Use a JSON configuration file')
+  .option('-c --config [filename]', 'Use a JSON or JS configuration file')
   .option('--coverage', 'Track code coverage and write to console (if not running as server)')
   .option('--timeout [seconds]', 'The per test timeout (in seconds)')
   .option('--delay [ms]', 'The delay (in ms) to wait before reopening the same browser again')
@@ -22,7 +22,7 @@ program.version(pkg.version)
   .parse(process.argv);
 
 if(program.config) {
-  config = JSON.parse(fs.readFileSync(program.config));
+  config = require(path.resolve('./', program.config));
 }
 
 config = _.extend(config, _.pick(program, 'browsers', 'port', 'root', 'reporter', 'timeout', 'delay', 'coverage', 'server'));
