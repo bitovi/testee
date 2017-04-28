@@ -1,5 +1,7 @@
 # Testee
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bitovi/testee.svg)](https://greenkeeper.io/)
+
 Run your QUnit, Mocha or Jasmine tests from the command line with any browser.
 
 - Runs on all browsers (supporting SocketIO)
