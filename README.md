@@ -51,7 +51,7 @@ On the command line, you have the following options available:
 * `-R`, `--root [path|URL]`: The server root path or URL the files are relative to
 * `-p`, `--port` `[port]`: The port to run the server on (default: `3996`)
 * `-r`, `--reporter` `[name]`: The name of the reporter to use (default: `Dot`)
-* `-c`, `--config` `[file]`: Use this JSON configuration file (can be overwritten by command line options)
+* `-c`, `--config` `[file]`: Use this JSON or JS configuration file (can be overridden by command line options)
 * `--timeout` `[seconds]`: The per test timeout (in seconds)
 * `--delay` `[ms]`: When running multiple tests, the time to wait for the browser to shut down before starting it with a new page.
 * `-s`, `--server`: Only run the server
@@ -191,7 +191,7 @@ API you need to provide a username and password:
     "type": "browserstack",
     "username": "your browserstack username",
     "password": "your browserstack password",
-    "version": "browserstack API version (recommended: 2)"
+    "version": "browserstack API version (recommended: 4)"
   }
 }
 ```
@@ -202,12 +202,14 @@ To start a worker, you must provide a valid [browser object](https://github.com/
 {
   browsers: [{
     os: "win",
+    os_version: "7.0",
     browser: "ie",
-    version: 8.0
+    browser_version: "8.0"
   }, {
     os: "win",
+    os_version: "7.0",
     browser: "ie",
-    version: 11.0
+    browser_version: "11.0"
  }]
 }
 ```
@@ -215,7 +217,7 @@ To start a worker, you must provide a valid [browser object](https://github.com/
 An example configuration that runs your tests on an iPad Mini and Samsung Galaxy S3 emulator using BrowserStack
 in a CI environment (outputting XUnit logs) could look like this:
 
-```js
+```json
 {
     "reporter" : "XUnit",
     "tunnel": {
@@ -226,16 +228,16 @@ in a CI environment (outputting XUnit logs) could look like this:
       "type": "browserstack",
       "username": "your browserstack username",
       "password": "your browserstack password",
-      "version": 2
+      "version": 4
     },
     "browsers": [{
       "os": "ios",
       "device": "iPad Mini",
-      "version": 6.0
+      "os_version": "6.0"
     }, {
       "os": "android",
       "device": "Samsung Galaxy S III",
-      "version": "4.1"
+      "os_version": "4.1"
     }]
   }
 }
@@ -345,16 +347,16 @@ module.exports = function(grunt) {
             type: 'browserstack',
             username: process.env.BROWSERSTACK_USER,
             password: process.env.BROWSERSTACK_PASSWORD,
-            version: 2
+            version: 4
           },
           browsers: [{
-            "os": "ios",
-            "device": "iPad Mini",
-            "version": 6.0
+            os: 'ios',
+            device: 'iPad Mini',
+            os_version: '6.0'
           }, {
-            "os": "android",
-            "device": "Samsung Galaxy S III",
-            "version": "4.1"
+            os: 'android',
+            device: 'Samsung Galaxy S III',
+            os_version: '4.1'
           }]
         },
         src: ['test/index.html']
