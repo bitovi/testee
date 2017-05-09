@@ -56,10 +56,7 @@
     "testing",
     "unit-test"
   ],
-  "license": {
-    "name": "MIT",
-    "url": "http://www.opensource.org/licenses/mit-license.php"
-  },
+  "license": "MIT",
   "main": "lib/testee.js",
   "repository": {
     "type": "git",
