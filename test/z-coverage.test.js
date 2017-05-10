@@ -1,3 +1,19 @@
+/*
+  NOTE: Do not rename this file.
+
+  This file's name is intentionally prefixed with a z
+  in order for Mocha to run these tests last. This itself
+  is a test of lib/server's `nocache` middleware.
+
+  This test "passes" if the folowing coverage tests pass.
+  This is because the tests that run before these would
+    otherwise be cached in the browser, making the
+    subsequent requests for the instrumented files to
+    never be made.
+
+  TODO: design a way to test this functionality better.
+*/
+
 var assert = require('assert');
 var path = require('path');
 var del = require('del');
