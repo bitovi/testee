@@ -19,7 +19,6 @@
     "body-parser": "^1.15.2",
     "commander": "^2.3.0",
     "connect-injector": "^0.4.0",
-    "connect-nocache": "^1.1.0",
     "debug": "^2.0.0",
     "feathers": "^2.0.1",
     "feathers-memory": "^1.0.1",
@@ -65,12 +64,11 @@
   "scripts": {
     "jshint": "jshint lib/*.js test/*.js --config",
     "mocha": "mocha test/ --recursive --timeout 30000",
-    "mocha:coverage": "mocha test-coverage/coverage.test.js --timeout 30000",
     "publish": "git push origin && git push origin --tags",
     "release:major": "npm version major && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:patch": "npm version patch && npm publish",
     "release:pre": "npm version prerelease && npm publish",
-    "test": "npm run jshint && npm run mocha && npm run mocha:coverage"
+    "test": "npm run jshint && npm run mocha"
   }
 }
