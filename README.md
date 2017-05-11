@@ -12,7 +12,6 @@
 - Code coverage
 - Local and remote file testing
 
-
 ## Installation
 
 [Node.js](http://nodejs.org/) `>= 4` is required. To install, type this at the command line:
@@ -91,34 +90,7 @@ testee.test(files, browsers, config)
 
 ## Grunt Usage
 
-This package comes with a [grunt](https://npmjs.com/grunt) task that extends the [configuration API](#configuration-api):
-
-```js
-module.exports = function(grunt) {
-  grunt.initConfig({
-    testee: {
-      options: {
-        // See configuration API
-      },
-      coverage: {
-        options: {
-          // See configuration API
-        },
-        src: ['test/index.html']
-      },
-      browserstack: {
-        options: {
-          // See configuration API
-        },
-        src: ['test/index.html']
-      }
-    }
-  });
-
-  grunt.loadNpmTasks('testee');
-};
-```
-
+See the [Testee Grunt plugin `grunt-testee`](https://github.com/bitovi/grunt-testee) for more information.
 
 ## Configuration API
 
