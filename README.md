@@ -1,8 +1,8 @@
 # Testee
 
-[![NPM Version][https://img.shields.io/npm/v/testee.svg]][https://npmjs.org/package/testee]
-[![Build Status][https://img.shields.io/travis/bitovi/testee.svg]][https://travis-ci.org/bitovi/testee]
-[![Gitter Chat][https://img.shields.io/gitter/room/bitovi/testee.svg]][https://gitter.im/bitovi/testee]
+[![NPM Version](https://img.shields.io/npm/v/testee.svg)](https://npmjs.org/package/testee)
+[![Build Status](https://img.shields.io/travis/bitovi/testee.svg)](https://travis-ci.org/bitovi/testee)
+[![Gitter Chat](https://img.shields.io/gitter/room/bitovi/testee.svg)](https://gitter.im/bitovi/testee)
 
 > Automated cross-browser testing made easy.
 
