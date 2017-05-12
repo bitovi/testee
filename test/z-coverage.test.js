@@ -56,7 +56,7 @@ describe('Coverage', function () {
 
   describe('QUnit example', function () {
     it('socketio', function () {
-      return testee.test(['examples/qunit/index.html'], browsers, config).fail(function (error) {
+      return testee.test(['examples/qunit/index.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         assert.ok(fs.existsSync('test/coverage/qunit/blogpost.js.html'), 'reports coverage of blogpost.js');
         assert.ok(fs.existsSync('test/coverage/qunit/test.js.html'), 'reports coverage of qunit/test.js');
@@ -64,7 +64,7 @@ describe('Coverage', function () {
     });
 
     it('rest', function () {
-      return testee.test(['examples/qunit/rest.html'], browsers, config).fail(function (error) {
+      return testee.test(['examples/qunit/rest.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         assert.ok(fs.existsSync('test/coverage/qunit/blogpost.js.html'), 'reports coverage of blogpost.js');
         assert.ok(fs.existsSync('test/coverage/qunit/test.js.html'), 'reports coverage of qunit/test.js');
@@ -74,7 +74,7 @@ describe('Coverage', function () {
 
   describe('Jasmine example', function () {
     it('socketio', function () {
-      return testee.test(['examples/jasmine/index.html'], browsers, config).fail(function (error) {
+      return testee.test(['examples/jasmine/index.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         assert.ok(fs.existsSync('test/coverage/jasmine/blogpost.js.html'), 'reports coverage of blogpost.js');
         assert.ok(fs.existsSync('test/coverage/jasmine/test.js.html'), 'reports coverage of jasmine/test.js');
@@ -82,7 +82,7 @@ describe('Coverage', function () {
     });
 
     it('rest', function () {
-      return testee.test(['examples/jasmine/rest.html'], browsers, config).fail(function (error) {
+      return testee.test(['examples/jasmine/rest.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         assert.ok(fs.existsSync('test/coverage/jasmine/blogpost.js.html'), 'reports coverage of blogpost.js');
         assert.ok(fs.existsSync('test/coverage/jasmine/test.js.html'), 'reports coverage of jasmine/test.js');
@@ -92,7 +92,7 @@ describe('Coverage', function () {
 
   describe('Mocha example', function () {
     it('socketio', function () {
-      return testee.test(['examples/mocha/index.html'], browsers, config).fail(function (error) {
+      return testee.test(['examples/mocha/index.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         assert.ok(fs.existsSync('test/coverage/mocha/blogpost.js.html'), 'reports coverage of blogpost.js');
         assert.ok(fs.existsSync('test/coverage/mocha/test.js.html'), 'reports coverage of mocha/test.js');
@@ -100,7 +100,7 @@ describe('Coverage', function () {
     });
 
     it('rest', function () {
-      return testee.test(['examples/mocha/rest.html'], browsers, config).fail(function (error) {
+      return testee.test(['examples/mocha/rest.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
         assert.ok(fs.existsSync('test/coverage/mocha/blogpost.js.html'), 'reports coverage of blogpost.js');
         assert.ok(fs.existsSync('test/coverage/mocha/test.js.html'), 'reports coverage of mocha/test.js');

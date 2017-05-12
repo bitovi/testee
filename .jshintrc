@@ -6,7 +6,8 @@
     "beforeEach": true,
     "after": true,
     "afterEach": true,
-    "exports": true
+    "exports": true,
+    "Promise": true
   },
   "unused": true,
   "undef": true,
