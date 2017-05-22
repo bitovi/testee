@@ -338,3 +338,11 @@ In some testing environments, reporting test progress via REST may work better t
 
 #### Browser caching
 On Safari, disable caching by choosing `Develop -> Disable Caches` and also `Develop -> Empty Caches`. Without these preferences, updated tests may not load in the browser.
+
+#### "UnhandledPromiseRejectionWarning" messages
+If you see a message which looks like the one below, there is most likely an incorrect assertion somewhere in your tests. Please refer to [issue #136](https://github.com/bitovi/testee/issues/136) for an example. If the warning is unrelated to your assertions, please open an issue.
+
+```
+UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1):
+Error: Test `title` should be a "string" but "number" was given instead.
+```
