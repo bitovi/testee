@@ -71,6 +71,11 @@ testee test.html --config=testee.js
 ```
 
 
+## Development Flow
+
+During development it is nice to have tests run when files change. Testee is unique in that you do not need Testee while developing. Test pages can be served locally by something like [`http-server`](https://github.com/indexzero/http-server) or [`live-server`](https://github.com/tapio/live-server) and opened/reloaded in the browser at will. This is the recommended way to iterate when using Testee. Testee is better used to test against multiple browsers as part of your build and/or release process, or alongside [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) for commits or pushes.
+
+
 ## Programmatic Usage
 
 For custom scripts (including [gulp](https://npmjs.com/gulp)):
