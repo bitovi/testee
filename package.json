@@ -1,7 +1,7 @@
 {
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": {
     "name": "David Luecke",
     "email": "daff@neyeon.com",
