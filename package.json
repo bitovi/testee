@@ -1,7 +1,7 @@
 {
   "name": "testee",
   "description": "Automated cross-browser testing made easy.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": {
     "name": "David Luecke",
     "email": "daff@neyeon.com",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "async": "^2.1.1",
     "chai": "^4.0.2",
-    "del": "^2.0.2",
+    "del": "^3.0.0",
     "jshint": "^2.9.3",
     "mocha": "^3.1.0",
     "qunitjs": "^1.23.1"
