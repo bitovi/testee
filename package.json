@@ -62,11 +62,6 @@
   "scripts": {
     "jshint": "jshint lib/*.js test/*.js --config",
     "mocha": "mocha test/ --recursive --timeout 30000",
-    "publish": "git push origin && git push origin --tags",
-    "release:major": "npm version major && npm publish",
-    "release:minor": "npm version minor && npm publish",
-    "release:patch": "npm version patch && npm publish",
-    "release:pre": "npm version prerelease && npm publish",
     "test": "npm run jshint && npm run mocha"
   }
 }

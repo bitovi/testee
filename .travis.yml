@@ -1,8 +1,16 @@
 sudo: false
 language: node_js
 node_js:
-  - node
+- node
 before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
+deploy:
+  provider: npm
+  email: core@donejs.com
+  api_key:
+    secure: UKxc6J3TPd+WmiJ4AQx+SZzbWGPWsOFcHiWVek8c0ia4AN5vE/VUBLhr2qV5ikGandzol0csFstMJM5Gpf2NclH6jaFHPeCi0jnTHRI4yTVw9VjXIucRa0pMfUsA/Ed+K2UFzGopch+2tBybv3BdkxAUMK6jtR9VbkMHb5eXooM=
+  on:
+    tags: true
+    repo: bitovi/testee
