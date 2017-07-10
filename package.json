@@ -24,7 +24,6 @@
     "feathers-memory": "^1.0.1",
     "feathers-rest": "^1.5.0",
     "feathers-socketio": "^1.4.1",
-    "grunt-testee": "^1.0.0",
     "http-proxy": "^1.1.4",
     "istanbul": "^0.4.0",
     "launchpad": "^0.6.0",
@@ -50,7 +49,6 @@
   "homepage": "http://github.com/bitovi/testee",
   "keywords": [
     "browserstack",
-    "gruntplugin",
     "phantomjs",
     "testing",
     "unit-test"
