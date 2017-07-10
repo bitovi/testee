@@ -1,28 +1,29 @@
-module('Blog post test');
+var unit = QUnit;
 
-test('Date set to current time', function() {
+unit.module('Blog post test');
+
+unit.test('Date set to current time', function(assert) {
   var post = new BlogPost('Hello', 'Hello world');
-  ok(post.date, 'not comparing the date since it seem to get off')
+  assert.ok(post.date, 'not comparing the date since it seem to get off')
 });
 
-test('Unpublished post throws exception', function() {
+unit.test('Unpublished post throws exception', function(assert) {
   var post = new BlogPost('Hello', 'Hello world');
-  throws(post.toString, new Error("This blog post is not published"), "Got exception");
+  assert.throws(post.toString, new Error("This blog post is not published"), "Got exception");
 });
 
-test('Generates HTML', function() {
-  stop();
+unit.test('Generates HTML', function(assert) {
+  var done = assert.async();
   var now = new Date();
   var newpost = new BlogPost('Hello', 'Hello world', now);
   newpost.publish(function(post) {
-    equal(post.toString(), "<h1>Hello</h1>" +
+    assert.equal(post.toString(), "<h1>Hello</h1>" +
       "<h6>Published on " + now.toString() + "</h6>" +
       "<p>Hello world</p>", 'Generated expected HTML');
-    start();
+    done();
   });
-
 });
 
-test('Fails epicly', function() {
-  ok(false, 'Everything is going to be allright');
+unit.test('Fails epicly', function(assert) {
+  assert.ok(false, 'Everything is going to be allright');
 });
