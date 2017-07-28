@@ -31,7 +31,7 @@ On the command line, you have the following options available:
 * `-V`, `--version`: output the version number
 * `-b`, `--browsers` `[name]`: A comma separated list of browsers you want to run (default: `phantom`)
 * `-R`, `--root [path|URL]`: The server root path or URL the files are relative to
-* `-p`, `--port` `[port]`: The port to run the server on (default: `3996`)
+* `-p`, `--port` `[port]`: The port to run the server on (default: `3621`)
 * `-r`, `--reporter` `[name]`: The name of the reporter to use (default: `Dot`)
 * `-c`, `--config` `[file]`: Use this JSON or JS configuration file (can be overridden by command line options)
 * `--timeout` `[seconds]`: The per test timeout (in seconds)
@@ -103,7 +103,7 @@ See the [Testee Grunt plugin `grunt-testee`](https://github.com/bitovi/grunt-tes
 A simple, local browser config (JSON) example with mostly default values could look like:
 ```json
 {
-  "port": 3996,
+  "port": 3621,
   "root": "/var/www/app/",
   "reporter": "dot",
   "timeout": 120,
@@ -158,7 +158,7 @@ The delay (in milliseconds) between multiple test pages within a single browser.
 
 #### `port`
 Type: `Number`  
-Default value: `3996`  
+Default value: `3621`  
 The port of the static fileserver used to serve the tests. This will also be used by [Localhost tunneling services](#localhost-tunneling).
 
 #### `reporter`
