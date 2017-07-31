@@ -12,6 +12,14 @@ describe('Testee', function () {
   var browser = process.env.TEST_BROWSER || 'firefox';
   var browsers = [browser];
 
+  it('should fail fast if tests files are not found', function (done) {
+    var filename = 'zzz/not-a-file.html';
+    testee.test([filename], browsers, config).catch(function (error) {
+      assert.equal(error.message, 'File "' + filename + '" not found');
+      done();
+    });
+  });
+
   describe('QUnit example', function () {
     it('socketio provider', function (done) {
       testee.test(['examples/qunit/index.html'], browsers, config).catch(function (error) {
