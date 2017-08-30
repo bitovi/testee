@@ -32,7 +32,7 @@ On the command line, you have the following options available:
 * `-b`, `--browsers` `[name]`: A comma separated list of browsers you want to run (default: `phantom`)
 * `-R`, `--root [path|URL]`: The server root path or URL the files are relative to
 * `-p`, `--port` `[port]`: The port to run the server on (default: `3621`)
-* `-r`, `--reporter` `[name]`: The name of the reporter to use (default: `Dot`)
+* `-r`, `--reporter` `[name]`: The name of the reporter to use (default: `Spec`)
 * `-c`, `--config` `[file]`: Use this JSON or JS configuration file (can be overridden by command line options)
 * `--timeout` `[seconds]`: The per test timeout (in seconds)
 * `--delay` `[ms]`: When running multiple tests, the time to wait for the browser to shut down before starting it with a new page.
@@ -105,7 +105,7 @@ A simple, local browser config (JSON) example with mostly default values could l
 {
   "port": 3621,
   "root": "/var/www/app/",
-  "reporter": "dot",
+  "reporter": "Spec",
   "timeout": 120,
   "delay": 1000,
   "tunnel": {
@@ -163,7 +163,7 @@ The port of the static fileserver used to serve the tests. This will also be use
 
 #### `reporter`
 Type: `String`  
-Default value: `'dot'`  
+Default value: `'Spec'`
 See [Mocha reporters](https://mochajs.org/#reporters).
 
 #### `root`
