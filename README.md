@@ -262,6 +262,29 @@ testee test.html --browsers=firefox --reporter=XUnit > testresults.xml
 
 See [available reporters](#reporter).
 
+**Note:** If your CI platform uses Ubuntu to run builds, such as Travis CI, additional configuration is needed for FireFox to run properly. See bellow for more details.
+
+## Launching FireFox on Linux
+
+The Linux version of FireFox uses [D-Bus](https://www.freedesktop.org/wiki/Software/dbus/) which is not preinstalled on all Linux distributions, including Ubuntu, this can cause errors when launching tests, heavily pollute Testee's debug logs with error messages, and make FireFox run slow.
+
+To solve this problem, we recommend installing `dbus-x11` via the `apt` package manager before the build executes.
+
+Here is an example configuration for Travis CI:
+```yml
+language: node_js
+node_js:
+  - "6"
+addons:
+  firefox: "latest-esr"
+  # Install D-Bus here
+  apt:
+    packages:
+      - "dbus-x11"
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+```
 
 ## Capturing `console.log` and `console.error`
 
