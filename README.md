@@ -186,7 +186,14 @@ Choose between locally installed browsers and those provided remotely by Browser
 #### `browsers`
 Type: `Array`  
 Default value: `['phantom']`  
-The browsers that will be used to run tests. For local browsers, use a browser name string (see [launchpad](https://npmjs.com/launchpad) for more info). For a remote/BrowserStack browser, use a [browser object](https://npmjs.com/browserstack#browser-objects). Mixing both types is not currently possible.
+The browsers that will be used to run tests. For local browsers, use a browser name string (see [Launchpad](https://npmjs.com/launchpad) for more info). For a remote/BrowserStack browser, use a [browser object](https://npmjs.com/browserstack#browser-objects). To pass command-line arguments and other browser options to Launchpad, use an object containing the browser name and optional array of arguments and options like so:
+
+```json
+{
+  "browser": "chrome",
+  "args": ["--remote-debugging-port=9222"]
+}
+```
 
 #### `launch`
 Type: `Object`  
