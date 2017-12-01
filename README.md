@@ -114,7 +114,17 @@ A simple, local browser config (JSON) example with mostly default values could l
   "launch": {
     "type": "local"
   },
-  "browsers": ["chrome", "firefox"]
+  "browsers": [
+    "firefox",
+    {
+      "browser": "chrome",
+      "args": [
+        "--headless",
+        "--disable-gpu",
+        "--remote-debugging-port=9222"
+      ]
+    }
+  ]
 }
 ```
 
@@ -186,12 +196,16 @@ Choose between locally installed browsers and those provided remotely by Browser
 #### `browsers`
 Type: `Array`  
 Default value: `['phantom']`  
-The browsers that will be used to run tests. For local browsers, use a browser name string (see [Launchpad](https://npmjs.com/launchpad) for more info). For a remote/BrowserStack browser, use a [browser object](https://npmjs.com/browserstack#browser-objects). To pass command-line arguments and other browser options to Launchpad, use an object containing the browser name and optional array of arguments and options like so:
+The browsers that will be used to run tests. For local browsers, use a browser name string (see [Launchpad](https://npmjs.com/launchpad) for more info). For a remote/BrowserStack browser, use a [browser object](https://npmjs.com/browserstack#browser-objects). To pass command-line arguments and other browser options to Launchpad, use an object containing the browser name and optional array of arguments and options. This browser object will spawn a Chrome Headless browser:
 
 ```json
 {
   "browser": "chrome",
-  "args": ["--remote-debugging-port=9222"]
+  "args": [
+    "--headless",
+    "--disable-gpu",
+    "--remote-debugging-port=9222"
+  ]
 }
 ```
 
@@ -258,6 +272,20 @@ See [miner documentation](http://daffl.github.com/miner/) for all available tunn
 
 If you plan to use these, be sure to add [electron](https://npmjs.com/electron) and/or [phantomjs-prebuilt](https://npmjs.com/phantomjs-prebuilt) to your list of `devDependencies`, or have them installed globally on your system.
 
+## Chrome Headless
+
+To easily leverage Chrome Headless, you can add [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to your project as a development dependency and the following browser option to your config's `browsers` array:
+
+```json
+{
+  "browser": "chromium",
+  "args": [
+    "--headless",
+    "--disable-gpu",
+    "--remote-debugging-port=9222"
+  ]
+}
+```
 
 ## CI integration
 
