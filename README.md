@@ -276,8 +276,11 @@ If you plan to use these, be sure to add [electron](https://npmjs.com/electron) 
 
 To easily leverage Chrome Headless, you can add [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to your project as a development dependency and the following browser option to your config's `browsers` array:
 
-```json
-{
+```js
+const puppeteer = require('puppeteer')
+process.env.LAUNCHPAD_CHROMIUM = puppeteer.executablePath()
+
+module.exports = {
   "browser": "chromium",
   "args": [
     "--headless",
