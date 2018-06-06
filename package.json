@@ -3,9 +3,9 @@
   "description": "Automated cross-browser testing made easy.",
   "version": "0.7.0",
   "author": {
-    "name": "David Luecke",
-    "email": "daff@neyeon.com",
-    "web": "http://daffl.github.com"
+    "name": "Bitovi",
+    "email": "contact@bitovi.com",
+    "url": "http://bitovi.com"
   },
   "bin": {
     "testee": "./bin/testee"
