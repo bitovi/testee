@@ -30,6 +30,10 @@ config = _.extend(config, _.pick(program, 'browsers', 'port', 'root', 'reporter'
 var browsers = _.isArray(config.browsers) ? config.browsers :
   (config.browsers || 'phantom').split(',');
 
+// passing `--coverage` will not instrument node_modules by default
+config.coverage = config.coverage !== true ? config.coverage :
+	{ ignore: [ "node_modules" ] };
+
 if(config.server) {
   testee.server(config);
 } else {
