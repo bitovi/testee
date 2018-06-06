@@ -250,6 +250,8 @@ Type: `Array`
 Default value: `['text']`  
 A list of regex patterns that match files to be ignored by coverage instrumentation and reporting.
 
+**Note:** When using the `--coverage` option, `coverage.ignore` will default to `['node_modules']`.
+
 #### `coverage.reporters`
 Type: `Array`  
 Default value: `[]`  
