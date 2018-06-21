@@ -20,7 +20,7 @@ describe('Testee', function () {
     });
   });
 
-  describe('QUnit example', function () {
+  describe.skip('QUnit example', function () {
     it('socketio provider', function (done) {
       testee.test(['examples/qunit/index.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
@@ -35,7 +35,7 @@ describe('Testee', function () {
     });
   });
 
-  describe('Jasmine example', function () {
+  describe.skip('Jasmine example', function () {
     it('socketio provider', function (done) {
       testee.test(['examples/jasmine/index.html'], browsers, config).catch(function (error) {
         assert.equal(error.message, 'There were 0 general errors and 1 total test failures.');
@@ -50,7 +50,7 @@ describe('Testee', function () {
     });
   });
 
-  describe('Mocha example', function () {
+  describe.skip('Mocha example', function () {
     it('socketio provider', function (done) {
       testee.test(['examples/mocha/index.html'], browsers, config).catch(function () {
         done();
@@ -62,4 +62,16 @@ describe('Testee', function () {
       });
     });
   });
+
+  describe('with all browsers', function () {
+    it('QUnit example: socketio provider', function (done) {
+      testee.test(['examples/qunit/index.html'], ['*'], config).catch(function (error) {
+        // the number in the error will match the number of browsers in the system.
+        assert.equal(/^There were 0 general errors and [0-9]+ total test failures\.$/.test(error.message), true);
+        done();
+      });
+    });
+  });
+
+
 });
