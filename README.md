@@ -122,6 +122,7 @@ A simple, local browser config (JSON) example with mostly default values could l
       "args": [
         "--headless",
         "--disable-gpu",
+        "--no-sandbox",
         "--remote-debugging-port=9222"
       ]
     }
@@ -205,6 +206,7 @@ The browsers that will be used to run tests. For local browsers, use a browser n
   "args": [
     "--headless",
     "--disable-gpu",
+    "--no-sandbox",
     "--remote-debugging-port=9222"
   ]
 }
@@ -288,6 +290,7 @@ module.exports = {
   "args": [
     "--headless",
     "--disable-gpu",
+    "--no-sandbox",
     "--remote-debugging-port=9222"
   ]
 }
