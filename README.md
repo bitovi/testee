@@ -33,6 +33,7 @@ On the command line, you have the following options available:
 * `-R`, `--root [path|URL]`: The server root path or URL the files are relative to
 * `-p`, `--port` `[port]`: The port to run the server on (default: `3621`)
 * `-r`, `--reporter` `[name]`: The name of the reporter to use (default: `Dot`)
+* `--reporter-options` `[options]`: The reporter specific options (separated by a comma)
 * `-c`, `--config` `[file]`: Use this JSON or JS configuration file (can be overridden by command line options)
 * `--timeout` `[seconds]`: The per test timeout (in seconds)
 * `--delay` `[ms]`: When running multiple tests, the time to wait for the browser to shut down before starting it with a new page.
