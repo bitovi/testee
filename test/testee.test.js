@@ -20,6 +20,22 @@ describe('Testee', function () {
     });
   });
 
+  it('reporterOptions should be passed to reporter init', function (done) {
+    var reporterOptions = {
+      "junit_report_name": "Tests"
+    };
+
+    var _reporterOptions;
+    var _reporter = function(runner, options) {
+      _reporterOptions = options.reporterOptions;
+    };
+
+    testee.test(['examples/qunit/index.html'], browsers, Object.assign({}, config, {reporter: _reporter, reporterOptions: reporterOptions})).catch(function () {
+      assert.equal(reporterOptions, _reporterOptions);
+      done();
+    });
+  });
+
   describe('QUnit example', function () {
     it('socketio provider', function (done) {
       testee.test(['examples/qunit/index.html'], browsers, config).catch(function (error) {

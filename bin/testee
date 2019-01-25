@@ -14,6 +14,7 @@ program.version(pkg.version)
   .option('-p, --port [port]', 'The server port')
   .option('-R, --root [path]', 'The server root path the files are relative to')
   .option('-r, --reporter [name]', 'The name of the reporter to use')
+  .option('--reporter-options [options]', 'The reporter specific options (separated by a comma)')
   .option('-c --config [filename]', 'Use a JSON or JS configuration file')
   .option('--coverage', 'Track code coverage and write to console (if not running as server)')
   .option('--timeout [seconds]', 'The per test timeout (in seconds)')
@@ -32,7 +33,18 @@ var browsers = _.isArray(config.browsers) ? config.browsers :
 
 // passing `--coverage` will not instrument node_modules by default
 config.coverage = config.coverage !== true ? config.coverage :
-	{ ignore: [ "node_modules" ] };
+  { ignore: [ "node_modules" ] };
+
+if (program.reporterOptions) {
+  config.reporterOptions = {};
+
+  var reporterOptionsArrStr = program.reporterOptions.split(",");
+
+  reporterOptionsArrStr.forEach(function (option) {
+    var options = option.split("=");
+    config.reporterOptions[options[0]] = options[1];
+  });
+}
 
 if(config.server) {
   testee.server(config);
