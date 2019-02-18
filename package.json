@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "babel-core": "^6.24.0",
-    "babel-plugin-istanbul": "^4.1.1",
+    "babel-plugin-istanbul": "^5.1.1",
     "body-parser": "^1.15.2",
     "commander": "^2.3.0",
     "connect-injector": "^0.4.0",
