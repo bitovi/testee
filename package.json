@@ -26,7 +26,7 @@
     "feathers-socketio": "^2.0.1",
     "http-proxy": "^1.1.4",
     "istanbul": "^0.4.0",
-    "launchpad": "^0.6.0",
+    "launchpad": "^0.7.1",
     "lodash": "^4.17.10",
     "mime-types": "^2.1.6",
     "miner": "^0.2.1",
