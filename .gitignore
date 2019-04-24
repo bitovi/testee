@@ -17,3 +17,4 @@ npm-debug.log
 
 testee.log
 test-coverage/coverage
+package-lock.json
