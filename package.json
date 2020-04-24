@@ -28,7 +28,7 @@
     "istanbul": "^0.4.0",
     "launchpad": "^0.7.1",
     "lodash": "^4.17.10",
-    "mime-types": "^2.1.6",
+    "mime-types": "^2.1.27",
     "miner": "^1.0.0",
     "mocha": "^4.1.0",
     "path": "^0.12.7",
