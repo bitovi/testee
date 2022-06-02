@@ -29,8 +29,7 @@
     "launchpad": "^0.7.1",
     "lodash": "^4.17.10",
     "mime-types": "^2.1.6",
-    "miner": "^1.0.0",
-    "mocha": "^4.1.0",
+    "miner": "^1.0.1",
     "path": "^0.12.7",
     "testee-client": "^0.5.0",
     "useragent": "^2.0.9"
@@ -40,7 +39,7 @@
     "chai": "^4.0.2",
     "del": "^3.0.0",
     "jshint": "^2.9.3",
-    "mocha": "^4.1.0",
+    "mocha": "^9.2.2",
     "qunitjs": "^2.4.0"
   },
   "engines": {
